@@ -11,31 +11,11 @@
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome'); 
 });
 
-Route::get('user/{id?}', function ($id = 1) {
-    return view('user.profile', ['id' => $id]);
-})->name('user.profile');
+Auth::routes();
 
-Route::get('page/{id}', function ($id) {
-    return view('page.show', ['id' => $id]);
-})->where('id', '[0-9]+');
-
-Route::get('page/css', function () {
-    return view('page.style');
-});
-
-Route::get('/task/{id}/delete', function ($id) {
-    return '<form method="post" action="' . route('task.delete', [$id]) . '">
-                <input type="hidden", name="_method", value="delete">
-                <input type="hidden", name="_token", value="' . csrf_token() . '">
-                <button type="submit"> Delete </button>
-            </form>';
-});
-
-Route::delete('/delete/{id}', function ($id) {
-    return 'Delete ' . $id . ' Successfully';
-}) -> name('task.delete');
-
+Route::get('/home', 'HomeController@index')->name('home');
