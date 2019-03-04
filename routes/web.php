@@ -11,11 +11,10 @@
 |
 */
 
-
-Route::get('/', function () {
-    return view('welcome'); 
-});
-
 Auth::routes();
 
+Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('form', 'RequestController@form');
+Route::post('form/file_upload', 'RequestController@fileup');

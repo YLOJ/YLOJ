@@ -26,7 +26,10 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
-
+    
+    protected $maxAttempts = 10;
+    protected $decayMinutes = 20;
+    
     /**
      * Create a new controller instance.
      *
@@ -35,5 +38,9 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function username() {
+        return 'name';
     }
 }
