@@ -16,7 +16,7 @@ class ProblemsetController extends Controller
 
     public function add() 
     {
-        return view('problemset.add');
+        return "view('problemset.add')";
     }
     
     public function showProblem($id)
