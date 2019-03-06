@@ -6,8 +6,7 @@
 
 	<div class = "row justify-content-center">
 		{{ $problemset -> links() }}
-	</div>
-
+    </div>
 
 	<div class = "row">
 		<div class = "row-md-6 row-md-offset-3">
@@ -33,7 +32,7 @@
 						<td class="text-success"> <b> {{ $x }}  </b> </td>
 					@elseif ($x == 0)
 						<td class="text-muted"> <b> {{ $x }}  </b> </td>
-					@else	
+					@else
 						<td class="text-danger"> <b> {{ $x }}  </b> </td>
 					@endif
 				  </tr>
