@@ -15,9 +15,9 @@ class CreateProblemset extends Migration
     {
         Schema::create('problemset', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->string('content_md');
-            $table->string('content_html');
+            $table->string('title', 50);
+            $table->TEXT('content_md', 65000);
+            $table->TEXT('content_html', 65000)->nullable();
         });
     }
 

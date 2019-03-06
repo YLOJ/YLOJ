@@ -17,4 +17,6 @@ Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/problemset', 'ProblemsetController@index')->name('problemset');
+Route::get('/problemset/fetch', 'ProblemsetController@fetch');
+
 Route::get('/problemset/{id}', 'ProblemsetController@showProblem');
