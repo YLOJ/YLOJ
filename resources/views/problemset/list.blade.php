@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 @extends('layouts.app')
 
 @section('content')
@@ -7,6 +8,15 @@
     <div class="row justify-content-center">
         {{ $problemset -> links() }}
     </div>
+
+    @auth
+    @if ( Auth::user()->permission > 0 )
+    <form method="post" action="problemset/add">
+        <button type="submit" class="btn-primary">Add Problem</button>
+        @csrf
+    </form>
+    @endif
+    @endauth
 
     <div class="row">
         <div class="row-md-6 row-md-offset-3">
@@ -20,8 +30,7 @@
                 </thead>
                 <tbody>
                     @foreach ($problemset as $problem)
-                    @if ($problem -> id % 2 == 1)
-                    <tr style="background-color:#F3F3F3">
+                    @if ($problem -> id % 2 == 1) <tr style="background-color:#F3F3F3">
                         @else
                     <tr>
                         @endif
@@ -29,7 +38,7 @@
                         <td> <a href="/problemset/{{$problem->id}}"> {{$problem->title}} </a> </td>
                         <?php
 						$x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100;
-					?>
+					    ?>
                         @if ($x > 0)
                         <td class="text-success"> <b> {{ $x }} </b> </td>
                         @elseif ($x == 0)
