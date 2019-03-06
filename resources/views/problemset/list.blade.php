@@ -9,12 +9,14 @@
         {{ $problemset -> links() }}
     </div>
 
-    @if ( {{ Auth::user()->permission > 0 }})
+    @auth
+    @if ( Auth::user()->permission > 0 )
         <form method="post" action="problemset/add">
             <button type="submit" class="btn-primary">Add Problem</button>
-            @csrfj
+            @csrf
         </form>
     @endif
+    @endauth
 
     <div class="row">
         <div class="row-md-6 row-md-offset-3">
