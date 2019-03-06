@@ -9,6 +9,7 @@
         {{ $problemset -> links() }}
     </div>
 
+<<<<<<< HEAD
     @auth
     @if ( Auth::user()->permission > 0 )
     <form method="post" action="problemset/add">
@@ -17,6 +18,14 @@
     </form>
     @endif
     @endauth
+=======
+    @if ( {{ Auth::user()->permission > 0 }})
+        <form method="post" action="problemset/add">
+            <button type="submit" class="btn-primary">Add Problem</button>
+            @csrfj
+        </form>
+    @endif
+>>>>>>> 64c0222... add permission button on list.blade.php
 
     <div class="row">
         <div class="row-md-6 row-md-offset-3">
@@ -38,7 +47,11 @@
                         <td> <a href="/problemset/{{$problem->id}}"> {{$problem->title}} </a> </td>
                         <?php
 						$x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100;
+<<<<<<< HEAD
 					    ?>
+=======
+					?>
+>>>>>>> 64c0222... add permission button on list.blade.php
                         @if ($x > 0)
                         <td class="text-success"> <b> {{ $x }} </b> </td>
                         @elseif ($x == 0)
