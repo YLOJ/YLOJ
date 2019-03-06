@@ -1,9 +1,9 @@
 @extends("layouts.problem")
 
 @section("title")
-nyg zjm
+{{ $title }}
 @endsection
 
 @section("problem_content")
-dyy jm too.
+<?php echo $content_html ?>
 @endsection
