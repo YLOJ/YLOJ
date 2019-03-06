@@ -10,6 +10,7 @@
     </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @auth
     @if ( Auth::user()->permission > 0 )
     <form method="post" action="problemset/add">
@@ -20,12 +21,20 @@
     @endauth
 =======
     @if ( {{ Auth::user()->permission > 0 }})
+=======
+    @auth
+    @if ( Auth::user()->permission > 0 )
+>>>>>>> c5d5c20... fix bugs
         <form method="post" action="problemset/add">
             <button type="submit" class="btn-primary">Add Problem</button>
-            @csrfj
+            @csrf
         </form>
     @endif
+<<<<<<< HEAD
 >>>>>>> 64c0222... add permission button on list.blade.php
+=======
+    @endauth
+>>>>>>> c5d5c20... fix bugs
 
     <div class="row">
         <div class="row-md-6 row-md-offset-3">
