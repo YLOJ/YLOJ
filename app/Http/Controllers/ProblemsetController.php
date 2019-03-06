@@ -13,6 +13,11 @@ class ProblemsetController extends Controller
         $problemset = DB::table('problemset') -> paginate(20);
         return view('problemset.list', ['problemset' => $problemset]);
     }
+
+    public function add() 
+    {
+        return view('problemset.add');
+    }
     
     public function showProblem($id)
     {
