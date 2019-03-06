@@ -19,11 +19,4 @@ class ProblemsetController extends Controller
         dd ($problemset);
     }
 
-    public function showProblem($id)
-    {
-        $content = DB::table('problemset') -> where('id' => $id);
-
-        md -> <html></html>
-        return view('problemset.show', ['contend_html', $contend_html]);
-    }
 }
