@@ -24,23 +24,58 @@ class ProblemsetController extends Controller
     {
         $problem = DB::table('problemset') -> where('id', $id) -> first();
         $title = $problem -> title;
+        $time_limit = $problem -> time_limit;
+        $memory_limit = $problem -> memory_limit;
         $content_md = $problem -> content_md;
-        return view('problemset.edit', ['title' => $title, 'content_md' => $content_md, 'id' => $id]);
+
+        return view('problemset.edit', [
+            'id' => $id,
+            'title' => $title, 
+            'time_limit' => $time_limit,
+            'memory_limit' => $memory_limit,
+            'content_md' => $content_md,
+            ]
+        );
     }
 
     public function add_submit(ProblemFormRequest $request) 
     { 
         $title = $request -> input('title');
+        $time_limit = $request -> input('time_limit');
+        $memory_limit = $request -> input('memory_limit');
         $content_md = $request -> input('content_md');
-        $flag = DB::insert('insert into `problemset` (`title`, `content_md`) values (?, ?)', [$title, $content_md]);
+        
+        DB::insert('insert into `problemset` (`title`, `time_limit`, `memory_limit`, `content_md`) values (?, ?, ?, ?)', [
+            $title, 
+            $time_limit,
+            $memory_limit,
+            $content_md,
+        ]);
+        
         return redirect('problemset');
     }
 
     public function edit_submit(ProblemFormRequest $request, $id)
     {
         $title = $request -> input('title');
+        $time_limit = $request -> input('time_limit');
+        $memory_limit = $request -> input('memory_limit');
         $content_md = $request -> input('content_md');
-        $flag = DB::update("update `problemset` set `title` = ?, `content_md` = ? where `id` = ?", [$title, $content_md, $id]);
+
+        DB::update("update `problemset` set 
+            `title` = ?, 
+            `time_limit` = ?,
+            `memory_limit` = ?,
+            `content_md` = ? 
+            where `id` = ?", [
+                $title, 
+                $time_limit,
+                $memory_limit,
+                $content_md, 
+                $id,
+            ]
+        );
+
         return redirect('problemset');
     }
     
@@ -48,8 +83,19 @@ class ProblemsetController extends Controller
     {
         $markdowner = new Markdowner();
         $problem = DB::table('problemset') -> where('id', $id) -> first();
+        
         $title = $problem -> title;
+        $time_limit = $problem -> time_limit;
+        $memory_limit = $problem -> memory_limit;
         $content_html = $markdowner -> toHTML($problem -> content_md);
-        return view('problemset.show', ['title' => $title, 'content_html' => $content_html, 'id' => $id]);
+        
+        return view('problemset.show', [
+            'id' => $id,
+            'title' => $title,
+            'time_limit' => $time_limit,
+            'memory_limit' => $memory_limit,
+            'content_html' => $content_html, 
+            ]
+        );
     }
 }
