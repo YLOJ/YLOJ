@@ -24,9 +24,7 @@
         </div>
         <div class="form-group">
             <label>Content</label> <br>
-            <textarea rows="20" cols="0" name="content_md", class="form-control">
-{{$content_md}}
-            </textarea>
+            <textarea rows="20" name="content_md", class="form-control">{{$content_md}}</textarea>
         </div>
         <button type="submit" class="btn btn-primary"> Save </button>
         @csrf
