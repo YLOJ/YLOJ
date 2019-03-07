@@ -34,7 +34,7 @@ class SubmitFormRequest extends FormRequest
         return [
             'title.required' => "Title can't be empty",
             'title.max' => "Title is too long",
-            'content_md.max' => "Content is to long"
+            'content_md.max' => "Content is too long"
         ]
     }
 }

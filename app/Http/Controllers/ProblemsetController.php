@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProblemFormRequest;
 use App\Services\Markdowner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,9 +20,12 @@ class ProblemsetController extends Controller
         return view('problemset.add');
     }
 
-    public function add_submit(Request $request) 
+    public function add_submit(ProblemFormRequest $request) 
     {
-        
+        $title = $request -> input('title');
+        $content_md = $request -> input('content_md');
+        $flag = DB::insert('insert into `problemset` (`title`, `content_md`) values (?, ?)', [$title, $content_md]);
+    
         return redirect('problemset');
     }
     
