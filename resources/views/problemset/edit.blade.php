@@ -24,9 +24,13 @@
         </div>
         <div class="form-group">
             <label>Content</label> <br>
+<<<<<<< HEAD
             <textarea rows="20" cols="0" name="content_md", class="form-control">
 {{$content_md}}
             </textarea>
+=======
+            <textarea rows="20" name="content_md", class="form-control">{{$content_md}}</textarea>
+>>>>>>> 2cdd5e98ce4f60f8d7f8f8129e0949286dacc430
         </div>
         <button type="submit" class="btn btn-primary"> Save </button>
         @csrf
