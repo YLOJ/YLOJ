@@ -18,11 +18,9 @@
         </div>
         <div class="form-group">
             <label>Content</label> <br>
-            <textarea rows="20" name="content_md", class="form-control">
-                {{$content_md}}
-            </textarea>
+            <textarea rows="20" name="content_md", class="form-control">{{$content_md}}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary"> Add </button>
+        <button type="submit" class="btn btn-primary"> Save </button>
         @csrf
     </form>
 </div>

@@ -5,7 +5,7 @@
 <div class="artcle">
     <h1> @yield("title") </h1>
 
-    <h5><nav>
+    <h3><nav>
         <a href="#">submit</a> |
         <a href="#">submissions</a> |
         <a href="#">discussions</a> |
@@ -21,11 +21,13 @@
             @endif
         @endauth
 
-    </nav></h5>
+    </nav></h3>
 
     <hr>
 
+    <h4>
     @yield("problem_content")
+    </h4>
 </div>
 
 @endsection
