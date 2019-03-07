@@ -40,7 +40,7 @@ class ProblemsetController extends Controller
     {
         $title = $request -> input('title');
         $content_md = $request -> input('content_md');
-        $flag = DB::update('update `problemset` set `title` = ? `content_md` = ? where `id` = ?', [$title, $content_md, $id]);
+        $flag = DB::update("update `problemset` set `title` = ?, `content_md` = ? where `id` = ?", [$title, $content_md, $id]);
         return redirect('problemset');
     }
     
