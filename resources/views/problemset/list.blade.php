@@ -12,7 +12,7 @@
     @auth
     @if ( Auth::user()->permission > 0 )
     <div>
-        <form method="post" action="problemset/add">
+        <form method="post" action="problem/add">
             <button type="submit" class="btn btn-primary"> Add Problem </button>
             @csrf
         </form>
