@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SubmitFormRequest extends FormRequest
+class ProblemFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,6 +35,6 @@ class SubmitFormRequest extends FormRequest
             'title.required' => "Title can't be empty",
             'title.max' => "Title is too long",
             'content_md.max' => "Content is too long"
-        ]
+        ];
     }
 }
