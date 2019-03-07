@@ -18,7 +18,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/problemset', 'ProblemsetController@index')->name('problemset');
 
-Route::get('/problem/{id}', 'ProblemsetController@showProblem');
-Route::post('/problem/add', 'ProblemsetController@add');
-Route::post('/problem/add_submit', 'ProblemsetController@add_submit');
-Route::post('/problem/edit/{id}', 'ProblemsetController@edit');
+Route::get('/problem/{id}', 'ProblemsetController@showProblem')->where('id', '[0-9]+');
+Route::match(['post', 'get'], '/problem/add', 'ProblemsetController@add');
+Route::any('/problem/add_submit', 'ProblemsetController@add_submit');
+Route::any('/problem/edit/{id}', 'ProblemsetController@edit');
