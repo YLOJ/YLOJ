@@ -23,6 +23,13 @@ class Markdowner
 
     protected function postTransformText($text)
     {
-        return $text;
+        $new_text = "";
+        $len = strlen($text);
+
+        for ($i = 0; $i < $len; $i ++) {
+            $new_text .= $text[$i] == "\n" ? "<br>" : $text[$i];
+        }
+        
+        return $new_text;
     }
 }
