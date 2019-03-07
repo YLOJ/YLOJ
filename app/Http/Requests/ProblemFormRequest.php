@@ -26,7 +26,6 @@ class ProblemFormRequest extends FormRequest
         return [
             'title' => 'bail|required|string|max:255',
             'content_md' => 'required|string|max:65000'
-            //
         ];
     }
 
@@ -34,7 +33,7 @@ class ProblemFormRequest extends FormRequest
         return [
             'title.required' => "Title can't be empty",
             'title.max' => "Title is too long",
-            'content_md.max' => "Content is too long"
+            'content_md.max' => "Content is too large"
         ];
     }
 }
