@@ -4,7 +4,7 @@
 
 <div class="artcle">
     <h1> @yield("title") </h1>
-
+    
     <h5><nav>
         <a href="#">submit</a> |
         <a href="#">submissions</a> |

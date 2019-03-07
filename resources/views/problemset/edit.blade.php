@@ -16,10 +16,16 @@
             <label>Title</label>
             <input type="text" name="title" class="form-control" value="{{$title}}">
         </div>
+        <div>
+            <label>Time Limit</label>
+            <input type="text" name="time_limit" value="{{$time_limit}}">Ms 
+            <label>Memory Limit</label>
+            <input type="text" name="memory_limit" value="{{$memory_limit}}">MB
+        </div>
         <div class="form-group">
             <label>Content</label> <br>
-            <textarea rows="20" name="content_md", class="form-control">
-                {{$content_md}}
+            <textarea rows="20" cols="0" name="content_md", class="form-control">
+{{$content_md}}
             </textarea>
         </div>
         <button type="submit" class="btn btn-primary"> Save </button>
