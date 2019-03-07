@@ -11,10 +11,12 @@
 
     @auth
     @if ( Auth::user()->permission > 0 )
-    <form method="post" action="problemset/add">
-        <button type="submit" class="btn-primary">Add Problem</button>
-        @csrf
-    </form>
+    <div>
+        <form method="post" action="problemset/add">
+            <button type="submit" class="btn btn-primary"> Add Problem </button>
+            @csrf
+        </form>
+    </div> <br>
     @endif
     @endauth
 
@@ -35,10 +37,9 @@
                     <tr>
                         @endif
                         <td> {{ $problem -> id }} </td>
-                        <td> <a href="/problemset/{{$problem->id}}"> {{$problem->title}} </a> </td>
-                        <?php
-						$x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100;
-					    ?>
+                        <td> <a href="/problem/{{ $problem->id }}"> {{$problem->title}} </a> </td>
+                        <?php $x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>
+
                         @if ($x > 0)
                         <td class="text-success"> <b> {{ $x }} </b> </td>
                         @elseif ($x == 0)

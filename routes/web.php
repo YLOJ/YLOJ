@@ -17,5 +17,8 @@ Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/problemset', 'ProblemsetController@index')->name('problemset');
-Route::post('/problemset/add', 'ProblemsetController@add');
-Route::get('/problemset/{id}', 'ProblemsetController@showProblem');
+
+Route::get('/problem/{id}', 'ProblemsetController@showProblem');
+Route::post('/problem/add', 'ProblemsetController@add');
+Route::post('/problem/add_submit', 'ProblemsetController@add_submit');
+Route::post('/problem/edit/{id}', 'ProblemsetController@edit');
