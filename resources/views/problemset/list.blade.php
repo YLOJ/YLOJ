@@ -35,7 +35,7 @@
                     <tr>
                         @endif
                         <td> {{ $problem -> id }} </td>
-                        <td> <a href="/problemset/{{$problem->id}}"> {{$problem->title}} </a> </td>
+                        <td> <a href="/problem/{{$problem->id}}"> {{$problem->title}} </a> </td>
                         <?php
 						$x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100;
 					?>

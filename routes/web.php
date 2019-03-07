@@ -18,4 +18,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/problemset', 'ProblemsetController@index')->name('problemset');
 Route::get('/problemset/add', 'ProblemsetController@add');
-Route::get('/problemset/{id}', 'ProblemsetController@showProblem');
+Route::get('/problem/{id}', 'ProblemsetController@showProblem');

@@ -11,6 +11,14 @@
         <a href="#">discussions</a> |
         <a href="#">statistics</a> |
         <a href="#">custom test</a>
+
+        @auth
+            @if ( Auth::user()->permission > 0)
+            | <a href="javascript:void(0);" onclick="document.getElementById('myform').submit();">edit</a>
+            <form id="myform" method="post" action="/problem/edit/{{$id}}"></form>
+            @endif
+        @endauth
+
     </nav></h5>
 
     <hr>
