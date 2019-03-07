@@ -21,6 +21,7 @@ class ProblemsetController extends Controller
 
     public function add_submit(Request $request) 
     {
+        
         return redirect('problemset');
     }
     
