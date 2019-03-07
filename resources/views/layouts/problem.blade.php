@@ -15,7 +15,9 @@
         @auth
             @if ( Auth::user()->permission > 0)
             | <a href="javascript:void(0);" onclick="document.getElementById('myform').submit();">edit</a>
-            <form id="myform" method="post" action="/problem/edit/{{$id}}"></form>
+            <form id="myform" method="post" action="/problem/edit/{{$id}}">
+                @csrf
+            </form>
             @endif
         @endauth
 
