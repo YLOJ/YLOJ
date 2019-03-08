@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProblemFormRequest extends FormRequest
@@ -13,7 +14,7 @@ class ProblemFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::check() && Auth::user()->permission > 0;
     }
 
     /**
