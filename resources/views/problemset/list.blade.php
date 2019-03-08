@@ -21,7 +21,7 @@
     @endauth
 
     <div class="row">
-        <div class="row-md-6 row-md-offset-3">
+        <div class="col">
             <table class="table table-bordered">
                 <thead>
                     <tr>
