@@ -19,8 +19,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/problemset', 'ProblemsetController@index')->name('problemset');
 Route::get('/problem/{id}', 'ProblemsetController@showProblem')->where('id', '[0-9]+');
 
-Route::any('/problem/add', 'ProblemsetController@add')->name('add');
-Route::post('/problem/add_submit', 'ProblemsetController@add_submit');
+Route::post('/problem/add', 'ProblemsetController@add')->name('add');
+Route::get('/problem/add', 'ProblemsetController@add');
 
-Route::any('/problem/edit/{id}', 'ProblemsetController@edit')->name('edit')->where('id', '[0-9]+');
+Route::post('/problem/add_submit', 'ProblemsetController@add_submit');
+Route::get('/problem/edit/{id}', 'ProblemsetController@edit')->name('edit')->where('id', '[0-9]+');
 Route::post('/problem/edit_submit/{id}', 'ProblemsetController@edit_submit')->where('id', '[0-9]+');
