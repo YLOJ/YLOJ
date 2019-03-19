@@ -33,10 +33,6 @@
 		
 		</div>
 	</div>
-<<<<<<< HEAD
-=======
-
->>>>>>> d4a4e38... fix
 </div>
 
 @endsection
