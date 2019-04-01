@@ -17,10 +17,10 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th style="width:12%">Submission ID</th>
+                        <th style="width:7%">ID</th>
                         <th style="width:25%">Problem Name</th>
                         <th style="width:10%">User</th>
-                        <th style="width:9%">Result</th>
+                        <th style="width:14%">Result</th>
                         <th style="width:9%">Score</th>
                         <th style="width:9%">Time</th>
                         <th style="width:9%">Memory</th>

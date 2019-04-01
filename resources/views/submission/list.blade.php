@@ -23,28 +23,29 @@
 
 <div class="container">
 
+	<p class="text-sm"> </p>
     <div class="hidden-xs">
         <form class="form-inline" action="/submission" method="get">
             <div class="form-group">
-                <label class="control-label"> Problem Id: </label>
-                <input class="form-control input-sm" type="text" name="problem_id" style="height:2em;width:4em" value="{{$problem_id}}">
+                <label class="control-label"> &nbsp Problem ID: &nbsp </label>
+                <input class="form-control input-sm" type="text" name="problem_id" style="height:2em;width:4em">
             </div>
 
             <div class="form-group">
-                <label class="control-label"> User Name: </label>
-                <input class="form-control input-sm" type="text" name="user_name" style="height:2em;width:10em" value="{{$user_name}}">
+                <label class="control-label"> &nbsp&nbsp User Name: &nbsp </label>
+                <input class="form-control input-sm" type="text" name="user_name" style="height:2em;width:10em">
             </div>
 
             <div class="form-group">
-                <label class="control-label"> Score: </label>
-                <input class="form-control input-sm" type="text" name="min_score" style="height:2em;width:3em" value="{{$min_score}}">
-                ~
-                <input class="form-control input-sm" type="text" name="max_score" style="height:2em;width:3em" value="{{$max_score}}">
-            </div>
-
-            <button class="btn btn-primary" type="submit"> Search </button>
+                <label class="control-label"> &nbsp&nbsp Score: &nbsp </label>
+                <input class="form-control input-sm" type="text" name="min_score" style="height:2em;width:3em">
+                &nbsp ~ &nbsp
+                <input class="form-control input-sm" type="text" name="max_score" style="height:2em;width:3em"> &nbsp&nbsp&nbsp
+			</div>
+            <button class="btn btn-primary btn-sm" type="submit"> Search </button>
         </form>
     </div>
+	<p class="text-sm"> </p>
 
     <div class="row">
         <div class="col">
@@ -52,10 +53,10 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th style="width:12%">Submission ID</th>
+                        <th style="width:7%">ID</th>
                         <th style="width:25%">Problem Name</th>
                         <th style="width:10%">User</th>
-                        <th style="width:9%">Result</th>
+                        <th style="width:14%">Result</th>
                         <th style="width:9%">Score</th>
                         <th style="width:9%">Time</th>
                         <th style="width:9%">Memory</th>
@@ -64,7 +65,7 @@
                 </thead>
                 <tbody>
                     @foreach ($submissionset as $sub)
-                    @if ($sub -> id % 2 == 1)
+                    @if ($sub -> id % 2 == 0)
                     <tr style="background-color:#F3F3F3">
                         @else
                     <tr>
