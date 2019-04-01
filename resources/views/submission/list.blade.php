@@ -13,7 +13,7 @@
         <div class="col">
 
             <form action="#" method="get">
-                Problem Id: <input type="text" name="problem_id">
+                Problem Id: <input type="text" name="id">
                 User Name: <input type="text" name="user_name">
                 <button type="submit">Search</button>
             </form>
