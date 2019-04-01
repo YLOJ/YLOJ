@@ -54,7 +54,7 @@
                     </tr>
                 </tbody>
             </table>
-            
+
             <pre>
                 <code class="cpp">
 {{ $sub -> source_code }}
