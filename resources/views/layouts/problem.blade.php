@@ -11,16 +11,22 @@
 
 			<center>
 			<div class = "btn-group-md">
-				<button class = "btn btn-primary" href="#"> Submit </button>
-				<button class = "btn btn-primary" href="#"> Submissions </button>
-				<button class = "btn btn-primary" href="#"> Dicussions </button>
-				<button class = "btn btn-primary" href="#"> Statistics </button>
-				<button class = "btn btn-primary" href="#"> Custom tests </button>
+				<button class = "btn btn-primary" href="#"> 
+					<img src="{{ asset('svg/icons/paper-plane.ico') }}"/> Submit </button>
+				<button class = "btn btn-primary" href="#"> 
+					<img src="{{ asset('svg/icons/text-left.ico') }}"/> Submissions </button>
+				<button class = "btn btn-primary" href="#"> 
+					<img src="{{ asset('svg/icons/discussion.ico') }}"/> Dicussions </button>
+				<button class = "btn btn-primary" href="#"> 
+					<img src="{{ asset('svg/icons/statistics.ico') }}"/> Statistics </button>
+				<button class = "btn btn-primary" href="#"> 
+					<img src="{{ asset('svg/icons/test-file.ico') }}"/> Custom tests </button>
 
 
 				@auth
 					@if ( Auth::user()->permission > 0)
-					<button class = "btn btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();"> Edit </button>
+					<button class = "btn btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();"> 
+						<img src="{{ asset('svg/icons/edit.ico') }}"/> Edit </button>
 					<form id="myform" method="post" action="/problem/edit/{{$id}}">
 						@csrf
 					</form>
