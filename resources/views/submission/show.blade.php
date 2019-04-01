@@ -2,8 +2,7 @@
 @extends('layouts.app')
 
 <head>
-    <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style/atom-one-light.css">
+    <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/xcode.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
     <script>
         hljs.initHighlightingOnLoad();
@@ -32,7 +31,8 @@
                     <tr>
                         <td> {{ $sub -> id }} </td>
                         <td>
-                            <a href="/problem/{{ $sub -> problem_id }}"> #{{ $sub -> problem_id }} : {{ $sub -> problem_name }} </a>
+                            <a href="/problem/{{ $sub -> problem_id }}"> #{{ $sub -> problem_id }} :
+                                {{ $sub -> problem_name }} </a>
                         </td>
                         <td> {{ $sub -> user_name }} </td>
                         <td>
@@ -54,34 +54,15 @@
                     </tr>
                 </tbody>
             </table>
-
-
+            
+            <pre>
+                <code class="cpp">
+{{ $sub -> source_code }}
+                </code>
+            </pre>
 
         </div>
     </div>
 </div>
-
-<pre>
-    <code class="javascript" style="atom-one-light">
-        function selectionSort(arr){
-            var minIndex, temp, len = arr.length;
-            for(var i=0; i < len; i++){
-                minIndex = i;
-                for(var j=i+1; j < len; j++){
-                    if(arr[j] < arr[minIndex]){
-                        minIndex = j;
-                    }
-                }
-                temp = arr[i];
-                arr[i] = arr[minIndex];
-                arr[minIndex] = temp;
-            }
-            return arr;
-        }
-        var num = new Array;
-        num = [1,5,2,8,4,9,3,0,4];
-        console.log(selectionSort(num));
-    </code>
-</pre>
 
 @endsection 
