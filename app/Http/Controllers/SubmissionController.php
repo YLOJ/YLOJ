@@ -9,7 +9,7 @@ class SubmissionController extends Controller
 {
     public function index()
     {
-        $submissionset = DB::table('submission') -> orderby('id') -> paginate(20);
+        $submissionset = DB::table('submission') -> orderby('id', 'desc') -> paginate(20);
         return view('submission.list', ['submissionset' => $submissionset]);
     }
 
