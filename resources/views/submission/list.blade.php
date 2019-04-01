@@ -5,20 +5,31 @@
 
 <div class="container">
 
-    <div class="row justify-content-center">
-        {{ $submissionset -> links() }}
+    <div class="hidden-xs">
+        <form class="form-inline" action="/submission" method="get">
+            <div class="form-group">
+                <label class="control-label"> Problem Id: </label>
+                <input class="form-control input-sm" type="text" name="problem_id" style="height:2em;width:4em">
+            </div>
+
+            <div class="form-group">
+                <label class="control-label"> User Name: </label>
+                <input class="form-control input-sm" type="text" name="user_name" style="height:2em;width:10em">
+            </div>
+
+            <div class="form-group">
+                <label class="control-label"> Score: </label>
+                <input class="form-control input-sm" type="text" name="min_score" style="height:2em;width:3em">
+                ~
+                <input class="form-control input-sm" type="text" name="max_score" style="height:2em;width:3em">
+            </div>
+
+            <button class="btn btn-primary" type="submit"> Search </button>
+        </form>
     </div>
 
     <div class="row">
         <div class="col">
-
-            <form action="#" method="get">
-                Problem Id: <input type="text" name="problem_id" style="width:4em">
-                User Name: <input type="text" name="user_name" style="width:10em">
-				Score: <input type="text" name="min_score" style="width:3em"> 
-				~ <input type="text" name="max_score" style="width:3em">
-				<button type="submit">Search</button>
-            </form>
 
             <table class="table table-bordered">
                 <thead>
@@ -66,6 +77,10 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="row justify-content-center">
+        {{ $submissionset -> links() }}
     </div>
 
 </div>
