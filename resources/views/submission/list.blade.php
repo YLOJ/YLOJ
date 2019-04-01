@@ -6,7 +6,7 @@
 <div class="container">
 
 	<div class="row justify-content-center">
-        {{ $submission -> links() }}
+        {{ $submissionset -> links() }}
     </div>
 
     <div class="row">
