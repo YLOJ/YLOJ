@@ -13,9 +13,11 @@
         <div class="col">
 
             <form action="#" method="get">
-                Problem Id: <input type="text" name="id">
-                User Name: <input type="text" name="user_name">
-                <button type="submit">Search</button>
+                Problem Id: <input type="text" name="problem_id" style="width:4em">
+                User Name: <input type="text" name="user_name" style="width:10em">
+				Score: <input type="text" name="min_score" style="width:3em"> 
+				~ <input type="text" name="max_score" style="width:3em">
+				<button type="submit">Search</button>
             </form>
 
             <table class="table table-bordered">
