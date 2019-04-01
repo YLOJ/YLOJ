@@ -26,3 +26,4 @@ Route::any('/problem/edit/{id}', 'ProblemsetController@edit')->name('edit')->whe
 Route::post('/problem/edit_submit/{id}', 'ProblemsetController@edit_submit')->where('id', '[0-9]+');
 
 Route::get('/submission', 'SubmissionController@index')->name('submission');
+Route::get('/submission/{id}', 'SubmissionController@show')->where('id', '[0-9]+');

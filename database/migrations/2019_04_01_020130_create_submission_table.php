@@ -16,7 +16,9 @@ class CreateSubmissionTable extends Migration
         Schema::create('submission', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('problem_id');
-            $table->string('user_id');
+            $table->string('problem_name');
+            $table->integer('user_id');
+            $table->string('user_name');
             $table->string('result');
             $table->integer('score');
             $table->integer('time_used');
