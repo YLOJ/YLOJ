@@ -11,16 +11,16 @@
 
 			<center>
 			<div class = "btn-group-md">
-				<button class = "btn btn-primary" href="#"> submit </button>
-				<button class = "btn btn-primary" href="#"> submissions </button>
-				<button class = "btn btn-primary" href="#"> dicussions </button>
-				<button class = "btn btn-primary" href="#"> statistics </button>
-				<button class = "btn btn-primary" href="#"> custom tests </button>
+				<button class = "btn btn-primary" href="#"> Submit </button>
+				<button class = "btn btn-primary" href="#"> Submissions </button>
+				<button class = "btn btn-primary" href="#"> Dicussions </button>
+				<button class = "btn btn-primary" href="#"> Statistics </button>
+				<button class = "btn btn-primary" href="#"> Custom tests </button>
 
 
 				@auth
 					@if ( Auth::user()->permission > 0)
-					<button class = "btn btn-primary" href="javascript:void(0);" onclick="document.getElementById('myform').submit();"> edit </button>
+					<button class = "btn btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();"> Edit </button>
 					<form id="myform" method="post" action="/problem/edit/{{$id}}">
 						@csrf
 					</form>
