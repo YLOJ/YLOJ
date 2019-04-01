@@ -16,6 +16,6 @@ class SubmissionController extends Controller
     public function show($id) 
     {
         $submission = DB::table('submission') -> where('id', $id) -> first();
-        return view('submission.show', ['submission' => $submission]);
+        return view('submission.show', ['sub' => $submission]);
     }
 }
