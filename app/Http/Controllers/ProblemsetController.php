@@ -45,12 +45,18 @@ class ProblemsetController extends Controller
         $memory_limit = $request -> input('memory_limit');
         $content_md = $request -> input('content_md');
         
-        DB::insert('insert into `problemset` (`title`, `time_limit`, `memory_limit`, `content_md`) values (?, ?, ?, ?)', [
-            $title, 
-            $time_limit,
-            $memory_limit,
-            $content_md,
-        ]);
+        DB::insert('insert into `problemset` (
+            `title`, 
+            `time_limit`, 
+            `memory_limit`, 
+            `content_md`
+            ) values (?, ?, ?, ?)', [
+                $title, 
+                $time_limit,
+                $memory_limit,
+                $content_md,
+            ]
+        );
         
         return redirect('problemset');
     }

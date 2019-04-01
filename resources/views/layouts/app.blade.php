@@ -48,7 +48,7 @@
                             <a class="nav-link" href="{{ route('problemset') }}">{{ __('Problemset') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{ __('Submission') }}</a>
+                            <a class="nav-link" href="{{ route('submission') }}">{{ __('Submission') }}</a>
                         </li>
                     </ul>
 
