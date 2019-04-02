@@ -24,7 +24,8 @@
                 &nbsp ~ &nbsp
                 <input class="form-control input-sm" type="text" name="max_score" style="height:2em;width:3em"> &nbsp&nbsp&nbsp
 			</div>
-            <button class="btn btn-primary btn-sm" type="submit"> Search </button>
+			<button class="btn btn-primary btn-sm" type="submit"> 
+				<img src="{{ asset('svg/icons/search.ico') }}"/> Search </button>
         </form>
     </div>
 	<p class="text-sm"> </p>
