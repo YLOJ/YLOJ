@@ -17,11 +17,11 @@
             <label>Title</label>
             <input type="text" name="title" class="form-control">
         </div>
-        <div class="form-group">
-            <label>Time Limit</label>
-            <input type="text" name="time_limit" value="1000">Ms 
-            <label>Memory Limit</label>
-            <input type="text" name="memory_limit" value="256">Mb
+        <div class="form-inline">
+            <label>Time Limit &nbsp </label>
+            <input type="text" name="time_limit" class="form-control input-sm" value="1000">Ms 
+            <label> &nbsp&nbsp Memory Limit &nbsp </label>
+            <input type="text" name="memory_limit" class="form-control input-sm" value="256">Mb
         </div>
         <div class="form-group">
             <label>Content</label> <br>
