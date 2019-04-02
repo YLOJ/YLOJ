@@ -3,6 +3,24 @@
 
 @section('content')
 
+<?php
+	if(isset($_GET['problem_id']))
+		$problem_id=$_GET['problem_id'];
+	else $problem_id="";
+
+	if(isset($_GET['user_name']))
+		$user_name=$_GET['user_name'];
+	else $user_name="";
+
+	if(isset($_GET['min_score']))
+		$min_score=$_GET['min_score'];
+	else $min_score="";
+
+	if(isset($_GET['max_score']))
+		$max_score=$_GET['max_score'];
+	else $max_score="";
+?>
+
 <div class="container">
 
 	<p class="text-sm"> </p>
@@ -10,19 +28,19 @@
         <form class="form-inline" action="/submission" method="get">
             <div class="form-group">
                 <label class="control-label"> &nbsp Problem ID: &nbsp </label>
-                <input class="form-control input-sm" type="text" name="problem_id" style="height:2em;width:4em">
+                <input class="form-control input-sm" type="text" name="problem_id" style="height:2em;width:4em" value={{$problem_id}}>
             </div>
 
             <div class="form-group">
                 <label class="control-label"> &nbsp&nbsp User Name: &nbsp </label>
-                <input class="form-control input-sm" type="text" name="user_name" style="height:2em;width:10em">
+                <input class="form-control input-sm" type="text" name="user_name" style="height:2em;width:10em" value={{$user_name}}>
             </div>
 
             <div class="form-group">
                 <label class="control-label"> &nbsp&nbsp Score: &nbsp </label>
-                <input class="form-control input-sm" type="text" name="min_score" style="height:2em;width:3em">
+                <input class="form-control input-sm" type="text" name="min_score" style="height:2em;width:3em" value={{$min_score}}>
                 &nbsp ~ &nbsp
-                <input class="form-control input-sm" type="text" name="max_score" style="height:2em;width:3em"> &nbsp&nbsp&nbsp
+                <input class="form-control input-sm" type="text" name="max_score" style="height:2em;width:3em" value={{$max_score}}> &nbsp&nbsp&nbsp
 			</div>
 			<button class="btn btn-primary btn-sm" type="submit"> 
 				<img src="{{ asset('svg/icons/search.ico') }}"/> Search </button>
