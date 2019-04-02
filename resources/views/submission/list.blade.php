@@ -28,21 +28,36 @@
         <form class="form-inline" action="/submission" method="get">
             <div class="form-group">
                 <label class="control-label"> &nbsp Problem ID: &nbsp </label>
+<<<<<<< HEAD
                 <input class="form-control" type="text" name="problem_id" style="height:2em;width:4em">
+=======
+                <input class="form-control input-sm" type="text" name="problem_id" style="height:2em;width:4em" value={{$problem_id}}>
+>>>>>>> 498408c04f43e48b824373a7ef48ddf5bf63a002
             </div>
 
             <div class="form-group">
                 <label class="control-label"> &nbsp&nbsp User Name: &nbsp </label>
+<<<<<<< HEAD
                 <input class="form-control" type="text" name="user_name" style="height:2em;width:10em">
+=======
+                <input class="form-control input-sm" type="text" name="user_name" style="height:2em;width:10em" value={{$user_name}}>
+>>>>>>> 498408c04f43e48b824373a7ef48ddf5bf63a002
             </div>
 
             <div class="form-group">
                 <label class="control-label"> &nbsp&nbsp Score: &nbsp </label>
+<<<<<<< HEAD
                 <input class="form-control" type="text" name="min_score" style="height:2em;width:3em">
                 &nbsp ~ &nbsp
                 <input class="form-control" type="text" name="max_score" style="height:2em;width:3em"> &nbsp&nbsp&nbsp
+=======
+                <input class="form-control input-sm" type="text" name="min_score" style="height:2em;width:3em" value={{$min_score}}>
+                &nbsp ~ &nbsp
+                <input class="form-control input-sm" type="text" name="max_score" style="height:2em;width:3em" value={{$max_score}}> &nbsp&nbsp&nbsp
+>>>>>>> 498408c04f43e48b824373a7ef48ddf5bf63a002
 			</div>
-            <button class="btn btn-primary btn-sm" type="submit"> Search </button>
+			<button class="btn btn-primary btn-sm" type="submit"> 
+				<img src="{{ asset('svg/icons/search.ico') }}"/> Search </button>
         </form>
     </div>
 	<p class="text-sm"> </p>
