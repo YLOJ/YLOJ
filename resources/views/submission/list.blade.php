@@ -4,26 +4,26 @@
 @section('content')
 
 <?php
-	if(isset($_GET['problem_id']))
-		$problem_id=$_GET['problem_id'];
-	else $problem_id="";
+if (isset($_GET['problem_id']))
+    $problem_id = $_GET['problem_id'];
+else $problem_id = "";
 
-	if(isset($_GET['user_name']))
-		$user_name=$_GET['user_name'];
-	else $user_name="";
+if (isset($_GET['user_name']))
+    $user_name = $_GET['user_name'];
+else $user_name = "";
 
-	if(isset($_GET['min_score']))
-		$min_score=$_GET['min_score'];
-	else $min_score="";
+if (isset($_GET['min_score']))
+    $min_score = $_GET['min_score'];
+else $min_score = "";
 
-	if(isset($_GET['max_score']))
-		$max_score=$_GET['max_score'];
-	else $max_score="";
+if (isset($_GET['max_score']))
+    $max_score = $_GET['max_score'];
+else $max_score = "";
 ?>
 
 <div class="container">
 
-	<p class="text-sm"> </p>
+    <p class="text-sm"> </p>
     <div class="hidden-xs">
         <form class="form-inline" action="/submission" method="get">
             <div class="form-group">
@@ -41,12 +41,12 @@
                 <input class="form-control" type="text" name="min_score" style="height:2em;width:3em">
                 &nbsp ~ &nbsp
                 <input class="form-control" type="text" name="max_score" style="height:2em;width:3em"> &nbsp&nbsp&nbsp
-			</div>
-			<button class="btn btn-primary btn-sm" type="submit"> 
-				<img src="{{ asset('svg/icons/search.ico') }}"/> Search </button>
+            </div>
+            <button class="btn btn-primary btn-sm" type="submit">
+                <img src="{{ asset('svg/icons/search.ico') }}" /> Search </button>
         </form>
     </div>
-	<p class="text-sm"> </p>
+    <p class="text-sm"> </p>
 
     <div class="row">
         <div class="col">
