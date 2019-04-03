@@ -28,19 +28,19 @@ else $max_score = "";
         <form class="form-inline" action="/submission" method="get">
             <div class="form-group">
                 <label class="control-label"> &nbsp Problem ID: &nbsp </label>
-                <input class="form-control" type="text" name="problem_id" style="height:2em;width:4em">
+                <input class="form-control" type="text" name="problem_id" style="height:2em;width:4em" value={{$problem_id}}>
             </div>
 
             <div class="form-group">
                 <label class="control-label"> &nbsp&nbsp User Name: &nbsp </label>
-                <input class="form-control" type="text" name="user_name" style="height:2em;width:10em">
+                <input class="form-control" type="text" name="user_name" style="height:2em;width:10em" value={{$user_name}}>
             </div>
 
             <div class="form-group">
                 <label class="control-label"> &nbsp&nbsp Score: &nbsp </label>
-                <input class="form-control" type="text" name="min_score" style="height:2em;width:3em">
+                <input class="form-control" type="text" name="min_score" style="height:2em;width:4em" value={{$min_score}}>
                 &nbsp ~ &nbsp
-                <input class="form-control" type="text" name="max_score" style="height:2em;width:3em"> &nbsp&nbsp&nbsp
+                <input class="form-control" type="text" name="max_score" style="height:2em;width:4em" value={{$max_score}}> &nbsp&nbsp&nbsp
             </div>
             <button class="btn btn-primary btn-sm" type="submit">
                 <img src="{{ asset('svg/icons/search.ico') }}" /> Search </button>

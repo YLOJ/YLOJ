@@ -13,7 +13,7 @@
     @if ( Auth::user()->permission > 0 )
     <div>
         <form method="post" action="problem/add">
-            <button type="submit" class="btn btn-primary"> Add Problem </button>
+            <button type="submit" class="btn btn-primary btn-sm"> Add Problem </button>
             @csrf
         </form>
     </div> <br>
