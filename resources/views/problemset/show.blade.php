@@ -23,11 +23,6 @@
 					</a>
 					<a href="#">
 						<button class="btn btn-sm btn-primary">
-							<img src="{{ asset('svg/icons/discussion.ico') }}" /> Dicussions 
-						</button>
-					</a>
-					<a href="#">
-						<button class="btn btn-sm btn-primary">
 							<img src="{{ asset('svg/icons/statistics.ico') }}" /> Statistics 
 						</button>
 					</a>
