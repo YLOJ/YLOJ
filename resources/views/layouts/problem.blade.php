@@ -31,7 +31,7 @@
 							<img src="{{ asset('svg/icons/statistics.ico') }}" /> Statistics 
 						</button>
 					</a>
-					<a href="#">
+					<a href="{{ url('/problem/customtests') }}">
 						<button class="btn btn-sm btn-primary" href="#">
 							<img src="{{ asset('svg/icons/test-file.ico') }}" /> Custom tests 
 						</button>

@@ -32,8 +32,14 @@ class SubmissionController extends Controller
         $submission = DB::table('submission') -> where('id', $id) -> first();
         return view('submission.show', ['sub' => $submission]);
     }
+
 	public function submitproblem($id) 
     {
         return view('submission.submit', ['id' => $id]);
+    }
+
+	public function customtests() 
+    {
+        return view('submission.customtests');
     }
 }
