@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-	id:{{$id}}
     <form action="#" method="post">
         <div class="form-group">
             <label>Source Code</label> <br>
