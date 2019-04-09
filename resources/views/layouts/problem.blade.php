@@ -11,23 +11,38 @@
                 Memory Limit : {{ $memory_limit }} Mb <br> <br>
 
                 <div class="btn-group-md">
-                    <button class="btn btn-sm btn-primary" href="#">
-                        <img src="{{ asset('svg/icons/paper-plane.ico') }}" /> Submit </button>
-                    <button class="btn btn-sm btn-primary" href="#">
-                        <img src="{{ asset('svg/icons/text-left.ico') }}" /> Submissions </button>
-                    <button class="btn btn-sm btn-primary" href="#">
-                        <img src="{{ asset('svg/icons/discussion.ico') }}" /> Dicussions </button>
-                    <button class="btn btn-sm btn-primary" href="#">
-                        <img src="{{ asset('svg/icons/statistics.ico') }}" /> Statistics </button>
-                    <button class="btn btn-sm btn-primary" href="#">
-                        <img src="{{ asset('svg/icons/test-file.ico') }}" /> Custom tests </button>
+					<a href="{{ url('/problem/submit/'.$id) }}">
+						<button class="btn btn-sm btn-primary" >
+							<img src="{{ asset('svg/icons/paper-plane.ico') }}" /> Submit 
+						</button>
+					</a>
+					<a href="#">
+						<button class="btn btn-sm btn-primary" href="#">
+							<img src="{{ asset('svg/icons/text-left.ico') }}" /> Submissions 
+						</button>
+					</a>
+					<a href="#">
+						<button class="btn btn-sm btn-primary" href="#">
+							<img src="{{ asset('svg/icons/discussion.ico') }}" /> Dicussions 
+						</button>
+					</a>
+					<a href="#">
+						<button class="btn btn-sm btn-primary" href="#">
+							<img src="{{ asset('svg/icons/statistics.ico') }}" /> Statistics 
+						</button>
+					</a>
+					<a href="#">
+						<button class="btn btn-sm btn-primary" href="#">
+							<img src="{{ asset('svg/icons/test-file.ico') }}" /> Custom tests 
+						</button>
+					</a>
 
 
                     @auth
                     @if ( Auth::user()->permission > 0)
                     <button class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();">
                         <img src="{{ asset('svg/icons/edit.ico') }}" /> Edit </button>
-                    <form id="myform" method="post" action="/problem/edit/{{$id}}">
+                    	<form id="myform" method="post" action="/problem/edit/{{$id}}">
                         @csrf
                     </form>
                     @endif
