@@ -20,6 +20,7 @@ Route::get('/problemset', 'ProblemsetController@index')->name('problemset');
 Route::get('/problem/{id}', 'ProblemsetController@showProblem')->where('id', '[0-9]+');
 Route::get('/problem/submit/{id}', 'SubmissionController@submitproblem')->where('id', '[0-9]+');
 Route::get('/problem/customtests', 'SubmissionController@customtests');
+Route::get('/problem/statistics/{id}', 'SubmissionController@statistics')->where('id', '[0-9]+');
 
 Route::any('/problem/add', 'ProblemsetController@add')->name('add');
 Route::post('/problem/add_submit', 'ProblemsetController@add_submit');
