@@ -27,6 +27,14 @@ class SubmissionController extends Controller
         return view('submission.list', ['submissionset' => $submissionset -> paginate('20')]);
     }
 
+	public function statistics($id)
+	{
+		$submissionset = DB::table('submission') -> where('problem_id', $id);
+		$submissionset = $submissionset -> where('score', '=', 100);
+		$submissionset = $submissionset -> orderby('time_used', 'asc');
+		return view('problemset.statistics', ['submissionset' => $submissionset -> paginate('10')]);
+	}
+
     public function show($id) 
     {
         $submission = DB::table('submission') -> where('id', $id) -> first();

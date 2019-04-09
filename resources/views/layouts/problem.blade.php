@@ -17,22 +17,22 @@
 						</button>
 					</a>
 					<a href="#">
-						<button class="btn btn-sm btn-primary" href="#">
+						<button class="btn btn-sm btn-primary">
 							<img src="{{ asset('svg/icons/text-left.ico') }}" /> Submissions 
 						</button>
 					</a>
 					<a href="#">
-						<button class="btn btn-sm btn-primary" href="#">
+						<button class="btn btn-sm btn-primary">
 							<img src="{{ asset('svg/icons/discussion.ico') }}" /> Dicussions 
 						</button>
 					</a>
-					<a href="#">
-						<button class="btn btn-sm btn-primary" href="#">
+					<a href="{{ url('/problem/statistics/'.$id) }}">
+						<button class="btn btn-sm btn-primary">
 							<img src="{{ asset('svg/icons/statistics.ico') }}" /> Statistics 
 						</button>
 					</a>
 					<a href="{{ url('/problem/customtests') }}">
-						<button class="btn btn-sm btn-primary" href="#">
+						<button class="btn btn-sm btn-primary">
 							<img src="{{ asset('svg/icons/test-file.ico') }}" /> Custom tests 
 						</button>
 					</a>
