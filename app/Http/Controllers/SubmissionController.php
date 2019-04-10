@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 
 class SubmissionController extends Controller
@@ -42,9 +43,19 @@ class SubmissionController extends Controller
         return view('submission.show', ['sub' => $submission]);
     }
 
-	public function submitproblem($id) 
+	public function submitpage($id) 
     {
         return view('submission.submit', ['id' => $id]);
+    }
+
+    public function submitcode($id) 
+    {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+
+        $user = Auth::user();
+        dd($user);
     }
 
 	public function customtests() 
