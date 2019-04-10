@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class SubmissionController extends Controller
 {
@@ -29,10 +30,10 @@ class SubmissionController extends Controller
 
 	public function statistics($id)
 	{
-		$submissionset = DB::table('submission') -> where('problem_id', $id);
-		$submissionset = $submissionset -> where('score', '=', 100);
-		$submissionset = $submissionset -> orderby('time_used', 'asc');
-		return view('problemset.statistics', ['submissionset' => $submissionset -> paginate('10')]);
+        $submissionset = DB::table('submission')->where('problem_id', $id);
+        $submissionset = $submissionset->where('score', '=', 100);
+        $submissionset = $submissionset->orderby('time_used', 'asc');
+        return view('problemset.statistics', ['submissionset' => $submissionset->paginate('10')]);
 	}
 
     public function show($id) 

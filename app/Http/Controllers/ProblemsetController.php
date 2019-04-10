@@ -7,6 +7,7 @@ use App\Http\Requests\ProblemFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 
 class ProblemsetController extends Controller
 {
@@ -28,9 +29,7 @@ class ProblemsetController extends Controller
     public function edit($id)
     {
         if (Auth::check() && Auth::user()->permission > 0) {
-            
             $problem = DB::table('problemset')->where('id', $id)->first();
-
             return view('problemset.edit', [
                 'id' => $id,
                 'title' => $problem->title,
