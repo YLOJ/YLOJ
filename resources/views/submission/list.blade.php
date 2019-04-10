@@ -45,7 +45,7 @@ else $max_score = "";
 						<input class="form-control" type="text" name="max_score" style="height:2em;width:4em" value={{$max_score}}> &nbsp&nbsp&nbsp
 					</div>
 					<button class="btn btn-primary btn-sm" type="submit">
-						<img src="{{ asset('svg/icons/search.ico') }}" /> Search </button>
+						<img src="{{ asset('svg/icons/search.ico') }}" class="icon-sm"/> Search </button>
 				</form>
 			</div>
 		</div>
