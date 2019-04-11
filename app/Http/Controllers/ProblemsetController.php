@@ -77,7 +77,7 @@ class ProblemsetController extends Controller
             ]
         );
 
-        return redirect('problemset');
+        return redirect(route('edit', $id));
     }
 
     public function showProblem($id)
@@ -92,5 +92,25 @@ class ProblemsetController extends Controller
             'memory_limit' => $problem->memory_limit,
             'content_html' => $markdowner->toHTML($problem->content_md),
         ]);
+    }
+
+    public function edit_data($id)
+    {
+        if (Auth::check() && Auth::user()->permission > 0) {
+            return view('problemset.edit_data', [ 'id' => $id, ]);
+        } else {
+            return redirect('404');
+        }
+    }
+
+    public function edit_data_submit($id)
+    {
+        if (Auth::check() && Auth::user()->permission > 0) {
+
+            return view('problemset.edit_data', [ 'id' => $id, ]);
+            
+        } else {
+            return redirect('404');
+        }
     }
 }
