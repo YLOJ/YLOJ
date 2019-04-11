@@ -17,7 +17,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th style="width:7%">ID</th>
+                        <th style="width:7%">Rank</th>
                         <th style="width:25%">Problem Name</th>
                         <th style="width:10%">User</th>
                         <th style="width:14%">Result</th>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Pagination;
 
 class SubmissionController extends Controller
 {
@@ -29,12 +30,26 @@ class SubmissionController extends Controller
         return view('submission.list', ['submissionset' => $submissionset -> paginate('20')]);
     }
 
-	public function statistics($id)
+	public function statistics($id, Request $request)
 	{
-        $submissionset = DB::table('submission')->where('problem_id', $id);
-        $submissionset = $submissionset->where('score', '=', 100);
-        $submissionset = $submissionset->orderby('time_used', 'asc');
-        return view('problemset.statistics', ['submissionset' => $submissionset->paginate('10')]);
+		$raw_data = DB::table('submission') -> where('score', '=', 100) -> where('problem_id', '=', $id);
+		$raw_data = $raw_data -> orderby('time_used', 'asc') -> get() -> toArray();
+		$map = array();
+		$data = array();
+		$count = 0;
+		foreach ($raw_data as $sub) {
+			if (!isset($map[$sub -> user_id])) {
+				$map[$sub -> user_id] = 1;
+				$sub -> id = ++$count;
+				array_push($data, $sub);
+			}
+		}
+		$page = $request -> page ?: 1;
+		$perPage = 10;
+		$begin = ($page - 1) * $perPage;
+		$data = new \Illuminate\Pagination\LengthAwarePaginator(array_slice($data, $begin, $perPage, true), count($data), $perPage,
+            $page, ['path' => $request -> url(), 'query' => $request -> query()]);
+		return view('problemset.statistics', ['submissionset' => $data]);
 	}
 
     public function show($id) 
