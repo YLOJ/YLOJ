@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Pagination;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SubmissionController extends Controller
 {
@@ -38,7 +37,8 @@ class SubmissionController extends Controller
         $raw_data = $raw_data -> orderby('time_used', 'asc') -> get() -> toArray();
 		$map = array();
 		$data = array();
-		$count = 0;
+        $count = 0;
+        
 		foreach ($raw_data as $sub) {
 			if (!isset($map[$sub -> user_id])) {
 				$map[$sub -> user_id] = 1;
@@ -46,12 +46,20 @@ class SubmissionController extends Controller
 				array_push($data, $sub);
 			}
 		}
-		$page = $request -> page ?: 1;
+        
+        $page = $request -> page ?: 1;
 		$perPage = 10;
 		$begin = ($page - 1) * $perPage;
-		$data = new \Illuminate\Pagination\LengthAwarePaginator(array_slice($data, $begin, $perPage, true), count($data), $perPage,
-            $page, ['path' => $request -> url(), 'query' => $request -> query()]);
-		return view('problemset.statistics', ['submissionset' => $data]);
+        
+        $data = new LengthAwarePaginator(
+            array_slice($data, $begin, $perPage, true), 
+            count($data), 
+            $perPage,
+            $page, 
+            ['path' => $request -> url(), 'query' => $request -> query()]
+        );
+        
+        return view('problemset.statistics', ['submissionset' => $data]);
 	}
 
     public function show($id) 

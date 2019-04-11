@@ -16,7 +16,7 @@ if ( Storage::disk('problems')->exists($id)) {
 
 <br>
 
-<form action="/problem/edit/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
+<form action="/problem/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
     <label>Upload 'data.zip':</label>
     <input type="file" name="data"><br>
     <input type="submit" value="upload">

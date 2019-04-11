@@ -31,7 +31,7 @@
     </form>
 
     <br>
-    <a href="{{ url('/problem/edit/data/'.$id) }}">
+    <a href="{{ url('/problem/data/'.$id) }}">
         <button class="btn btn-primary">
             Manage Data
         </button>

@@ -15,23 +15,35 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/test', 'HomeController@test')->name('test');
 
+Route::name('problem.')->prefix('problem')->group(function() {
+    Route::get('/', 'ProblemsetController@index')->name('index');
+    Route::get('/{id}', 'ProblemsetController@show')->name('show')->where('id', '[0-9]+');
+    
+    Route::any('/add', 'ProblemsetController@add')->name('add');
+    Route::post('/add_submit', 'ProblemsetController@add_submit');
+
+    Route::any('/edit/{id}', 'ProblemsetController@edit')->name('edit')->where('id', '[0-9]+');
+    Route::post('/edit_submit/{id}', 'ProblemsetController@edit_submit')->name('edit_submit')->where('id', '[0-9]+');
+    
+    Route::any('/data/{id}', 'ProblemsetController@data')->name('data')->where('id', '[0-9]+');
+    Route::post('/data_submit/{id}', 'ProblemsetController@data_submit')->name('data_submit')->where('id', '[0-9]+');
+
+    Route::get('/submit/{id}', 'SubmissionController@submitpage')->name('submitpage')->where('id', '[0-9]+');
+    Route::post('/submit/{id}', 'SubmissionController@submitcode')->name('submitcode')->where('id', '[0-9]+');
+
+    Route::get('/customtests', 'SubmissionController@customtests')->name('costumtests');
+    Route::get('/statistics/{id}', 'SubmissionController@statistics')->name('statistics')->where('id', '[0-9+]');
+});
+
+/*
 Route::get('/problemset', 'ProblemsetController@index')->name('problemset');
 Route::get('/problem/{id}', 'ProblemsetController@showProblem')->where('id', '[0-9]+');
 Route::get('/problem/submit/{id}', 'SubmissionController@submitpage')->where('id', '[0-9]+');
 Route::post('/problem/submit/{id}', 'SubmissionController@submitcode')->where('id', '[0-9]+');
 Route::get('/problem/customtests', 'SubmissionController@customtests');
 Route::get('/problem/statistics/{id}', 'SubmissionController@statistics')->where('id', '[0-9]+');
-
-Route::any('/problem/add', 'ProblemsetController@add')->name('add');
-Route::post('/problem/add_submit', 'ProblemsetController@add_submit');
-
-Route::any('/problem/edit/{id}', 'ProblemsetController@edit')->name('edit')->where('id', '[0-9]+');
-Route::post('/problem/edit_submit/{id}', 'ProblemsetController@edit_submit')->where('id', '[0-9]+');
-Route::any('/problem/edit/data/{id}', 'ProblemsetController@edit_data')->name('edit.data')->where('id','[0-9]+');
-Route::post('/problem/edit/data_submit/{id}', 'ProblemsetController@edit_data_submit')->name('edit.data_submit')->where('id', '[0-9]+');
-
+*/
 
 Route::get('/submission', 'SubmissionController@index')->name('submission');
 Route::get('/submission/{id}', 'SubmissionController@show')->where('id', '[0-9]+');
