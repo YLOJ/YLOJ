@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 
 class ProblemsetController extends Controller
 {
@@ -77,7 +78,7 @@ class ProblemsetController extends Controller
             ]
         );
 
-        return redirect('problemset');
+        return redirect(route('edit', $id));
     }
 
     public function showProblem($id)
@@ -92,5 +93,29 @@ class ProblemsetController extends Controller
             'memory_limit' => $problem->memory_limit,
             'content_html' => $markdowner->toHTML($problem->content_md),
         ]);
+    }
+
+    public function edit_data($id)
+    {
+        if (Auth::check() && Auth::user()->permission > 0) {
+            return view('problemset.edit_data', [ 'id' => $id, ]);
+        } else {
+            return redirect('404');
+        }
+    }
+
+    public function edit_data_submit(Request $request, $id)
+    {
+        if (Auth::check() && Auth::user()->permission > 0) {
+
+            Storage::disk('problems')->put(
+                $id . '/data.zip',
+                file_get_contents( $request->data )
+            );
+
+            return redirect(route('edit.data', $id));
+        } else {
+            return redirect('404');
+        }
     }
 }
