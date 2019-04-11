@@ -12,7 +12,7 @@ if (file_exists("../storage/problems/" . $id)) {
 ?>
 
 <form action="/problem/edit/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
-    <label>upload file:</label>
+    <label>Open file:</label>
     <input type="file" name="data"><br>
     <input type="submit" value="upload">
     @csrf

@@ -103,12 +103,12 @@ class ProblemsetController extends Controller
         }
     }
 
-    public function edit_data_submit($id)
+    public function edit_data_submit(Request $request, $id)
     {
         if (Auth::check() && Auth::user()->permission > 0) {
-
-            return view('problemset.edit_data', [ 'id' => $id, ]);
-            
+            move_uploaded_file($request->data, '../storage/problems/'.$id.'/data.zip');
+            return redirect(route('edit.data', $id));
+            //return view('problemset.edit_data', [ 'id' => $id, ]);
         } else {
             return redirect('404');
         }
