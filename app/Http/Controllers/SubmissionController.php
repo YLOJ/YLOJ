@@ -21,14 +21,13 @@ class SubmissionController extends Controller
 
     public function index(Request $request)
     {
-        $submissionset = DB::table('submission')->orderby('id', 'desc');
-
+        $submission = DB::table('submission')->orderby('id', 'desc');
         $submission = $this->check($submission, $request, 'problem_id');
         $submission = $this->check($submission, $request, 'user_name');
         $submission = $this->check($submission, $request, 'min_score', '>=');
         $submission = $this->check($submission, $request, 'max_score', '<=');
 
-        return view('submission.list', ['submissionset' => $submissionset -> paginate('20')]);
+        return view('submission.list', ['submissionset' => $submission -> paginate('20')]);
     }
 
 	public function statistics($id, Request $request)
