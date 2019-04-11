@@ -28,6 +28,9 @@ Route::post('/problem/add_submit', 'ProblemsetController@add_submit');
 
 Route::any('/problem/edit/{id}', 'ProblemsetController@edit')->name('edit')->where('id', '[0-9]+');
 Route::post('/problem/edit_submit/{id}', 'ProblemsetController@edit_submit')->where('id', '[0-9]+');
+Route::any('/problem/edit/data/{id}', 'ProblemsetController@edit_data')->where('id','[0-9]+');
+Route::post('/problem/edit/data_submit/{id}', 'ProblemsetController@edit_data_submit')->where('id', '[0-9]+');
+
 
 Route::get('/submission', 'SubmissionController@index')->name('submission');
 Route::get('/submission/{id}', 'SubmissionController@show')->where('id', '[0-9]+');
