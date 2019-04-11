@@ -9,31 +9,42 @@ use Illuminate\Support\Facades\Redis;
 
 class SubmissionController extends Controller
 {
+    public function check($sub, $request, $para, $operator = '=') 
+    {
+        if($request->has($para) && $request->input($para) != null) {
+            return $sub->where($para, $operator, $request->input($para));
+        }
+
+        return $sub;
+    }
+
     public function index(Request $request)
     {
-        $submissionset = DB::table('submission') -> orderby('id', 'desc');
+        $submissionset = DB::table('submission')->orderby('id', 'desc');
 
-        if ($request -> has('problem_id') && $request -> input('problem_id') != null) {
-            $submissionset = $submissionset -> where('problem_id', $request -> input('problem_id'));
-        }
-        if ($request -> has('user_name') && $request -> input('user_name') != null) {
-            $submissionset = $submissionset -> where('user_name', $request -> input('user_name'));
-        }
-        if ($request -> has('min_score') && $request -> input('min_score') != null) {
-            $submissionset = $submissionset -> where('score', '>=', $request -> input('min_score'));
-        }
-        if ($request -> has('max_score') && $request -> input('max_score') != null) {
-            $submissionset = $submissionset -> where('score', '<=', $request -> input('max_score'));
-        }
+        $submission = $this->check($submission, $request, 'problem_id');
+        $submission = $this->check($submission, $request, 'user_name');
+        $submission = $this->check($submission, $request, 'min_score', '>=');
+        $submission = $this->check($submission, $request, 'max_score', '<=');
 
         return view('submission.list', ['submissionset' => $submissionset -> paginate('20')]);
     }
 
 	public function statistics($id)
-	{
-        $submissionset = DB::table('submission')->where('problem_id', $id);
-        $submissionset = $submissionset->where('score', '=', 100);
+    {
+        $submissionset = DB::table('submission');
         $submissionset = $submissionset->orderby('time_used', 'asc');
+
+        $data = $submissionset->get()->toArray();
+        $map = array();
+
+        foreach ($data as $sub) {
+            if (!isset($map[$sub->user_id]) && $sub->problem_id == $id && $sub->score == 100) {
+                $map[$sub->user_id] = 1;
+                $submissionset = $submissionset -> where('id', '=', $sub->id, 'or');
+            }
+        }
+
         return view('problemset.statistics', ['submissionset' => $submissionset->paginate('10')]);
 	}
 
