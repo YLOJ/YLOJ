@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 
 class ProblemsetController extends Controller
 {
@@ -106,9 +107,13 @@ class ProblemsetController extends Controller
     public function edit_data_submit(Request $request, $id)
     {
         if (Auth::check() && Auth::user()->permission > 0) {
-            move_uploaded_file($request->data, '../storage/problems/'.$id.'/data.zip');
+
+            Storage::disk('problems')->put(
+                $id . '/data.zip',
+                file_get_contents( $request->data )
+            );
+
             return redirect(route('edit.data', $id));
-            //return view('problemset.edit_data', [ 'id' => $id, ]);
         } else {
             return redirect('404');
         }

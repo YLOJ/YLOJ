@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -19,8 +20,6 @@ class HomeController extends Controller
 
     public function test() 
     {
-        Redis::set('233', '666');
-        dd(Redis::info());
-        dd(Redis::get('233'));
+        dd(Storage::disk('problems'));
     }
 }
