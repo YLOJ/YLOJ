@@ -10,12 +10,14 @@ use Illuminate\Pagination;
 
 class SubmissionController extends Controller
 {
-    public function check($sub, $request, $para, $operator = '=') 
+    public function check($sub, $request, $para, $_para = "", $operator = '=') 
     {
-        if($request->has($para) && $request->input($para) != null) {
-            return $sub->where($para, $operator, $request->input($para));
+        if ($_para == "") {
+            $_para = $para;
         }
-
+        if ($request->has($para) && $request->input($para) != null) {
+            return $sub->where($_para, $operator, $request->input($para));
+        }
         return $sub;
     }
 
@@ -24,8 +26,8 @@ class SubmissionController extends Controller
         $submission = DB::table('submission')->orderby('id', 'desc');
         $submission = $this->check($submission, $request, 'problem_id');
         $submission = $this->check($submission, $request, 'user_name');
-        $submission = $this->check($submission, $request, 'min_score', '>=');
-        $submission = $this->check($submission, $request, 'max_score', '<=');
+        $submission = $this->check($submission, $request, 'min_score', 'score', '>=');
+        $submission = $this->check($submission, $request, 'max_score', 'score', '<=');
 
         return view('submission.list', ['submissionset' => $submission -> paginate('20')]);
     }
