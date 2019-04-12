@@ -11,7 +11,7 @@
         </ul>
     </div>
     @endif
-	<h3>Problem #{{$id}} </h3>
+	<h3><a href={{url('/problem/'.$id)}}>Problem #{{$id}}</a> </h3>
     <form action="/problem/edit_submit/{{$id}}" method="post">
         <div class="form-group">
             <label>Title</label>
