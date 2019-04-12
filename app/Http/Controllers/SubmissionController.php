@@ -73,14 +73,38 @@ class SubmissionController extends Controller
         return view('submission.submit', ['id' => $id]);
     }
 
-    public function submitcode($id) 
+    public function submitcode(Request $request,$id) 
     {
         if (!Auth::check()) {
             return redirect('login');
         }
 
-        $user = Auth::user();
-        dd($user);
+        DB::insert('insert into submission (
+            problem_id,
+            problem_name,
+            user_id,
+            user_name,
+            result,
+            score,
+            time_used,
+            memory_used,
+            source_code,
+            created_at
+            ) value(?,?,?,?,?,?,?,?,?,?) ',[
+                $id,
+                DB::select('select * from problemset where id=?',[$id])[0]->title,
+                Auth::User()->id,
+                Auth::User()->name,
+                "waiting",
+                0,
+                0,
+                0,
+                $request->input('source_code'),
+                NOW(),
+            ]
+        );
+
+        return redirect('submission');
     }
 
 	public function customtests() 

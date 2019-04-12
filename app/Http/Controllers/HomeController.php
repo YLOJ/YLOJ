@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -20,6 +22,7 @@ class HomeController extends Controller
 
     public function test() 
     {
-        dd(Storage::disk('problems'));
+        $tmp=DB::select('select * from problemset where id=1');
+        dd($tmp[0]->title);
     }
 }
