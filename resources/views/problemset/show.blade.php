@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col">
             <div class="text-center">
-                <h1> {{ $title }} </h1>
+                <h1> #{{$id}}. {{ $title }} </h1>
                 Time Limit : {{ $time_limit }} Ms <br>
                 Memory Limit : {{ $memory_limit }} Mb <br> <br>
 
