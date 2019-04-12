@@ -14,7 +14,7 @@ class AddJudgeinfoIntoSubmission extends Migration
     public function up()
     {
         Schema::table('submission', function (Blueprint $table) {
-            $table->string('judge_info')->after('source_code')->nullable();
+            $table->text('judge_info')->after('source_code')->nullable();
         });
     }
 
