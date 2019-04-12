@@ -7,7 +7,7 @@
 
 	<div style="text-align:center"> 
 		<br> <br>
-		<h2> Accepted Submissions </h2>	
+		<h2> Problem #{{$submissionset -> first() -> problem_id}}. Accepted Submissions </h2>	
 		<br> <br>
 	</div>
 
