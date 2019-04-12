@@ -59,7 +59,8 @@ class SubmissionController extends Controller
             ['path' => $request -> url(), 'query' => $request -> query()]
         );
         
-        return view('problemset.statistics', ['submissionset' => $data]);
+		$title = DB::table('problemset')-> where('id','=',$id) -> first() -> title;
+        return view('problemset.statistics', ['submissionset' => $data, 'id' => $id, 'title' => $title]);
 	}
 
     public function show($id) 

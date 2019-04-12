@@ -11,6 +11,7 @@
         </ul>
     </div>
     @endif
+	<h3><a href={{url('/problem/'.$id)}}>Problem #{{$id}}</a> </h3>
     <form action="/problem/edit_submit/{{$id}}" method="post">
         <div class="form-group">
             <label>Title</label>
@@ -24,13 +25,13 @@
         </div>
         <div class="form-group">
             <label>Content</label> <br>
-            <textarea rows="20" name="content_md" , class="form-control">{{$content_md}}</textarea>
+            <textarea rows="16" name="content_md" , class="form-control">{{$content_md}}</textarea>
         </div>
         <button type="submit" class="btn btn-primary"> Save </button>
         @csrf
     </form>
 
-    <br>
+	<br>
     <a href="{{ url('/problem/data/'.$id) }}">
         <button class="btn btn-primary">
             Manage Data

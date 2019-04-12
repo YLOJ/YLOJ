@@ -7,7 +7,7 @@
 
 	<div style="text-align:center"> 
 		<br> <br>
-		<h2> Accepted Submissions </h2>	
+		<h2> Statistics<a href="{{url('/problem/'.$id)}}"> #{{$id}}: {{$title}} </a> </h2>
 		<br> <br>
 	</div>
 
