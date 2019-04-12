@@ -28,6 +28,7 @@ Route::name('problem.')->prefix('problem')->group(function() {
     
     Route::any('/data/{id}', 'ProblemsetController@data')->name('data')->where('id', '[0-9]+');
     Route::post('/data_submit/{id}', 'ProblemsetController@data_submit')->name('data_submit')->where('id', '[0-9]+');
+    Route::any('/data_download/{id}', 'ProblemsetController@data_download')->name('data_download')->where('id', '[0-9]+');
 
     Route::get('/submit/{id}', 'SubmissionController@submitpage')->name('submitpage')->where('id', '[0-9]+');
     Route::post('/submit/{id}', 'SubmissionController@submitcode')->name('submitcode')->where('id', '[0-9]+');

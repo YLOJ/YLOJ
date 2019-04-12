@@ -110,11 +110,20 @@ class ProblemsetController extends Controller
         if (Auth::check() && Auth::user()->permission > 0) {
             Storage::disk('problems')->put(
                 $id . '/data.zip',
-                file_get_contents( $request->data )
+                file_get_contents( $request->file('data') )
             );
             return redirect(route('problem.data', $id));
         } else {
             return redirect('404');
         }
     }
+
+	public function data_download($id)
+	{
+		if (Auth::check() && Auth::user()->permission > 0) {
+            return Storage::disk('problems')->download("$id/data.zip","data_$id.zip");
+        } else {
+            return redirect('404');
+        }
+	}
 }

@@ -2,6 +2,7 @@
 
 @section('content')
 
+<div class="container">
 <?php
 
 use Illuminate\Support\Facades\Storage;
@@ -19,8 +20,19 @@ if ( Storage::disk('problems')->exists($id)) {
 <form action="/problem/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
     <label>Upload 'data.zip':</label>
     <input type="file" name="data"><br>
-    <input type="submit" value="upload">
+	<button type="submit" class="btn btn-primary"> upload </button>
     @csrf
 </form>
+
+<br/>
+
+<?php
+	if ( Storage::disk('problems')->exists($id)) {
+		echo '<a href="/problem/data_download/'.$id.'">
+		<button class="btn btn-primary"> download </button>
+		</a>';
+	}
+?>
+</div>
 
 @endsection
