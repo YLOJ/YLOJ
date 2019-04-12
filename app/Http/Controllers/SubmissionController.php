@@ -71,7 +71,8 @@ class SubmissionController extends Controller
 
 	public function submitpage($id) 
     {
-        return view('submission.submit', ['id' => $id]);
+		$title = DB::table('problemset')-> where('id','=',$id) -> first() -> title;
+        return view('submission.submit', ['id' => $id,'title'=>$title]);
     }
 
     public function submitcode(Request $request,$id) 
