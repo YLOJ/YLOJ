@@ -3,36 +3,34 @@
 @section('content')
 
 <div class="container">
+
 <?php
-
 use Illuminate\Support\Facades\Storage;
-
-if ( Storage::disk('problems')->exists($id)) {
-    $list = Storage::disk('problems')->files($id);
-    foreach ($list as $file_name) { 
-        echo $file_name."<br>";
-    }
-} else echo "no data exists";
 ?>
 
+<h2> Problem #{{ $id }} : Manage Data</h2>
+
+@if (Storage::disk('problems')->exists($id))
+	<h3 class="text-success"> Data Uploaded </h3>
+@else 
+	<h3 class="text-danger"> No Data Exists </h3>
+@endif
 <br>
 
 <form action="/problem/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
-    <label>Upload 'data.zip':</label>
-    <input type="file" name="data"><br>
-	<button type="submit" class="btn btn-primary"> upload </button>
-    @csrf
+	<label> <b> Upload data.zip: </b> </label> <br>
+	<input type="file" name="data"> <br> <br>
+	<button type="submit" class="btn btn-danger"> Upload </button>
+	@csrf
 </form>
 
-<br/>
+<br>
 
-<?php
-	if ( Storage::disk('problems')->exists($id)) {
-		echo '<a href="/problem/data_download/'.$id.'">
-		<button class="btn btn-primary"> download </button>
-		</a>';
-	}
-?>
+@if (Storage::disk('problems')->exists($id)) 
+	<a href="/problem/data_download/{{ $id }}">
+		<button class="btn btn-primary"> Download </button>
+	</a>
+@endif
 </div>
 
 @endsection
