@@ -89,10 +89,10 @@ else $max_score = "";
                         <td> {{ $sub -> user_name }} </td>
                         <td>
                             @if ($sub -> result == "waiting")
-                                <a class="text-primary">
+                                <a class="text-primary" href="/submission/{{$sub->id}}">
                             @else
-                                @if ($sub -> result == "accepted") <a class="text-success">
-                                @else <a class="text-danger">
+                                @if ($sub -> result == "Accepted") <a class="text-success">
+                                @else <a class="text-danger" href="/submission/{{$sub->id}}">
                                 @endif
                             @endif
                                     <b> {{ $sub -> result }} </b> </a>
