@@ -20,16 +20,14 @@ use Illuminate\Support\Facades\Storage;
 <form action="/problem/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
 	<label> <b> Upload data.zip: </b> </label> <br>
 	<input type="file" name="data"> <br> <br>
-	<button type="submit" class="btn btn-danger"> Upload </button>
+	@include('buttons.submit',['text' => 'Upload'])
 	@csrf
 </form>
 
 <br>
 
 @if (Storage::disk('problems')->exists($id)) 
-	<a href="/problem/data_download/{{ $id }}">
-		<button class="btn btn-primary"> Download </button>
-	</a>
+	@include('buttons.jump',['href' => '/problem/data_download/{{ $id }}' , 'text' => 'Download'])
 @endif
 </div>
 

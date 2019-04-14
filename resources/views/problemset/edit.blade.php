@@ -11,7 +11,7 @@
         </ul>
     </div>
     @endif
-	<h3><a href={{url('/problem/'.$id)}}>Problem #{{$id}}</a> </h3>
+    <h3><a href="{{url('/problem/'.$id)}}">Problem #{{$id}}</a> </h3>
     <form action="/problem/edit_submit/{{$id}}" method="post">
         <div class="form-group">
             <label>Title</label>
@@ -27,15 +27,11 @@
             <label>Content</label> <br>
             <textarea rows="16" name="content_md" , class="form-control">{{$content_md}}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary"> Save </button>
+        @include('buttons.submit',['text' => 'Save'])
         @csrf
     </form>
 
-	<br>
-    <a href="{{ url('/problem/data/'.$id) }}">
-        <button class="btn btn-primary">
-            Manage Data
-        </button>
-    </a>
+    <br>
+    @include('buttons.jump',['href' => url('/problem/data/'.$id) , 'text' => 'Manage Data'])
 </div>
 @endsection

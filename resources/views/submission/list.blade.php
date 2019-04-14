@@ -44,16 +44,16 @@ else $max_score = "";
                         &nbsp ~ &nbsp
                         <input class="form-control" type="text" name="max_score" style="height:2em;width:4em" value={{$max_score}}> &nbsp&nbsp&nbsp
                     </div>
-                    <button class="btn btn-primary btn-sm" type="submit">
-                        <img src="{{ asset('svg/icons/search.ico') }}" class="icon-sm" /> Search </button>
+                    @include('buttons.submit-icon' , ['icon' => 'search' , 'text' => 'Search'])
                 </form>
             </div>
         </div>
         <div class="col-md-2" style="text-align:right">
             @auth
-            <a href="{{ url('/submission?user_name='.Auth::User() -> name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score) }}">
-                <button class="btn btn-primary btn-sm"> My Submissions </button>
-            </a>
+                @include('buttons.jump' , [ 
+                    'href' => url('/submission?user_name='.Auth::User() -> name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score) , 
+                    'text' => 'My Submission'
+                    ])
             @endauth
         </div>
     </div>

@@ -11,27 +11,10 @@
                 Memory Limit : {{ $memory_limit }} Mb <br> <br>
 
                 <div class="btn-group-md">
-					<a href="{{ url('/problem/submit/'.$id) }}">
-						<button class="btn btn-sm btn-primary" >
-							<img src="{{ asset('svg/icons/paper-plane.ico') }}" class="icon-sm"/> Submit 
-						</button>
-					</a>
-					<a href="{{ url('/submission?problem_id='.$id) }}">
-						<button class="btn btn-sm btn-primary">
-							<img src="{{ asset('svg/icons/text-left.ico') }}" class="icon-sm"/> Submissions 
-						</button>
-					</a>
-					<a href="{{ url('/problem/statistics/'.$id) }}">
-						<button class="btn btn-sm btn-primary">
-							<img src="{{ asset('svg/icons/statistics.ico') }}" class="icon-sm"/> Statistics 
-						</button>
-					</a>
-					<a href="{{ url('/problem/customtests') }}">
-						<button class="btn btn-sm btn-primary">
-							<img src="{{ asset('svg/icons/test-file.ico') }}" class="icon-sm"/> Custom tests 
-						</button>
-					</a>
-
+                    @include('buttons.jump-icon' , ['href' => url('/problem/submit/'.$id) , 'icon' => 'paper-plane' , 'text' => 'Submit'])
+                    @include('buttons.jump-icon' , ['href' => url('/submission?problem_id='.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
+                    @include('buttons.jump-icon' , ['href' => url('/problem/statistics/'.$id) , 'icon' => 'statistics' , 'text' => 'Statistics'])
+                    @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
 
                     @auth
                     @if ( Auth::user()->permission > 0)

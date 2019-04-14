@@ -7,7 +7,7 @@
         <div class="form-group">
             <textarea rows="20" name="source_code" , class="form-control"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary"> Submit </button>
+        @include('buttons.submit' , ['text' => 'Submit'])
         @csrf
     </form>
 </div>

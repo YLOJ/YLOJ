@@ -38,14 +38,5 @@ Route::name('problem.')->prefix('problem')->group(function() {
     Route::get('/statistics/{id}', 'SubmissionController@statistics')->name('statistics')->where('id', '[0-9+]');
 });
 
-/*
-Route::get('/problemset', 'ProblemsetController@index')->name('problemset');
-Route::get('/problem/{id}', 'ProblemsetController@showProblem')->where('id', '[0-9]+');
-Route::get('/problem/submit/{id}', 'SubmissionController@submitpage')->where('id', '[0-9]+');
-Route::post('/problem/submit/{id}', 'SubmissionController@submitcode')->where('id', '[0-9]+');
-Route::get('/problem/customtests', 'SubmissionController@customtests');
-Route::get('/problem/statistics/{id}', 'SubmissionController@statistics')->where('id', '[0-9]+');
-*/
-
 Route::get('/submission', 'SubmissionController@index')->name('submission');
 Route::get('/submission/{id}', 'SubmissionController@show')->where('id', '[0-9]+');

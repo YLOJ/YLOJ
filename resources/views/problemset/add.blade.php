@@ -28,7 +28,7 @@
             <label>Content</label> <br>
             <textarea rows="20" name="content_md", class="form-control"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary"> Add </button>
+        @include('buttons.submit' , ['text' => 'Add'])
         @csrf
     </form>
 </div>
