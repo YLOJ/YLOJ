@@ -14,45 +14,12 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th style="width:7%">ID</th>
-                        <th style="width:25%">Problem Name</th>
-                        <th style="width:10%">User</th>
-                        <th style="width:14%">Result</th>
-                        <th style="width:9%">Score</th>
-                        <th style="width:9%">Time</th>
-                        <th style="width:9%">Memory</th>
-                        <th style="width:17%">Submission Time</th>
-                    </tr>
-                </thead>
+            <table class="table table-bordered"> 
+				@include('includes.verdict_table')
                 <tbody>
                     <tr>
-                        <td> {{ $sub -> id }} </td>
-                        <td>
-                            <a href="/problem/{{ $sub -> problem_id }}"> #{{ $sub -> problem_id }} :
-                                {{ $sub -> problem_name }} </a>
-                        </td>
-                        <td> {{ $sub -> user_name }} </td>
-                        <td>
-                            @if ($sub -> result == "Accepted") <a class="text-success">
-							@elseif ($sub -> result == "waiting") <a class="text-primary">
-							@else <a class="text-danger">
-                            @endif
-								<b> {{ $sub -> result }} </b> </a>
-                        </td>
-                        <td>
-                            @if ($sub -> score == 100) <a class="text-success">
-                                @elseif ($sub -> score > 0) <a class="text-warning">
-                                    @else <a class="text-danger">
-                                        @endif
-                                        <b> <a href="/submission/{{$sub -> id}}"> {{ $sub -> score }} </a> </b> </a>
-                        </td>
-                        <td> {{ $sub -> time_used }}ms </td>
-                        <td> {{ $sub -> memory_used }}kb </td>
-                        <td> {{ $sub -> created_at }} </td>
-                    </tr>
+						@include('includes.verdict', ['sub' => $sub])
+					</tr>
                 </tbody>
             </table>
 
@@ -63,6 +30,8 @@
 			@auth
 				@if(Auth::user() -> permission > 0)
 					@include('buttons.jump-danger', ['href' => url('submission/rejudge/'.$sub -> id), 'text' => 'Rejudge'])
+					&nbsp &nbsp
+					@include('buttons.jump-danger', ['href' => url('submission/delete/'.$sub -> id), 'text' => 'Delete'])
 				@endif
 			@endauth
 

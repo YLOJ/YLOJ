@@ -42,6 +42,7 @@ class SubmissionController extends Controller
 		foreach ($raw_data as $sub) {
 			if (!isset($map[$sub -> user_id])) {
 				$map[$sub -> user_id] = 1;
+				$sub -> url = url('submission/'.$sub -> id);
 				$sub -> id = ++$count;
 				array_push($data, $sub);
 			}
@@ -59,7 +60,7 @@ class SubmissionController extends Controller
             ['path' => $request -> url(), 'query' => $request -> query()]
         );
         
-		$title = DB::table('problemset')-> where('id','=',$id) -> first() -> title;
+		$title = DB::table('problemset') -> where('id','=',$id) -> first() -> title;
         return view('problemset.statistics', ['submissionset' => $data, 'id' => $id, 'title' => $title]);
 	}
 
@@ -119,6 +120,18 @@ class SubmissionController extends Controller
 	{
 		DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'waiting', 'score' => 0]);
 		return redirect('submission');
+	}
+
+	public function delete_submission($id)
+	{
+		DB::table('submission') -> where('id', '=', $id) -> delete();
+		return redirect('submission');
+	}
+
+	public function delete_problem_submission($id)
+	{
+		DB::table('submission') -> where('problem_id', '=', $id) -> delete();
+		return redirect('problem/edit/'.$id);
 	}
 
 	public function customtests() 
