@@ -33,6 +33,9 @@ class Judger:
         ftemp = open('temp.out', 'w')
 
         runcfg = {
+                'trace' : True,
+                'calls' : [0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 21, 59, 158, 231, 257], 
+                'files' : {'/etc/ld.so.cache': 0},
                 'args' : ['./exec'],
                 'fd_in' : fin.fileno(),
                 'fd_out' : ftemp.fileno(),
