@@ -121,9 +121,16 @@ class ProblemsetController extends Controller
 	public function data_download($id)
 	{
 		if (Auth::check() && Auth::user()->permission > 0) {
-            return Storage::disk('problems')->download("$id/data.zip","data_$id.zip");
+            return Storage::disk('problems')->download("$id/data.zip", "data_$id.zip");
         } else {
             return redirect('404');
         }
+	}
+
+	public function delete_problem($id)
+	{
+		DB::table('problemset') -> where('id', '=', $id) -> delete();
+		DB::table('submission') -> where('problem_id', '=', $id) -> delete();
+		Storage::disk('problems') -> deleteDirectory($id);
 	}
 }

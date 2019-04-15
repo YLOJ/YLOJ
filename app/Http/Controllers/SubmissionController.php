@@ -28,7 +28,7 @@ class SubmissionController extends Controller
         $submission = $this->check($submission, $request, 'min_score', 'score', '>=');
         $submission = $this->check($submission, $request, 'max_score', 'score', '<=');
 
-        return view('submission.list', ['submissionset' => $submission -> paginate('20')]);
+        return view('submission.list', ['submissionset' => $submission -> paginate('10')]);
     }
 
 	public function statistics($id, Request $request)
@@ -108,6 +108,18 @@ class SubmissionController extends Controller
 
         return redirect('submission');
     }
+
+	public function rejudge($id)
+	{
+		DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'waiting', 'score' => 0]);
+		return redirect('submission/'.$id);
+	}
+
+	public function rejudge_problem($id)
+	{
+		DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'waiting', 'score' => 0]);
+		return redirect('submission');
+	}
 
 	public function customtests() 
     {

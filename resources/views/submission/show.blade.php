@@ -36,10 +36,11 @@
                         </td>
                         <td> {{ $sub -> user_name }} </td>
                         <td>
-                            @if ($sub -> result == "accepted") <a class="text-success">
-                                @else <a class="text-danger">
-                                    @endif
-                                    <b> {{ $sub -> result }} </b> </a>
+                            @if ($sub -> result == "Accepted") <a class="text-success">
+							@elseif ($sub -> result == "waiting") <a class="text-primary">
+							@else <a class="text-danger">
+                            @endif
+								<b> {{ $sub -> result }} </b> </a>
                         </td>
                         <td>
                             @if ($sub -> score == 100) <a class="text-success">
@@ -56,10 +57,14 @@
             </table>
 
             <pre>
-                <code class="cpp">
-{{ $sub -> source_code }}
-                </code>
+                <code class="cpp">{{ $sub -> source_code }} </code>
             </pre>
+
+			@auth
+				@if(Auth::user() -> permission > 0)
+					@include('buttons.jump-danger', ['href' => url('submission/rejudge/'.$sub -> id), 'text' => 'Rejudge'])
+				@endif
+			@endauth
 
         </div>
     </div>

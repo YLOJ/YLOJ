@@ -33,5 +33,13 @@
 
     <br>
     @include('buttons.jump',['href' => url('/problem/data/'.$id) , 'text' => 'Manage Data'])
+
+	<br> <br>
+	@include('buttons.jump-danger', ['href' => '/problem/delete/'.$id , 'text' => 'Delete Problem'])
+	&nbsp &nbsp
+	@include('buttons.jump-danger', ['href' => '/submission/rejudge_problem/'.$id , 'text' => 'Rejudge All'])
+
+
+
 </div>
 @endsection

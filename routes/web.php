@@ -36,7 +36,11 @@ Route::name('problem.')->prefix('problem')->group(function() {
 
     Route::get('/customtests', 'SubmissionController@customtests')->name('costumtests');
     Route::get('/statistics/{id}', 'SubmissionController@statistics')->name('statistics')->where('id', '[0-9+]');
+
+	Route::any('/delete/{id}', 'ProblemsetController@delete_problem')->name('delete')->where('id', '[0-9]+');
 });
 
 Route::get('/submission', 'SubmissionController@index')->name('submission');
 Route::get('/submission/{id}', 'SubmissionController@show')->where('id', '[0-9]+');
+Route::get('/submission/rejudge/{id}', 'SubmissionController@rejudge')->where('id', '[0-9]+');
+Route::get('/submission/rejudge_problem/{id}', 'SubmissionController@rejudge_problem')->where('id', '[0-9]+');

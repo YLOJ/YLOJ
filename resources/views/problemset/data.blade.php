@@ -27,8 +27,8 @@ use Illuminate\Support\Facades\Storage;
 <br>
 
 @if (Storage::disk('problems')->exists($id)) 
-	@include('buttons.jump',['href' => '/problem/data_download/{{ $id }}' , 'text' => 'Download'])
-@endif
+	@include('buttons.jump',['href' => '/problem/data_download/'.$id , 'text' => 'Download'])
+@endif <br> <br>
 </div>
 
 @endsection
