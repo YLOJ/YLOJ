@@ -23,7 +23,7 @@ class Judger:
 
     def compile_src(self):
         if (self.language == 'cpp'):
-            if os.system('g++ %s -o exec -DONLINE_JUDGE -O2' % self.src_path) != 0:
+            if os.system('ulimit -t 10 && g++-8 %s -o exec -DONLINE_JUDGE -O2' % self.src_path) != 0:
                 return False
             return True
 
@@ -40,13 +40,17 @@ class Judger:
                 'fd_in' : fin.fileno(),
                 'fd_out' : ftemp.fileno(),
                 'timelimit' : self.config['time_limit'] * 1000,
-                'memorylimit' : self.config['memory_limit'] * 1024,
+                'memorylimit' : min(1024 * 1024, self.config['memory_limit'] * 2048),
                 }
 
         res = lorun.run(runcfg);
 
         fin.close()
         ftemp.close()
+
+        print (res['memoryused'])
+        if res['memoryused'] > self.config['memory_limit'] * 1024:
+            res['result'] = 3
 
         if res['result'] == 0:
             ftemp = open('temp.out')
@@ -72,6 +76,8 @@ class Judger:
         if 'subtasks' in self.config:
             pass 
         else:
+            time = -1
+            memory = -1
             score = 0
             score_per_test = 100 // self.config['test_cases']
 
@@ -81,6 +87,8 @@ class Judger:
 
                 if os.path.isfile(stdin) and os.path.isfile(stdout):
                     res = self.run(stdin, stdout)
+                    time = max(time, res['timeused'])
+                    memory = max(memory, res['memoryused'])
                     info.update({ 'case%d' % i : res })
                 else:
                     info.update({ 'case%d' % i : 'Data Error' })
@@ -88,12 +96,14 @@ class Judger:
                 if res['result'] == 0:
                     score += score_per_test
                 elif 'result' not in info:
-                    info.update({ 'result' : JUDGE_RESULT[res['result']] })
+                    info['result'] = JUDGE_RESULT[res['result']]
 
             if 'result' not in info:
                 score = 100
                 info.update({ 'result' : JUDGE_RESULT[0] })
 
+            info['time'] = time
+            info['memory'] = memory
             info.update({ 'score' : score })
 
         os.remove('./exec')
