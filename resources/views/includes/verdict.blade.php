@@ -37,11 +37,15 @@
 	@endif
 </td>
 
-@if ($sub -> result == "Accepted" || $sub -> result == "Wrong Answer")
+@if ($sub -> time_used >= 0)
 	<td> {{ $sub -> time_used }}ms </td>
-	<td> {{ $sub -> memory_used }}kb </td>
-@else
+@else 
 	<td> / </td>
+@endif
+
+@if ($sub -> memory_used >= 0)
+	<td> {{ $sub -> memory_used }}kb </td>
+@else 
 	<td> / </td>
 @endif
 
