@@ -76,7 +76,7 @@ class SubmissionController extends Controller
         return view('submission.submit', ['id' => $id,'title'=>$title]);
     }
 
-    public function submitcode(Request $request,$id) 
+    public function submitcode(Request $request, $id) 
     {
         if (!Auth::check()) {
             return redirect('login');
@@ -98,7 +98,7 @@ class SubmissionController extends Controller
                 DB::select('select * from problemset where id=?',[$id])[0]->title,
                 Auth::User()->id,
                 Auth::User()->name,
-                "waiting",
+                "Waiting",
                 0,
                 0,
                 0,
@@ -112,13 +112,13 @@ class SubmissionController extends Controller
 
 	public function rejudge($id)
 	{
-		DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'waiting', 'score' => 0]);
+		DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting', 'score' => 0, 'time_used' => -1, 'memory_used' => -1]);
 		return redirect('submission/'.$id);
 	}
 
 	public function rejudge_problem($id)
 	{
-		DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'waiting', 'score' => 0]);
+		DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting', 'score' => 0, 'time_used' => -1, 'memory_used' => -1]);
 		return redirect('submission');
 	}
 
