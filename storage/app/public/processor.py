@@ -1,14 +1,15 @@
 import os
 import yaml
 import pymysql
+import config
 
 from judger import Judger
 
 conn = pymysql.connect(
-        host = 'lk.yali.edu.cn',
-        user = 'root',
-        password = 'itismine',
-        database = 'test',
+        host = config.table['host'],
+        user = config.table['user'],
+        password = config.table['password'],
+        database = config.table['database'],
         charset = 'utf8'
         )
 
@@ -24,7 +25,7 @@ while cnt:
     print (sub)
 
     if (sub == None):
-        pass
+        continue
 
     judge_id = sub['id']
     problem_id = sub['problem_id']
