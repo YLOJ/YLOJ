@@ -100,8 +100,8 @@ class SubmissionController extends Controller
                 Auth::User()->name,
                 "Waiting",
                 0,
-                0,
-                0,
+                -1,
+                -1,
                 $request->input('source_code'),
                 NOW(),
             ]
