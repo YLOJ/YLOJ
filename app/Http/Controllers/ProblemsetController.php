@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
+use Chumper\Zipper\Zipper;
+
 class ProblemsetController extends Controller
 {
     public function index()
@@ -107,12 +109,16 @@ class ProblemsetController extends Controller
 
     public function data_submit(Request $request, $id)
     {
-        if (Auth::check() && Auth::user()->permission > 0) {
-            Storage::disk('problems')->put(
-                $id . '/data.zip',
-                file_get_contents( $request->file('data') )
-            );
-            return redirect(route('problem.data', $id));
+        if (Auth::check() && Auth::user() -> permission > 0) {
+			Storage::disk('problems') -> put(
+				$id . '/data.zip',
+				file_get_contents( $request -> file('data') )
+			);
+			Storage::makeDirectory('public/tmp');
+			$zipper = Zipper;
+			$zipper -> make(storage_path('app/problems/'.$id.'/data.zip')) 
+					-> extractTo(storage_path('app/problems/'.$id.'/'));
+			return redirect(route('problem.data', $id));
         } else {
             return redirect('404');
         }
@@ -129,8 +135,12 @@ class ProblemsetController extends Controller
 
 	public function delete_problem($id)
 	{
-		DB::table('problemset') -> where('id', '=', $id) -> delete();
-		DB::table('submission') -> where('problem_id', '=', $id) -> delete();
-		Storage::disk('problems') -> deleteDirectory($id);
+		if (Auth::check() && Auth::user()->permission > 0) {
+			DB::table('problemset') -> where('id', '=', $id) -> delete();
+			DB::table('submission') -> where('problem_id', '=', $id) -> delete();
+			Storage::disk('problems') -> deleteDirectory($id);
+		} else {
+			return redirect('404');
+		}
 	}
 }

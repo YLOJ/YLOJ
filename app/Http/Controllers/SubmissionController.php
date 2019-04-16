@@ -112,24 +112,36 @@ class SubmissionController extends Controller
 
 	public function rejudge($id)
 	{
+		if (!Auth::check() || Auth::User() -> permission <= 0) {
+			return redirect('404');
+		}
 		DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting', 'score' => 0, 'time_used' => -1, 'memory_used' => -1]);
 		return redirect('submission/'.$id);
 	}
 
 	public function rejudge_problem($id)
 	{
+		if (!Auth::check() || Auth::User() -> permission <= 0) {
+			return redirect('404');
+		}
 		DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting', 'score' => 0, 'time_used' => -1, 'memory_used' => -1]);
 		return redirect('submission');
 	}
 
 	public function delete_submission($id)
 	{
+		if (!Auth::check() || Auth::User() -> permission <= 0) {
+			return redirect('404');
+		}
 		DB::table('submission') -> where('id', '=', $id) -> delete();
 		return redirect('submission');
 	}
 
 	public function delete_problem_submission($id)
 	{
+		if (!Auth::check() || Auth::User() -> permission <= 0) {
+			return redirect('404');
+		}
 		DB::table('submission') -> where('problem_id', '=', $id) -> delete();
 		return redirect('problem/edit/'.$id);
 	}
