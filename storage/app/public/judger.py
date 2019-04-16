@@ -51,9 +51,7 @@ class Judger:
         if res['result'] == 0:
             ftemp = open('temp.out')
             fout = open(stdout)
-
             info = lorun.check(fout.fileno(), ftemp.fileno())
-
             ftemp.close()
             fout.close()
 
