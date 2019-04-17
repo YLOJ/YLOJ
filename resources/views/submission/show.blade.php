@@ -23,20 +23,38 @@
                 </tbody>
             </table>
 
-            <pre>
-                <code class="cpp">{{ $sub -> source_code }} </code>
-            </pre>
+			@component('includes.collapse_box', ['id' => 'code', 'title' => 'Source Code'])
+				<pre><code class="cpp">{{ $sub -> source_code }}</code></pre>
+			@endcomponent
+			@if($sub -> result == 'Compile Error')	
+				@component('includes.collapse_box', ['id' => 'compile_info', 'title' => 'Compile Info'])
+					<pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
+				@endcomponent
+			@elseif($sub -> result != 'Waiting')
+				@component('includes.collapse_box', ['id' => 'details', 'title' => 'Details'])
+					<ul class="list-group">
+						@foreach($sub -> task as $info)
+							@if($info['result'] == 'Accepted') <li class="list-group-item list-group-item-success"> 
+							@else <li class="list-group-item list-group-item-danger">
+							@endif
+								Case {{ $loop -> index + 1 }} : {{ $info['result'] }} &nbsp &nbsp Time : {{ $info['time_used'] }} ms &nbsp &nbsp Memory : {{ $info['memory_used'] }}kb  
+							</li>
+						@endforeach
+					</ul>
+				@endcomponent
+			@endif
 
+			<br>
 			@auth
 				@if(Auth::user() -> permission > 0)
 					@include('buttons.jump-danger', ['href' => url('submission/rejudge/'.$sub -> id), 'text' => 'Rejudge'])
-					&nbsp &nbsp
+					&nbsp
 					@include('buttons.jump-danger', ['href' => url('submission/delete/'.$sub -> id), 'text' => 'Delete'])
 				@endif
 			@endauth
 
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 
 @endsection

@@ -52,7 +52,7 @@ else $max_score = "";
             @auth
                 @include('buttons.jump' , [ 
                     'href' => url('/submission?user_name='.Auth::User() -> name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score) , 
-                    'text' => 'My Submission'
+                    'text' => 'My Submissions'
                     ])
             @endauth
         </div>

@@ -66,14 +66,40 @@ class SubmissionController extends Controller
 
     public function show($id) 
     {
-        $submission = DB::table('submission') -> where('id', $id) -> first();
-        return view('submission.show', ['sub' => $submission]);
+        $sub = DB::table('submission') -> where('id', $id) -> first();
+		$result_id = array(
+			'Accepted',
+			'Wrong Answer',
+			'Time Limit Exceeded',
+			'Memory Limit Exceeded',
+			'Wrong Answer',
+			'Runtime Error',
+			'Wrong Answer',
+			'Compile Error',
+			'System Error');
+
+		if ($sub -> result != 'Compile Error' && $sub -> result != 'Waiting') {
+			$detail = explode(';', $sub -> judge_info);
+			$task_id = 0;
+			$sub -> task = array();
+			foreach ($detail as $case) {
+				$buffer = explode(',', $case);
+				if (count($buffer) < 3) continue;
+				$sub -> task[$task_id++] = array(
+					'result' => $result_id[$buffer[0]],
+					'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
+					'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2]
+				);
+			}
+		}	
+
+        return view('submission.show', ['sub' => $sub]);
     }
 
 	public function submitpage($id) 
     {
 		$title = DB::table('problemset')-> where('id','=',$id) -> first() -> title;
-        return view('submission.submit', ['id' => $id,'title'=>$title]);
+        return view('submission.submit', ['id' => $id,'title' => $title]);
     }
 
     public function submitcode(Request $request, $id) 
