@@ -81,8 +81,12 @@ else $max_score = "";
     </div>
 
     <div class="row justify-content-center">
-        {{ $submissionset -> links() }}
-    </div>
+<?php
+$str = $submissionset -> links();
+$arr = explode('?', $str);
+echo implode('?user_name='.$user_name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score.'&', $arr);
+?>
+	</div>
 
 </div>
 

@@ -125,7 +125,7 @@ class SubmissionController extends Controller
                 Auth::User()->id,
                 Auth::User()->name,
                 "Waiting",
-                0,
+                -1,
                 -1,
                 -1,
                 $request->input('source_code'),
@@ -141,7 +141,7 @@ class SubmissionController extends Controller
 		if (!Auth::check() || Auth::User() -> permission <= 0) {
 			return redirect('404');
 		}
-		DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting', 'score' => 0, 'time_used' => -1, 'memory_used' => -1]);
+		DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
 		return redirect('submission/'.$id);
 	}
 
@@ -150,7 +150,7 @@ class SubmissionController extends Controller
 		if (!Auth::check() || Auth::User() -> permission <= 0) {
 			return redirect('404');
 		}
-		DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting', 'score' => 0, 'time_used' => -1, 'memory_used' => -1]);
+		DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
 		return redirect('submission');
 	}
 
