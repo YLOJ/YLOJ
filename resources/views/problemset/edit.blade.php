@@ -27,6 +27,13 @@
             <label>Content</label> <br>
             <textarea rows="16" name="content_md" , class="form-control">{{$content_md}}</textarea>
         </div>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" name="visibility" {{$visibility?'checked':''}} value=1>
+			<label class="form-check-label" for="visibility">
+				Visibility
+			</label>
+		</div>
+		<br>
         @include('buttons.submit',['text' => 'Save'])
         @csrf
     </form>

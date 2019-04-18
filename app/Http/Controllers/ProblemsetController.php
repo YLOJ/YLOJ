@@ -71,6 +71,7 @@ class ProblemsetController extends Controller
                 'time_limit' => $problem->time_limit,
                 'memory_limit' => $problem->memory_limit,
                 'content_md' => $problem->content_md,
+				'visibility' => $problem->visibility
             ]);
         } else {
             return redirect('404');
@@ -84,13 +85,15 @@ class ProblemsetController extends Controller
             `title` = ?, 
             `time_limit` = ?,
             `memory_limit` = ?,
-            `content_md` = ? 
+            `content_md` = ?,
+			`visibility` = ?
             where `id` = ?",
             [
                 $request->input('title'),
                 $request->input('time_limit'),
                 $request->input('memory_limit'),
                 $request->input('content_md'),
+                $request->input('visibility') != null,
                 $id,
             ]
         );
