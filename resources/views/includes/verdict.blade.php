@@ -20,6 +20,8 @@
 		<a class="text-success" href={{ $sub -> url }}>
 	@elseif ($sub -> result == "Data Error") 
 		<a style="color:#2F4F4F" href={{ $sub -> url }}>
+	@elseif ($sub -> result == "Judgement Failed") 
+		<a style="color:#2F4F4F" href={{ $sub -> url }}>
 	@elseif ($sub -> result == "Runtime Error") 
 		<a style="color:#FF8C00" href={{ $sub -> url }}>
 	@elseif ($sub -> result == "Compile Error") 
@@ -28,6 +30,10 @@
 		<a style="color:#8B008B" href={{ $sub -> url }}>
 	@elseif ($sub -> result == "Memory Limit Exceeded") 
 		<a style="color:#8B4513" href={{ $sub -> url }}>
+	@elseif ($sub -> result == "Presitation Error") 
+		<a style="color:#556B2F" href={{ $sub -> url }}>
+	@elseif ($sub -> result == "Partially Correct") 
+		<a style="color:#3CB371" href={{ $sub -> url }}>
 	@else 
 		<a class="text-danger" href={{ $sub -> url }}>
 	@endif
