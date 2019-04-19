@@ -26,13 +26,17 @@ class ProblemsetController extends Controller
         $markdowner = new Markdowner();
         $problem = DB::table('problemset')->where('id', $id)->first();
 
-        return view('problemset.show', [
-            'id' => $id,
-            'title' => $problem->title,
-            'time_limit' => $problem->time_limit,
-            'memory_limit' => $problem->memory_limit,
-            'content_html' => $markdowner->toHTML($problem->content_md),
-        ]);
+        if ($problem -> visibility == true || Auth::check() && Auth::user()->permission > 0) {
+			return view('problemset.show', [
+				'id' => $id,
+				'title' => $problem->title,
+				'time_limit' => $problem->time_limit,
+				'memory_limit' => $problem->memory_limit,
+				'content_html' => $markdowner->toHTML($problem->content_md),
+			]);
+        } else {
+            return redirect('404');
+        }
     }
 
     public function add()

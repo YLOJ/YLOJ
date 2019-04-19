@@ -20,6 +20,11 @@
     @endif
     @endauth
 
+<?php
+$cnt=0;
+$flag=Auth::check()&&Auth::user()->permission>0;
+?>
+
     <div class="row">
         <div class="col">
             <table class="table table-bordered">
@@ -31,24 +36,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($problemset as $problem)
-                    @if ($problem -> id % 2 == 1) <tr style="background-color:#F3F3F3">
-                        @else
-                    <tr>
-                        @endif
-                        <td> {{ $problem -> id }} </td>
-                        <td> <a href="/problem/{{ $problem->id }}"> {{$problem->title}} </a> </td>
-                        <?php $x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>
+				@foreach ($problemset as $problem)
+					@if ($flag == 1|| $problem -> visibility == true)
+						@if (($cnt = $cnt + 1) % 2 == 1) <tr style="background-color:#F3F3F3">
+							@else
+						<tr>
+							@endif
+							<td> {{ $problem -> id }} </td>
+							<td> <a href="/problem/{{ $problem->id }}"> {{$problem->title}} </a> </td>
+							<?php $x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>
 
-                        @if ($x > 0)
-                        <td class="text-success"> <b> {{ $x }} </b> </td>
-                        @elseif ($x == 0)
-                        <td class="text-muted"> <b> {{ $x }} </b> </td>
-                        @else
-                        <td class="text-danger"> <b> {{ $x }} </b> </td>
-                        @endif
-                    </tr>
-                    @endforeach
+							@if ($x > 0)
+							<td class="text-success"> <b> {{ $x }} </b> </td>
+							@elseif ($x == 0)
+							<td class="text-muted"> <b> {{ $x }} </b> </td>
+							@else
+							<td class="text-danger"> <b> {{ $x }} </b> </td>
+							@endif
+						</tr>
+					@endif
+				@endforeach
                 </tbody>
             </table>
         </div>

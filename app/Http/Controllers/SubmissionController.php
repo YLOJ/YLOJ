@@ -33,6 +33,11 @@ class SubmissionController extends Controller
 
 	public function statistics($id, Request $request)
 	{
+		if(DB::table('problemset')->where('id','=',$id)->first()->visibility==false){
+			if(!Auth::check()||Auth::user()->permission<=0){
+				return redirect('404');
+			}
+		}
 		$raw_data = DB::table('submission') -> where('score', '=', 100) -> where('problem_id', '=', $id);
         $raw_data = $raw_data -> orderby('time_used', 'asc') -> get() -> toArray();
 		$map = array();
@@ -67,6 +72,11 @@ class SubmissionController extends Controller
     public function show($id) 
     {
         $sub = DB::table('submission') -> where('id', $id) -> first();
+		if(DB::table('problemset')->where('id','=',$sub->problem_id)->first()->visibility==false){
+			if(!Auth::check()||Auth::user()->permission<=0){
+				return redirect('404');
+			}
+		}
 		$result_id = array(
 			'Accepted',
 			'Wrong Answer',
@@ -107,6 +117,9 @@ class SubmissionController extends Controller
         if (!Auth::check()) {
             return redirect('login');
         }
+		if (DB::table('problemset')->where('id','=',$id)->first()->visibility== false &&Auth::user()->permission<=0){
+			return redirect('login');
+		}
 
         DB::insert('insert into submission (
             problem_id,
