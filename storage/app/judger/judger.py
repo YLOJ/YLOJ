@@ -32,15 +32,15 @@ class Judger:
         fout = open('temp.out', 'w')
 
         runcfg = {
-                'trace' : True,
-                'calls' : [0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 21, 59, 158, 231, 257], 
-                'files' : {'/etc/ld.so.cache': 0},
-                'args' : ['./exec'],
-                'fd_in' : fin.fileno(),
-                'fd_out' : fout.fileno(),
-                'timelimit' : self.config['time_limit'] * 1000,
-                'memorylimit' : min(1024 * 1024, self.config['memory_limit'] * 2048),
-                }
+            'trace' : True,
+            'calls' : [0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 21, 59, 158, 231, 257], 
+            'files' : {'/etc/ld.so.cache': 0},
+            'args' : ['./exec'],
+            'fd_in' : fin.fileno(),
+            'fd_out' : fout.fileno(),
+            'timelimit' : self.config['time_limit'] * 1000,
+            'memorylimit' : min(1024 * 1024, self.config['memory_limit'] * 2048),
+        }
 
         res = lorun.run(runcfg)
 
@@ -57,15 +57,15 @@ class Judger:
             checker = BuiltinChecker('ncmp', fin.name, fout.name, fans.name)
             info = checker.check()
 
-            print (info.score)
-
             fout.close()
             fans.close()
 
-            if info != 0:
+            if info.result != 0:
                 res.update({ 'result' : info.result, 'score' : info.score })
+            else:
+                res['score'] = 1.
         else:
-            res['score'] = 1.
+            res['score'] = 0.
 
         os.remove('temp.out')
         return res

@@ -36,7 +36,8 @@ class BuiltinChecker:
             code = 0
         except subprocess.CalledProcessError as err:
             code = err.returncode
-    
+
+        print (code)
         return get_result(code)
 
 class Checker:
@@ -54,7 +55,7 @@ def get_result(code):
     elif code == 3:
         return CheckerResult(6)
     elif code == 4:
-        return CheckerResult(4)
+        return CheckerResult(1)
     elif code == 5:
         return CheckerResult(1)
     elif code >= 16 and code <= 116:
