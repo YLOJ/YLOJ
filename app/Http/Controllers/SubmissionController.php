@@ -78,15 +78,14 @@ class SubmissionController extends Controller
 			}
 		}
 		$result_id = array(
-			'Accepted',
-			'Wrong Answer',
-			'Time Limit Exceeded',
-			'Memory Limit Exceeded',
-			'Wrong Answer',
+			'Accepted', 
+			'Wrong Answer', 
+			'Time Limit Exceeded', 
+			'Memory Limit Exceeded', 
+			'Presentation Error',
 			'Runtime Error',
-			'Wrong Answer',
-			'Compile Error',
-			'System Error');
+			'Judgement Failed', 
+			'Partially Correct');
 
 		if ($sub -> result != 'Compile Error' && $sub -> result != 'Waiting') {
 			$detail = explode(';', $sub -> judge_info);
@@ -98,7 +97,8 @@ class SubmissionController extends Controller
 				$sub -> task[$task_id++] = array(
 					'result' => $result_id[$buffer[0]],
 					'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
-					'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2]
+					'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2],
+					'score' => $buffer[3]
 				);
 			}
 		}	
