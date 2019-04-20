@@ -35,7 +35,8 @@ Route::name('problem.')->prefix('problem')->group(function() {
     Route::post('/submit/{id}', 'SubmissionController@submitcode')->name('submitcode')->where('id', '[0-9]+');
 
     Route::get('/customtests', 'SubmissionController@customtests')->name('customtests');
-    Route::post('/customtests_submit', 'SubmissionController@customtests_submit');
+    Route::post('/customtests', 'SubmissionController@customtests_submit');
+    Route::post('/customtests/output_download', 'SubmissionController@customtests_download');
 
     Route::get('/statistics/{id}', 'SubmissionController@statistics')->name('statistics')->where('id', '[0-9+]');
 

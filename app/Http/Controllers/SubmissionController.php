@@ -200,6 +200,20 @@ class SubmissionController extends Controller
 		] );
 		Storage::disk('customtest')->put( $id.'.cpp' , $req->input('source_code'));
 		Storage::disk('customtest')->put( $id.'.in' , $req->input('input_file'));
-		return view('submission.customtests', ['jid' => $id]);
+
+		while( DB::table('custom_test_submission')->where('id' , '=' , $id)->value('result') == 'Waiting');
+
+		$rst = DB::table('custom_test_submission')->where('id' , '=' , $id);
+		return view('submission.customtests' , [
+			'jid' => $id,
+			'time_used' => $rst->value('time_used'),
+			'memory_used' => $rst->value('memory_used'),
+		]);
+	}
+
+	public function customtests_download(Request $req)
+	{
+		$jid=$req->input('jid');
+		return Storage::disk('customtest')->download($jid.".out", "output.txt");
 	}
 }
