@@ -37,7 +37,7 @@ def run(p_path, in_path, out_path):
     rst = lorun.run(runcfg)
     fin.close()
     fout.close()
-    
+
     os.remove('./customtest_exec');
 
     return rst
@@ -77,14 +77,13 @@ while 1:
 
         res = run(src_path, in_path, out_path);
 
-#res['time'] = res.get('time', -1)
-#res['memory'] = res.get('memory', -1)
-#res['judge_info'] = res['judge_info'].replace('\\n', '\\\\n').replace('\"', '\\"')
+#print(res)
 
         res['result'] = RESULT_STR[res['result']]
 
-        cmd = cmd_update % (res['result'],res['time'],res['memory'],id)
-        print(cmd)
+        cmd = cmd_update % (res['result'],res['timeused'],res['memoryused'],id)
+
+#print(cmd)
 
         cursor.execute(cmd)
 
