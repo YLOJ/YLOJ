@@ -193,7 +193,11 @@ class SubmissionController extends Controller
 	
 	public function customtests_submit(Request $req)
 	{
-		$id = DB::table('custom_test_submission')->insertGetId( ['judged' => false] );
+		$id = DB::table('custom_test_submission')->insertGetId( [
+			'result' => 'Waiting' ,
+			'time_used' => 0 ,
+			'memory_used' => 0 ,
+		] );
 		Storage::disk('customtest')->put( $id.'.cpp' , $req->input('source_code'));
 		Storage::disk('customtest')->put( $id.'.in' , $req->input('input_file'));
 		return view('submission.customtests', ['jid' => $id]);

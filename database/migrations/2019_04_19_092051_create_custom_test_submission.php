@@ -15,7 +15,9 @@ class CreateCustomTestSubmission extends Migration
     {
         Schema::create('custom_test_submission', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('judged');
+            $table->string('result',15);
+			$table->integer('time_used');
+			$table->integer('memory_used');
         });
     }
 
