@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
 
 class SubmissionController extends Controller
 {
@@ -188,5 +189,13 @@ class SubmissionController extends Controller
 	public function customtests() 
     {
         return view('submission.customtests');
-    }
+	}
+	
+	public function customtests_submit(Request $req)
+	{
+		$id = DB::table('custom_test_submission')->insertGetId( ['judged' => false] );
+		Storage::disk('customtest')->put( $id.'.cpp' , $req->input('source_code'));
+		Storage::disk('customtest')->put( $id.'.in' , $req->input('input_file'));
+		return view('submission.customtests', ['jid' => $id]);
+	}
 }
