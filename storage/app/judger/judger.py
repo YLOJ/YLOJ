@@ -62,16 +62,16 @@ class Judger:
             fout = open('temp.out')
             fans = open(stdout)
 
-            checker = BuiltinChecker('fcmp', fin.name, fout.name, fans.name)
-            info = checker.check()
-
-            fout.close()
-            fans.close()
-
-            if info.result != 0:
-                res.update({ 'result' : info.result, 'score' : info.score })
-            else:
-                res['score'] = 1.
+            try:
+                info = self.checker.check(stdin, 'temp.out', stdout)
+                fout.close()
+                fans.close()
+                res['result'] = info.result
+                res['score'] = info.score
+            except CheckerException as e:
+                print (e)
+                res['result'] = 6
+                res['score'] = 0.
         else:
             res['score'] = 0.
 
@@ -81,12 +81,21 @@ class Judger:
     def judge(self, problem_id):
 
         try:
-            subprocess.check_output(self.cmd, shell=True, stderr=subprocess.STDOUT, timeout=5)
+            subprocess.check_output(self.cmd, shell = True, stderr = subprocess.STDOUT, timeout = 5)
         except subprocess.CalledProcessError as e:
             compile_info = e.output.decode('utf-8')
-            return { 'result' : 'Compile Error', 'score' : 0, 'judge_info' : "%s" % compile_info }
+            return { 'result' : 'Compile Error', 'score' : -1, 'judge_info' : "%s" % compile_info }
         except subprocess.TimeoutExpired as time_e:
-            return { 'result' : 'Compile Error', 'score' : 0, 'judge_info' : 'Compile Time Exceeded' }
+            return { 'result' : 'Compile Error', 'score' : -1, 'judge_info' : 'Compile Time Exceeded' }
+
+        checker_type = self.config.get('checker_type', 'builtin')
+
+        if checker_type == 'custom':
+            checker_name = self.config.get('checker_name', 'spj')
+            self.checker = Checker('../problems/%d/%s.cpp' % (problem_id, checker_name))
+        else:
+            checker_name = self.config.get('checker_name', 'fcmp')
+            self.checker = BuiltinChecker(checker_name)
 
         info = { }
         score = 0

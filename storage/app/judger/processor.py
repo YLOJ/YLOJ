@@ -2,6 +2,8 @@ import os
 import yaml
 import config
 import pymysql
+
+from checker import *
 from judger import Judger
 from judger import ConfigError
 
@@ -56,6 +58,12 @@ while cnt:
                 'score' : -1,
                 'result' : 'Data Error',
                 'judge_info' : 'Invalid config.yml : \n %s' % e
+            }
+        except CheckerException as e:
+            res = {
+                'score' : -1,
+                'result' : 'Data Error',
+                'judge_info' : '%s' % e,
             }
 
         res['time'] = res.get('time', -1)
