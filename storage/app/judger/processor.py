@@ -3,6 +3,7 @@ import yaml
 import config
 import pymysql
 from judger import Judger
+from judger import ConfigError
 
 cmd_select = "SELECT * FROM submission WHERE `result` = 'Waiting' ORDER BY `id` ASC"
 cmd_update = """
@@ -46,9 +47,15 @@ while cnt:
                 res = judger.judge(sub['problem_id'])
         except FileNotFoundError as e:
             res = { 
-                'score' : 0, 
+                'score' : -1, 
                 'result' : 'Data Error', 
-                'judge_info' : 'Could not find config.yml' 
+                'judge_info' : 'Data not found : \n %s' % e
+            }
+        except ConfigError as e:
+            res = {
+                'score' : -1,
+                'result' : 'Data Error',
+                'judge_info' : 'Invalid config.yml : \n %s' % e
             }
 
         res['time'] = res.get('time', -1)

@@ -117,12 +117,12 @@ class ProblemsetController extends Controller
     public function data_submit(Request $request, $id)
     {
         if (Auth::check() && Auth::user() -> permission > 0) {
+			Storage::deleteDirectory('problems/'.$id);
 			Storage::disk('problems') -> put(
 				$id . '/data.zip',
 				file_get_contents( $request -> file('data') )
 			);
-			Storage::makeDirectory('public/tmp');
-			$zipper = Zipper;
+			$zipper = new Zipper;
 			$zipper -> make(storage_path('app/problems/'.$id.'/data.zip')) 
 					-> extractTo(storage_path('app/problems/'.$id.'/'));
 			return redirect(route('problem.data', $id));

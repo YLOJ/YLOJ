@@ -14,6 +14,14 @@ JUDGE_RESULT = [
     'Partially Correct',
 ]
 
+class ConfigError(Exception):
+
+    def __init__(self, info):
+        self.info = info
+    
+    def __str__(self):
+        return repr(self.info)
+
 class Judger:
 
     def __init__(self, config, src_path, language = 'cpp'):
@@ -54,7 +62,7 @@ class Judger:
             fout = open('temp.out')
             fans = open(stdout)
 
-            checker = BuiltinChecker('ncmp', fin.name, fout.name, fans.name)
+            checker = BuiltinChecker('fcmp', fin.name, fout.name, fans.name)
             info = checker.check()
 
             fout.close()
@@ -87,24 +95,78 @@ class Judger:
         judge_info = ""
 
         if 'subtasks' in self.config:
-            pass 
+            #judge_info = "1"
+            for sub in self.config['subtasks']:
+
+                cases = []
+                if 'score' not in sub or type(sub['score']) != int:
+                    raise ConfigError('invalid subtask info : \'score\'')
+                elif 'test_cases' not in sub:
+                    raise ConfigError('invalid subtask info : \'test_cases\'')
+                elif type(sub['test_cases']) == list:
+                    for i in range(len(sub['test_cases']) // 2):
+                        l = sub['test_cases'][i * 2]
+                        r = sub['test_cases'][i * 2 + 1]
+                        if type(l) != int or type(r) != int or l > r:
+                            raise ConfigError('invalid subtask info : invalid interval in test set')
+                        cases = cases + list(range(l, r + 1))
+                elif type(sub['test_cases']) == dict:
+                    for i in sub['test_cases']:
+                        if type(i) != int:
+                            raise ConfigError('invalid subtask info : invalid element in test set')
+                        cases.append(i)
+                else:
+                    raise ConfigError('invalid subtask info : \'test_cases\'')
+
+                sub_score = sub['score']
+                sub_result = 0;
+
+                for i in cases:
+                    print ('#%d' % i)
+                    stdin =  '../problems/%d/%s%d.in'  % (problem_id, self.config['problem_name'], i)
+                    stdout = '../problems/%d/%s%d.out' % (problem_id, self.config['problem_name'], i)
+
+                    res = self.run(stdin, stdout)
+                    print (res)
+                    info.update({ 'case%d' % i : res })
+                    #judge_info += "%d,%d,%d,%d;" % (res['result'], res['timeused'], res['memoryused'], int(res['score'] * sub['score']))
+                    sub_time = max(time, res['timeused'])
+                    sub_memory = max(memory, res['memoryused'])
+                    sub_score = min(sub_score, int(sub['score'] * res['score']))
+
+                    if res['result'] == 0:
+                        pass
+                    elif sub_result == 0:
+                        sub_result = res['result']
+
+                judge_info += "%d,%d,%d,%d;" % (sub_result, sub_time, sub_memory, sub_score)
+                time = max(time, sub_time)
+                memory = max(memory, sub_memory)
+                score += sub_score
+
+                if sub_result == 0:
+                    pass
+                elif 'result' not in info:
+                    info['result'] = JUDGE_RESULT[sub_result]
+
+
         else:
+            #judge_info = "0"
+
+            if 'test_cases' not in self.config or type(self.config['test_cases']) != int:
+                raise ConfigError('invalid info : \'test_cases\'')
+
             score_per_test = 100 // self.config['test_cases']
 
             for i in range(self.config['test_cases']):
                 stdin =  '../problems/%d/%s%d.in'  % (problem_id, self.config['problem_name'], i)
                 stdout = '../problems/%d/%s%d.out' % (problem_id, self.config['problem_name'], i)
 
-                if os.path.isfile(stdin) and os.path.isfile(stdout):
-                    res = self.run(stdin, stdout)
-                    time = max(time, res['timeused'])
-                    memory = max(memory, res['memoryused'])
-                    info.update({ 'case%d' % i : res })
-                    judge_info += "%d,%d,%d,%d;" % (res['result'], res['timeused'], res['memoryused'], int(res['score'] * score_per_test))
-                else:
-                    info.update({ 'case%d' % i : 'Data Error' })
-                    judge_info += "%d,%d,%d,%d;" % (-1, -1, -1, 0)
-
+                res = self.run(stdin, stdout)
+                info.update({ 'case%d' % i : res })
+                judge_info += "%d,%d,%d,%d;" % (res['result'], res['timeused'], res['memoryused'], int(res['score'] * score_per_test))
+                time = max(time, res['timeused'])
+                memory = max(memory, res['memoryused'])
                 score += int(score_per_test * res['score'])
 
                 if res['result'] == 0:
@@ -112,13 +174,13 @@ class Judger:
                 elif 'result' not in info:
                     info['result'] = JUDGE_RESULT[res['result']]
 
-            if 'result' not in info:
-                info['result'] = JUDGE_RESULT[0]
+        if 'result' not in info:
+            info['result'] = JUDGE_RESULT[0]
 
-            info['score'] = score
-            info['time'] = time
-            info['memory'] = memory
-            info['judge_info'] = judge_info
+        info['score'] = score
+        info['time'] = time
+        info['memory'] = memory
+        info['judge_info'] = judge_info
 
         os.remove('./exec')
         return info

@@ -30,6 +30,10 @@
 				@component('includes.collapse_box', ['id' => 'compile_info', 'title' => 'Compile Info'])
 					<pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
 				@endcomponent
+			@elseif($sub -> result == 'Data Error')
+				@component('includes.collapse_box', ['id' => 'error_info', 'title' => 'Error Details'])
+					<pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
+				@endcomponent
 			@elseif($sub -> result != 'Waiting')
 				@component('includes.collapse_box', ['id' => 'details', 'title' => 'Details'])
 					<ul class="list-group">
