@@ -54,16 +54,16 @@ class Judger:
             fout = open('temp.out')
             fans = open(stdout)
 
-            checker = BuiltinChecker('ncmp', fin.name, fout.name, fans.name)
-            info = checker.check()
-
-            fout.close()
-            fans.close()
-
-            if info.result != 0:
-                res.update({ 'result' : info.result, 'score' : info.score })
-            else:
-                res['score'] = 1.
+            try:
+                info = self.checker.check(inpath, outpath, anspath)
+                fout.close()
+                fans.close()
+                res['result'] = info.result
+                res['score'] = info.score
+            except CheckerException as e:
+                print (e)
+                res['result'] = 6
+                res['score'] = 0.
         else:
             res['score'] = 0.
 
@@ -73,12 +73,23 @@ class Judger:
     def judge(self, problem_id):
 
         try:
-            subprocess.check_output(self.cmd, shell=True, stderr=subprocess.STDOUT, timeout=5)
+            subprocess.check_output(self.cmd, shell = True, stderr = subprocess.STDOUT, timeout = 5)
         except subprocess.CalledProcessError as e:
             compile_info = e.output.decode('utf-8')
-            return { 'result' : 'Compile Error', 'score' : 0, 'judge_info' : "%s" % compile_info }
+            return { 'result' : 'Compile Error', 'score' : -1, 'judge_info' : "%s" % compile_info }
         except subprocess.TimeoutExpired as time_e:
-            return { 'result' : 'Compile Error', 'score' : 0, 'judge_info' : 'Compile Time Exceeded' }
+            return { 'result' : 'Compile Error', 'score' : -1, 'judge_info' : 'Compile Time Exceeded' }
+
+        try:
+            checker_type = self.config.get('checker_type', 'builtin')
+            if checker_type == 'custom':
+                checker_name = self.config.get('checker_name', 'spj')
+                self.checker = Checker('../problems/%d/%s.cpp' % (problem_id, checker_name))
+            else:
+                checker_name = self.config.get('checker_name', 'ncmp')
+                self.checker = BuiltinChecker(checker_name)
+        except Exception as e:
+            return { 'result' : 'Judgement Failed', 'score' : 0, 'judge_info' : '%s' % e }
 
         info = { }
         score = 0
@@ -89,7 +100,7 @@ class Judger:
         if 'subtasks' in self.config:
             pass 
         else:
-            score_per_test = 100 // self.config['test_cases']
+            score_per_case = 100 // self.config['test_cases']
 
             for i in range(self.config['test_cases']):
                 stdin =  '../problems/%d/%s%d.in'  % (problem_id, self.config['problem_name'], i)
@@ -100,12 +111,12 @@ class Judger:
                     time = max(time, res['timeused'])
                     memory = max(memory, res['memoryused'])
                     info.update({ 'case%d' % i : res })
-                    judge_info += "%d,%d,%d,%d;" % (res['result'], res['timeused'], res['memoryused'], int(res['score'] * score_per_test))
+                    judge_info += "%d,%d,%d,%d;" % (res['result'], res['timeused'], res['memoryused'], int(res['score'] * score_per_case))
                 else:
                     info.update({ 'case%d' % i : 'Data Error' })
                     judge_info += "%d,%d,%d,%d;" % (-1, -1, -1, 0)
 
-                score += int(score_per_test * res['score'])
+                score += int(score_per_case * res['score'])
 
                 if res['result'] == 0:
                     pass
