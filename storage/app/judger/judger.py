@@ -80,16 +80,14 @@ class Judger:
         except subprocess.TimeoutExpired as time_e:
             return { 'result' : 'Compile Error', 'score' : -1, 'judge_info' : 'Compile Time Exceeded' }
 
-        try:
-            checker_type = self.config.get('checker_type', 'builtin')
-            if checker_type == 'custom':
-                checker_name = self.config.get('checker_name', 'spj')
-                self.checker = Checker('../problems/%d/%s.cpp' % (problem_id, checker_name))
-            else:
-                checker_name = self.config.get('checker_name', 'ncmp')
-                self.checker = BuiltinChecker(checker_name)
-        except Exception as e:
-            return { 'result' : 'Judgement Failed', 'score' : 0, 'judge_info' : '%s' % e }
+        checker_type = self.config.get('checker_type', 'builtin')
+
+        if checker_type == 'custom':
+            checker_name = self.config.get('checker_name', 'spj')
+            self.checker = Checker('../problems/%d/%s.cpp' % (problem_id, checker_name))
+        else:
+            checker_name = self.config.get('checker_name', 'ncmp')
+            self.checker = BuiltinChecker(checker_name)
 
         info = { }
         score = 0

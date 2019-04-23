@@ -53,8 +53,9 @@ class Checker:
 
     def __init__(self, checker_path):
         self.checker_exec = tempfile.NamedTemporaryFile()
+
         try:
-            subprocess.run(['g++-8', checker_path, '-o', self.checker_exec, '-O2'], check = True)
+            subprocess.run(['g++-8', checker_path, '-o', self.checker_exec, '-I./checkers', '-O2'], check = True)
         except subprocess.CalledProcessError as e:
             raise CheckerException('Invalid checker')
 
