@@ -7,7 +7,7 @@ class CheckerException(Exception):
 
 class CheckerResult:
 
-    def __init__(self, code):
+    def __init__(self, code, result_file):
         self.score = 0.
 
         if code == 0:
@@ -22,8 +22,10 @@ class CheckerResult:
         elif code >= 16 and code <= 116:
             self.result = 7
             self.score = (code - 16.) / 100
-
-        print (code)
+        elif code == 7:
+            self.result = 7
+            msg = result_file.read().decode('utf-8')
+            self.score = float(msg.split(' ')[0])
 
 class BuiltinChecker:
     builtin_checkers = ["acmp", "caseicmp", "casencmp", "casewcmp", "dcmp", "fcmp", "hcmp", "icmp", "lcmp", "ncmp", "pointscmp", "rcmp", "rcmp4", "rcmp6", "rcmp9", "rncmp", "uncmp", "wcmp", "yesno"]
@@ -49,7 +51,7 @@ class BuiltinChecker:
         except subprocess.CalledProcessError as err:
             code = err.returncode
 
-        return CheckerResult(code)
+        return CheckerResult(code, result_file)
 
 class Checker:
 
@@ -68,6 +70,7 @@ class Checker:
             subprocess.run([self.checker_exec, inpath, outpath, anspath, result_file.name], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             code = 0
         except subprocess.CalledProcessError as err:
+            print (err)
             code = err.returncode
 
-        return CheckerResult(code)
+        return CheckerResult(code, result_file)
