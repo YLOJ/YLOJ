@@ -14,25 +14,58 @@ JUDGE_RESULT = [
     'Partially Correct',
 ]
 
-class ConfigError(Exception):
+class CompileError(Exception):
+    pass
 
-    def __init__(self, info):
-        self.info = info
-    
-    def __str__(self):
-        return repr(self.info)
+class ConfigError(Exception):
+    pass
 
 class Judger:
+    checker_types = ['builtin', 'custom']
+    problem_types = ['traditional', 'interactive', 'answer-only']
 
-    def __init__(self, config, src_path, language = 'cpp'):
+    def __init__(self, problem_id, config, src_path, language = 'cpp'):
+        self.path = '../problems/%d' % problem_id
         self.config = config
         self.src_path = src_path
         self.language = language
-        self.compile_src()
+        self.prework()
 
-    def compile_src(self):
-        if (self.language == 'cpp'):
-            self.cmd = 'ulimit -t 5 && g++-8 %s -o exec -DONLINE_JUDGE -O2' % self.src_path
+    def compile_src(self, cmd):
+        try:
+            subprocess.check_output(cmd, shell = True, stderr = subprocess.STDOUT, timeout = 5)
+        except subprocess.CalledProcessError as e:
+            compile_info = e.output.decode('utf-8')
+            raise CompileError(compile_info)
+        except subprocess.TimeoutExpired as time_e:
+            raise CompileError('Compile Time Exceeded')
+
+    def prework(self):
+        problem_type = self.config.get('problem_type', 'traditional')
+        checker_type = self.config.get('checker_type', 'builtin')
+
+        if not problem_type in self.problem_types:
+            raise ConfigError('Unknown problem type %s' % problem_type)
+
+        if not checker_type in self.checker_types:
+            raise ConfigError('Unknown checker type %s' % checker_type)
+
+        if problem_type == 'traditional':
+            if self.language == 'cpp':
+                cmd = 'ulimit -t 5 && g++-8 %s -o exec -DONLINE_JUDGE -O2' % self.src_path
+            self.compile_src(cmd)
+        elif problem_type == 'interactive':
+            if self.language == 'cpp':
+                grader_path = os.path.join(self.path, 'grader.cpp')
+                cmd = 'ulimit -t 5 && g++-8 %s %s -o exec -DONLINE_JUDGE -O2 -I%s' % (grader_path, self.src_path, self.path)
+            self.compile_src(cmd)
+
+        if checker_type == 'custom':
+            checker_name = self.config.get('checker_name', 'spj')
+            self.checker = Checker('%s/%s.cpp' % (self.path, checker_name))
+        else:
+            checker_name = self.config.get('checker_name', 'fcmp')
+            self.checker = BuiltinChecker(checker_name)
 
     def run(self, stdin, stdout):
 
@@ -64,38 +97,23 @@ class Judger:
 
             try:
                 info = self.checker.check(fin.name, fout.name, fans.name)
-                fout.close()
-                fans.close()
                 res['result'] = info.result
                 res['score'] = info.score
             except Exception as e:
                 print (e)
                 res['result'] = 6
                 res['score'] = 0.
+
+            fout.close()
+            fans.close()
         else:
             res['score'] = 0.
 
         os.remove('temp.out')
         return res
 
-    def judge(self, problem_id):
+    def judge(self):
 
-        try:
-            subprocess.check_output(self.cmd, shell = True, stderr = subprocess.STDOUT, timeout = 5)
-        except subprocess.CalledProcessError as e:
-            compile_info = e.output.decode('utf-8')
-            return { 'result' : 'Compile Error', 'score' : -1, 'judge_info' : "%s" % compile_info }
-        except subprocess.TimeoutExpired as time_e:
-            return { 'result' : 'Compile Error', 'score' : -1, 'judge_info' : 'Compile Time Exceeded' }
-
-        checker_type = self.config.get('checker_type', 'builtin')
-
-        if checker_type == 'custom':
-            checker_name = self.config.get('checker_name', 'spj')
-            self.checker = Checker('../problems/%d/%s.cpp' % (problem_id, checker_name))
-        else:
-            checker_name = self.config.get('checker_name', 'fcmp')
-            self.checker = BuiltinChecker(checker_name)
 
         info = { }
         score = 0
@@ -132,8 +150,8 @@ class Judger:
 
                 for i in cases:
                     print ('#%d' % i)
-                    stdin =  '../problems/%d/%s%d.in'  % (problem_id, self.config['problem_name'], i)
-                    stdout = '../problems/%d/%s%d.out' % (problem_id, self.config['problem_name'], i)
+                    stdin =  '%s/%s%d.in'  % (self.path, self.config['problem_name'], i)
+                    stdout = '%s/%s%d.out' % (self.path, self.config['problem_name'], i)
 
                     res = self.run(stdin, stdout)
                     print (res)
@@ -157,8 +175,6 @@ class Judger:
                     pass
                 elif 'result' not in info:
                     info['result'] = JUDGE_RESULT[sub_result]
-
-
         else:
             #judge_info = "0"
 
@@ -168,8 +184,8 @@ class Judger:
             score_per_test = 100 // self.config['test_cases']
 
             for i in range(self.config['test_cases']):
-                stdin =  '../problems/%d/%s%d.in'  % (problem_id, self.config['problem_name'], i)
-                stdout = '../problems/%d/%s%d.out' % (problem_id, self.config['problem_name'], i)
+                stdin =  '%s/%s%d.in'  % (self.path, self.config['problem_name'], i)
+                stdout = '%s/%s%d.out' % (self.path, self.config['problem_name'], i)
 
                 res = self.run(stdin, stdout)
                 info.update({ 'case%d' % i : res })

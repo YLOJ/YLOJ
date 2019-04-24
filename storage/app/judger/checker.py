@@ -2,7 +2,7 @@ import os
 import subprocess
 import tempfile
 
-class CheckerException(Exception):
+class CheckerError(Exception):
     pass
 
 class CheckerResult:
@@ -34,7 +34,7 @@ class BuiltinChecker:
         self.checker = checker
 
         if not checker in self.builtin_checkers:
-            raise CheckerException("Unknown builtin checker: %s" % checker)
+            raise CheckerError("Unknown builtin checker: %s" % checker)
 
     def check(self, inpath, outpath, anspath):
         checker_path = os.path.join("./checkers", "%s.cpp" % self.checker)
@@ -61,7 +61,7 @@ class Checker:
         try:
             subprocess.run(['g++-8', checker_path, '-o', self.checker_exec, '-I./checkers', '-O2'], check = True)
         except Exception as e:
-            raise CheckerException('Invalid checker')
+            raise CheckerError('Invalid checker')
 
     def check(self, inpath, outpath, anspath):
         result_file = tempfile.NamedTemporaryFile()
@@ -70,7 +70,6 @@ class Checker:
             subprocess.run([self.checker_exec, inpath, outpath, anspath, result_file.name], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             code = 0
         except subprocess.CalledProcessError as err:
-            print (err)
             code = err.returncode
 
         return CheckerResult(code, result_file)
