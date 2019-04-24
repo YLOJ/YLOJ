@@ -122,7 +122,7 @@ class ProblemsetController extends Controller
 				file_get_contents( $request -> file('data') )
 			);
 			Storage::makeDirectory('public/tmp');
-			$zipper = Zipper;
+			$zipper = new Zipper;
 			$zipper -> make(storage_path('app/problems/'.$id.'/data.zip')) 
 					-> extractTo(storage_path('app/problems/'.$id.'/'));
 			return redirect(route('problem.data', $id));

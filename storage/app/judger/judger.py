@@ -55,12 +55,12 @@ class Judger:
             fans = open(stdout)
 
             try:
-                info = self.checker.check(inpath, outpath, anspath)
+                info = self.checker.check(fin.name, fout.name, fans.name)
                 fout.close()
                 fans.close()
                 res['result'] = info.result
                 res['score'] = info.score
-            except CheckerException as e:
+            except Exception as e:
                 print (e)
                 res['result'] = 6
                 res['score'] = 0.

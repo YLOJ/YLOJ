@@ -23,6 +23,8 @@ class CheckerResult:
             self.result = 7
             self.score = (code - 16.) / 100
 
+        print (code)
+
 class BuiltinChecker:
     builtin_checkers = ["acmp", "caseicmp", "casencmp", "casewcmp", "dcmp", "fcmp", "hcmp", "icmp", "lcmp", "ncmp", "pointscmp", "rcmp", "rcmp4", "rcmp6", "rcmp9", "rncmp", "uncmp", "wcmp", "yesno"]
 
@@ -52,11 +54,11 @@ class BuiltinChecker:
 class Checker:
 
     def __init__(self, checker_path):
-        self.checker_exec = tempfile.NamedTemporaryFile()
+        self.checker_exec = tempfile.NamedTemporaryFile().name
 
         try:
             subprocess.run(['g++-8', checker_path, '-o', self.checker_exec, '-I./checkers', '-O2'], check = True)
-        except subprocess.CalledProcessError as e:
+        except Exception as e:
             raise CheckerException('Invalid checker')
 
     def check(self, inpath, outpath, anspath):

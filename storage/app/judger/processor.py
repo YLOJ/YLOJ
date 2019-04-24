@@ -19,6 +19,7 @@ WHERE `id` = %d
 
 cnt = 1
 while cnt:
+    cnt -= 1
     try:
         conn = pymysql.connect(
             host = config.table['host'],
@@ -56,7 +57,7 @@ while cnt:
             res = {
                 'score' : -1,
                 'result' : 'Data Error',
-                'judge_info' : '%s' % e,
+                'judge_info' : e,
             }
 
         res['time'] = res.get('time', -1)
