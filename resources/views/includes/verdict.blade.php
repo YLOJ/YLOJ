@@ -51,7 +51,7 @@ if(DB::table('problemset')->where('id','=',$sub->problem_id)->first()->visibilit
 		<b> {{ $sub -> result }} </b> </a>
 </td>
 <td>
-	@if ($sub -> result == "Waiting")
+	@if ($sub -> result == "Waiting" || $sub -> score == -1)
 		<a> / </a>
 	@else
 		@if ($sub -> score == 100) 
