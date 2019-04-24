@@ -20,7 +20,6 @@ WHERE `id` = %d
 
 cnt = 1
 while cnt:
-    cnt -= 1
     try:
         conn = pymysql.connect(
             host = config.table['host'],
@@ -78,4 +77,3 @@ while cnt:
         os.remove('./temp.cpp')
     except Exception as e:
         print (e)
-        break

@@ -35,9 +35,12 @@
 					<pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
 				@endcomponent
 			@elseif($sub -> result != 'Waiting')
+				<?php
+				dd($sub);
+				?>
 				@component('includes.collapse_box', ['id' => 'details', 'title' => 'Details'])
 					<ul class="list-group">
-						@foreach($sub -> task as $info)
+						@foreach($sub -> case_info as $info)
 							@if($info['result'] == 'Accepted') <li class="list-group-item list-group-item-success"> 
 							@elseif($info['result'] == 'Partially Correct') <li class="list-group-item list-group-item-warning"> 
 							@else <li class="list-group-item list-group-item-danger">

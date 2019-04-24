@@ -72,8 +72,8 @@ class SubmissionController extends Controller
     public function show($id) 
     {
         $sub = DB::table('submission') -> where('id', $id) -> first();
-		if(DB::table('problemset')->where('id','=',$sub->problem_id)->first()->visibility==false){
-			if(!Auth::check()||Auth::user()->permission<=0){
+		if (DB::table('problemset') -> where('id', '=', $sub -> problem_id) -> first() -> visibility == false) {
+			if (!Auth::check() || Auth::user() -> permission <= 0) {
 				return redirect('404');
 			}
 		}
@@ -87,19 +87,51 @@ class SubmissionController extends Controller
 			'Judgement Failed', 
 			'Partially Correct');
 
-		if ($sub -> result != 'Compile Error' && $sub -> result != 'Waiting') {
-			$detail = explode(';', $sub -> judge_info);
-			$task_id = 0;
-			$sub -> task = array();
-			foreach ($detail as $case) {
-				$buffer = explode(',', $case);
-				if (count($buffer) < 3) continue;
-				$sub -> task[$task_id++] = array(
-					'result' => $result_id[$buffer[0]],
-					'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
-					'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2],
-					'score' => $buffer[3]
-				);
+		if ($sub -> result != 'Compile Error' && $sub -> result != 'Waiting' && $sub -> score != -1) {
+			$details = explode('|', $sub -> judge_info);
+			if ($details[0] == '0') {
+				$details = explode(';', $details[1]);
+				$case_id = 0;
+				$sub -> case_info = array();
+				foreach ($details as $case) {
+					$buffer = explode(',', $case);
+					if (count($buffer) < 3) continue;
+					$sub -> case_info[$case_id++] = array(
+						'result' => $result_id[$buffer[0]],
+						'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
+						'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2],
+						'score' => $buffer[3]
+					);
+				}
+			} else {
+				array_shift($details);
+				$subtask_id = 0;
+				foreach ($details as $subdetails) {
+					$subdetails = explode(';', $subdetails);
+					$buffer = explode(',', $subdetails[0]);
+
+					if (count($buffer) < 3) continue;
+					$sub -> subtask[$subtask_id] = (object)null;
+					$sub -> subtask[$subtask_id] -> case_info = array();
+					$sub -> subtask[$subtask_id] -> result = $result_id[$buffer[0]];
+					$sub -> subtask[$subtask_id] -> time_used = $buffer[1] < 0 ? '\\' : $buffer[1];
+					$sub -> subtask[$subtask_id] -> memory_used = $buffer[2] < 0 ? '\\' : $buffer[2];
+					$sub -> subtask[$subtask_id] -> score = $buffer[3];
+
+					$case_id = 0;
+					array_shift($subdetails);
+					foreach ($subdetails as $case) {
+						$buffer = explode(',', $case);
+						if (count($buffer) < 3) continue;
+						$sub -> subtask[$subtask_id] -> case_info[$case_id++] = array(
+							'result' => $result_id[$buffer[0]],
+							'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
+							'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2],
+							'score' => $buffer[3]
+						);
+					}
+					$subtask_id++;
+				}
 			}
 		}	
 
