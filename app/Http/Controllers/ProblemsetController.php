@@ -102,6 +102,16 @@ class ProblemsetController extends Controller
             ]
         );
 
+        DB::update(
+            "update `submission` set 
+            `problem_name` = ? 
+            where `problem_id` = ?",
+            [
+                $request->input('title'),
+                $id,
+            ]
+        );
+
         return redirect(route('problem.edit', $id));
     }
 

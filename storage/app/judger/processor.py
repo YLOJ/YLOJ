@@ -2,6 +2,7 @@ import os
 import yaml
 import config
 import pymysql
+import tempfile
 
 from judger import *
 from checker import *
@@ -38,7 +39,7 @@ while cnt:
         src_path = os.path.join('./', 'temp.cpp')
         conf_path = os.path.join('../problems/%d/config.yml' % sub['problem_id'])
 
-        print (sub['source_code'], file = open('./temp.cpp', 'w'))
+        print (sub['source_code'], file = open(src_path, 'w'))
 
         try:
             with open(conf_path, 'r') as stream:
@@ -62,6 +63,7 @@ while cnt:
         cursor.execute(cmd)
 
         conn.commit()
-        os.remove('./temp.cpp')
+        os.remove(src_path)
+
     except Exception as e:
         print (e)

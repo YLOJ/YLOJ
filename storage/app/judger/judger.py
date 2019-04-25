@@ -28,6 +28,7 @@ class Judger:
         self.path = '../problems/%d' % problem_id
         self.config = config
         self.src_path = src_path
+        self.exec_path = tempfile.NamedTemporaryFile().name
         self.language = language
         self.prework()
 
@@ -52,35 +53,40 @@ class Judger:
 
         if problem_type == 'traditional':
             if self.language == 'cpp':
-                cmd = 'ulimit -t 5 && g++-8 %s -o exec -DONLINE_JUDGE -O2' % self.src_path
+                cmd = 'ulimit -t 5 && g++-8 %s -o %s -DONLINE_JUDGE -O2' % (self.src_path, self.exec_path)
             self.compile_src(cmd)
         elif problem_type == 'interactive':
             if self.language == 'cpp':
                 grader_path = os.path.join(self.path, 'grader.cpp')
-                cmd = 'ulimit -t 5 && g++-8 %s %s -o exec -DONLINE_JUDGE -O2 -I%s' % (grader_path, self.src_path, self.path)
+                cmd = 'ulimit -t 5 && g++-8 %s %s -o %s -DONLINE_JUDGE -O2 -I%s' % (grader_path, self.src_path, self.exec_path, self.path)
             self.compile_src(cmd)
 
         if checker_type == 'custom':
             checker_name = self.config.get('checker_name', 'spj')
             self.checker = Checker('%s/%s.cpp' % (self.path, checker_name))
         else:
-            checker_name = self.config.get('checker_name', 'fcmp')
+            checker_name = self.config.get('checker_name', 'ncmp')
             self.checker = BuiltinChecker(checker_name)
 
     def run(self, stdin, stdout):
 
+        out_path = tempfile.NamedTemporaryFile().name
+
         fin = open(stdin)
-        fout = open('temp.out', 'w')
+        fout = open(out_path, 'w')
+
+        time_limit = self.config.get('time_limit', 1)
+        memory_limit = self.config.get('memory_limit', 128)
 
         runcfg = {
             'trace' : True,
-            'calls' : [0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 21, 59, 158, 231, 257], 
+            'calls' : [0, 1, 3, 5, 8, 9, 10, 11, 12, 21, 158, 231, 257], 
             'files' : {'/etc/ld.so.cache': 0},
-            'args' : ['./exec'],
+            'args' : [self.exec_path],
             'fd_in' : fin.fileno(),
             'fd_out' : fout.fileno(),
-            'timelimit' : self.config['time_limit'] * 1000,
-            'memorylimit' : min(1024 * 1024, self.config['memory_limit'] * 2048),
+            'timelimit' : time_limit * 1000,
+            'memorylimit' : min(1024 * 1024, memory_limit * 2048),
         }
 
         res = lorun.run(runcfg)
@@ -92,7 +98,7 @@ class Judger:
             res['result'] = 3
 
         if res['result'] == 0:
-            fout = open('temp.out')
+            fout = open(out_path)
             fans = open(stdout)
 
             try:
@@ -109,11 +115,9 @@ class Judger:
         else:
             res['score'] = 0.
 
-        os.remove('temp.out')
         return res
 
     def judge(self):
-
 
         info = { }
         score = 0
@@ -231,5 +235,4 @@ class Judger:
         info['judge_info'] = judge_info
         print(judge_info)
 
-        os.remove('./exec')
         return info
