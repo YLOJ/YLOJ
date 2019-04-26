@@ -22,13 +22,13 @@
 
 ```yaml
 subtasks:
-    -score: 30
-     test_cases: [0, 2] # same as {0, 1, 2}
-    -score: 37
-     test_cases: [5, 6, 8, 10] # same as {5, 6, 8, 9, 10}
-    -score: 33
-     test_cases: {3, 4, 233, 666}
-     dependency: {0, 1}
+    - score: 30
+      test_cases: [0, 2] # same as {0, 1, 2}
+    - score: 37
+      test_cases: [5, 6, 8, 10] # same as {5, 6, 8, 9, 10}
+    - score: 33
+      test_cases: {3, 4, 233, 666}
+      dependency: {0, 1}
 ```
 
 ### 修改题目类型
@@ -92,9 +92,9 @@ checker_type: builtin
 checker_name: fcmp
 subtasks:
     - score: 30
-      test_cases: [0, 2] # same as {0, 1, 2}
+      test_cases: [0, 2]
     - score: 37
-      test_cases: [5, 6, 8, 10] # same as {5, 6, 8, 9, 10}
+      test_cases: [5, 6, 8, 10]
     - score: 33
       test_cases: {3, 4, 233, 666}
       dependency: {0, 1}
