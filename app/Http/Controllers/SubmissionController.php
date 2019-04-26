@@ -85,7 +85,8 @@ class SubmissionController extends Controller
 			'Presentation Error',
 			'Runtime Error',
 			'Judgement Failed', 
-			'Partially Correct');
+			'Partially Correct',
+			'Skipped');
 
 		if ($sub -> result != 'Compile Error' && $sub -> result != 'Waiting' && $sub -> score != -1) {
 			$details = explode('|', $sub -> judge_info);
@@ -111,6 +112,7 @@ class SubmissionController extends Controller
 					$buffer = explode(',', $subdetails[0]);
 
 					if (count($buffer) < 3) continue;
+
 					$sub -> subtask[$subtask_id] = (object)null;
 					$sub -> subtask[$subtask_id] -> case_info = array();
 					$sub -> subtask[$subtask_id] -> result = $result_id[$buffer[0]];
@@ -118,8 +120,24 @@ class SubmissionController extends Controller
 					$sub -> subtask[$subtask_id] -> memory_used = $buffer[2] < 0 ? '\\' : $buffer[2];
 					$sub -> subtask[$subtask_id] -> score = $buffer[3];
 
-					$case_id = 0;
 					array_shift($subdetails);
+					$buffer = explode(',', $subdetails[0]);
+					$sub -> subtask[$subtask_id] -> dependency = $buffer;
+					$sub -> subtask[$subtask_id] -> have_dependency = $buffer[0] != "";
+
+					if ($sub -> subtask[$subtask_id] -> have_dependency) {
+						array_shift($subdetails);
+						$buffer = explode(',', $subdetails[0]);
+						$sub -> subtask[$subtask_id] -> dependency_info = array(
+							'result' => $result_id[$buffer[0]],
+							'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
+							'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2],
+							'score' => $buffer[3]
+						);
+					}
+
+					array_shift($subdetails);
+					$case_id = 0;
 					foreach ($subdetails as $case) {
 						$buffer = explode(',', $case);
 						if (count($buffer) < 3) continue;

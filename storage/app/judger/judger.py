@@ -12,6 +12,7 @@ JUDGE_RESULT = [
     'Runtime Error',
     'Judgement Failed',
     'Partially Correct',
+    'Skipped',
 ]
 
 class CompileError(Exception):
@@ -104,6 +105,7 @@ class Judger:
             try:
                 info = self.checker.check(fin.name, fout.name, fans.name)
                 res['result'] = info.result
+                print (info.result)
                 res['score'] = info.score
             except Exception as e:
                 print (e)
@@ -160,8 +162,10 @@ class Judger:
                 sub_time.append(-1)
                 sub_score.append(1)
                 sub_result.append(0)
+                sub_dependency = []
+                sub_info = ""
 
-                if 'dependency' in sub and type(sub['dependency']) == dict:
+                if 'dependency' in sub and type(sub['dependency']) == dict and len(sub['dependency']) > 0:
                     for i in sub['dependency']:
                         if type(i) != int or i >= idx:
                             raise ConfigError('invalid subtask dependency')
@@ -170,9 +174,16 @@ class Judger:
                         sub_score[idx] = min(sub_score[idx], sub_score[i])
                         if sub_result[idx] == 0 and sub_result[i] != 0:
                             sub_result[idx] = sub_result[i]
+                        sub_dependency.append(i)
+                    sub_info += "%d,%d,%d,%d;" % (sub_result[idx], sub_score[idx], sub_memory[idx], int(sub_score[idx] * sub['score']))
 
-                sub_info = ""
+
                 for i in cases:
+                    if int(sub_score[idx] * sub['score']) == 0:
+                        print ('Subtask #%d Skipped' % idx)
+                        sub_info += "%d,%d,%d,%d;" % (8, -1, -1, 0)
+                        break
+
                     print ('running on Case #%d in Subtask #%d' % (i, idx))
                     stdin =  '%s/%s%d.in'  % (self.path, self.config['problem_name'], i)
                     stdout = '%s/%s%d.out' % (self.path, self.config['problem_name'], i)
@@ -191,6 +202,12 @@ class Judger:
                         sub_result[idx] = res['result']
 
                 judge_info += "%d,%d,%d,%d;" % (sub_result[idx], sub_time[idx], sub_memory[idx], int(sub_score[idx] * sub['score']))
+                if len(sub_dependency) > 0:
+                    for i in sub_dependency:
+                        judge_info += "%d," % i
+                    judge_info = judge_info[:-1] + ';'
+                else:
+                    judge_info += ';'
                 judge_info += sub_info
                 judge_info = judge_info[:-1] + '|'
                 time = max(time, sub_time[idx])
