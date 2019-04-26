@@ -68,7 +68,7 @@ test_cases: 2
 time_limit: 1
 memory_limit: 128
 checker_type: builtin
-chekcer_name: ncmp
+checker_name: ncmp
 ```
 
 自定义比较器示例
@@ -89,13 +89,13 @@ problem_name: aplusb
 time_limit: 1
 memory_limit: 128
 checker_type: builtin
-chekcer_name: fcmp
+checker_name: fcmp
 subtasks:
-    -score: 30
-     test_cases: [0, 2] # same as {0, 1, 2}
-    -score: 37
-     test_cases: [5, 6, 8, 10] # same as {5, 6, 8, 9, 10}
-    -score: 33
-     test_cases: {3, 4, 233, 666}
-     dependency: {0, 1}
+    - score: 30
+      test_cases: [0, 2] # same as {0, 1, 2}
+    - score: 37
+      test_cases: [5, 6, 8, 10] # same as {5, 6, 8, 9, 10}
+    - score: 33
+      test_cases: {3, 4, 233, 666}
+      dependency: {0, 1}
 ```
