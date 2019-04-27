@@ -43,7 +43,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{ __('Contests') }}</a>
+							<a class="nav-link" href="{{ route('contest.index') }}"> Contests </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('problem.index') }}">{{ __('Problemset') }}</a>

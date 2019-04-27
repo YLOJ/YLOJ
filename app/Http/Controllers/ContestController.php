@@ -26,12 +26,6 @@ class ContestController extends Controller
             return redirect('404');
         }
 
-        return view('contest.show', [
-            'id' => $contest->id, 
-            'title' => $contest->title,
-            'contest_info' => $contest->contest_info,
-            'begin_time' => $contest->begin_time,
-            'end_time' => $contest->end_time,
-        ]);
+        return view('contest.show', ['contest' => $contest]);
     }
 }
