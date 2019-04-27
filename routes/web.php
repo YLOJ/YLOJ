@@ -47,3 +47,8 @@ Route::get('/submission/rejudge_problem/{id}', 'SubmissionController@rejudge_pro
 
 Route::get('/submission/delete/{id}', 'SubmissionController@delete_submission')->where('id', '[0-9]+');
 Route::get('/submission/delete_problem/{id}', 'SubmissionController@delete_problem_submission')->where('id', '[0-9]+');
+
+Route::name('contest.')->prefix('contest')->group(function() {
+    Route::get('/', 'ContestController@index')->name('index');
+    Route::get('/{id}', 'ContestController@show')->name('show')->where('id', '[0-9]+');
+});

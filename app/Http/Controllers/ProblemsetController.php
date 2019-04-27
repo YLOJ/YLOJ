@@ -27,13 +27,13 @@ class ProblemsetController extends Controller
         $problem = DB::table('problemset')->where('id', $id)->first();
 
         if ($problem -> visibility == true || Auth::check() && Auth::user()->permission > 0) {
-			return view('problemset.show', [
-				'id' => $id,
-				'title' => $problem->title,
-				'time_limit' => $problem->time_limit,
-				'memory_limit' => $problem->memory_limit,
-				'content_html' => $markdowner->toHTML($problem->content_md),
-			]);
+            return view('problemset.show', [
+                'id' => $id,
+                'title' => $problem->title,
+                'time_limit' => $problem->time_limit,
+                'memory_limit' => $problem->memory_limit,
+                'content_html' => $markdowner->toHTML($problem->content_md),
+            ]);
         } else {
             return redirect('404');
         }
@@ -75,7 +75,7 @@ class ProblemsetController extends Controller
                 'time_limit' => $problem->time_limit,
                 'memory_limit' => $problem->memory_limit,
                 'content_md' => $problem->content_md,
-				'visibility' => $problem->visibility
+                'visibility' => $problem->visibility
             ]);
         } else {
             return redirect('404');
@@ -90,7 +90,7 @@ class ProblemsetController extends Controller
             `time_limit` = ?,
             `memory_limit` = ?,
             `content_md` = ?,
-			`visibility` = ?
+            `visibility` = ?
             where `id` = ?",
             [
                 $request->input('title'),
@@ -127,37 +127,37 @@ class ProblemsetController extends Controller
     public function data_submit(Request $request, $id)
     {
         if (Auth::check() && Auth::user() -> permission > 0) {
-			Storage::deleteDirectory('problems/'.$id);
-			Storage::disk('problems') -> put(
-				$id . '/data.zip',
-				file_get_contents( $request -> file('data') )
-			);
-			$zipper = new Zipper;
-			$zipper -> make(storage_path('app/problems/'.$id.'/data.zip')) 
-					-> extractTo(storage_path('app/problems/'.$id.'/'));
-			return redirect(route('problem.data', $id));
+            Storage::deleteDirectory('problems/'.$id);
+            Storage::disk('problems') -> put(
+                $id . '/data.zip',
+                file_get_contents( $request -> file('data') )
+            );
+            $zipper = new Zipper;
+            $zipper -> make(storage_path('app/problems/'.$id.'/data.zip')) 
+                -> extractTo(storage_path('app/problems/'.$id.'/'));
+            return redirect(route('problem.data', $id));
         } else {
             return redirect('404');
         }
     }
 
-	public function data_download($id)
-	{
-		if (Auth::check() && Auth::user()->permission > 0) {
+    public function data_download($id)
+    {
+        if (Auth::check() && Auth::user()->permission > 0) {
             return Storage::disk('problems')->download("$id/data.zip", "data_$id.zip");
         } else {
             return redirect('404');
         }
-	}
+    }
 
-	public function delete_problem($id)
-	{
-		if (Auth::check() && Auth::user()->permission > 0) {
-			DB::table('problemset') -> where('id', '=', $id) -> delete();
-			DB::table('submission') -> where('problem_id', '=', $id) -> delete();
-			Storage::disk('problems') -> deleteDirectory($id);
-		} else {
-			return redirect('404');
-		}
-	}
+    public function delete_problem($id)
+    {
+        if (Auth::check() && Auth::user()->permission > 0) {
+            DB::table('problemset') -> where('id', '=', $id) -> delete();
+            DB::table('submission') -> where('problem_id', '=', $id) -> delete();
+            Storage::disk('problems') -> deleteDirectory($id);
+        } else {
+            return redirect('404');
+        }
+    }
 }
