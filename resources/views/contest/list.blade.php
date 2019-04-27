@@ -6,14 +6,14 @@
 <div class="container">
 
     <div class="row justify-content-center">
-        {{ $problemset -> links() }}
+        {{ $contest -> links() }}
     </div>
 
     @auth
     @if ( Auth::user()->permission > 0 )
     <div>
-        <form method="post" action="problem/add">
-            @include('buttons.submit' , ['text' => 'Add Problem'])
+        <form method="post" action="contest/add">
+            @include('buttons.submit' , ['text' => 'Add Contest'])
             @csrf
         </form>
     </div> <br>
@@ -21,8 +21,8 @@
     @endauth
 
 <?php
-$cnt=0;
-$flag=Auth::check()&&Auth::user()->permission>0;
+$cnt = 1;
+$flag = Auth::check() && Auth::user() -> permission > 0;
 ?>
 
     <div class="row">
@@ -30,22 +30,27 @@ $flag=Auth::check()&&Auth::user()->permission>0;
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th style="width:13%">Problem ID</th>
-                        <th style="width:78%">Title</th>
-                        <th style="width:9%">Rating</th>
+                        <th style="width:8%"> ID </th>
+                        <th style="width:32%"> Contest Title </th>
+						<th style="width:18%"> Begin Time </th>
+						<th style="width:18%"> End Time </th>
+						<th style="width:12%"> Duration </th>
+                        <th style="width:8%"> Rating </th>
                     </tr>
                 </thead>
                 <tbody>
-				@foreach ($problemset as $problem)
-					@if ($flag == 1|| $problem -> visibility == true)
-						@if (($cnt = $cnt + 1) % 2 == 1) <tr style="background-color:#F3F3F3">
+				@foreach ($contests as $contest)
+					@if ($flag == 1 || )
+						@if (($cnt = $cnt + 1) % 2 == 1) <tr style = "background-color:#F3F3F3">
 							@else
 						<tr>
 							@endif
-							<td> {{ $problem -> id }} </td>
-							<td> <a href="/problem/{{ $problem->id }}"> {{$problem->title}} </a> </td>
+							<td> {{ $contest -> id }} </td>
+							<td> <a href="/contest/{{ $contest -> id }}">  {{ $contest -> title }} </a> </td>
+							<td> {{ $contest -> begin_time -> format('Y-m-d H:i:s'); }} </td>
+							<td> {{ $contest -> end_time -> format('Y-m-d H:i:s'); }} </td>
+							<td> {{ $contest -> begin_time -> diff($contest -> end_time) -> format('%h H, %i M') }} </td>
 							<?php $x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>
-
 							@if ($x > 0)
 							<td class="text-success"> <b> {{ $x }} </b> </td>
 							@elseif ($x == 0)
