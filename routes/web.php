@@ -15,7 +15,6 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/test', 'HomeController@test');
 
 Route::name('problem.')->prefix('problem')->group(function() {
     Route::get('/', 'ProblemsetController@index')->name('index');
@@ -36,7 +35,6 @@ Route::name('problem.')->prefix('problem')->group(function() {
 
     Route::get('/customtests', 'SubmissionController@customtests')->name('customtests');
     Route::get('/statistics/{id}', 'SubmissionController@statistics')->name('statistics')->where('id', '[0-9+]');
-
 });
 
 Route::get('/submission', 'SubmissionController@index')->name('submission');
@@ -51,4 +49,7 @@ Route::get('/submission/delete_problem/{id}', 'SubmissionController@delete_probl
 Route::name('contest.')->prefix('contest')->group(function() {
     Route::get('/', 'ContestController@index')->name('index');
     Route::get('/{id}', 'ContestController@show')->name('show')->where('id', '[0-9]+');
+
+    Route::any('/add', 'ContestController@add')->name('add');
+    Route::post('/add_submit', 'ContestController@add_submit');
 });

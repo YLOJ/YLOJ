@@ -133,8 +133,7 @@ class ProblemsetController extends Controller
                 file_get_contents( $request -> file('data') )
             );
             $zipper = new Zipper;
-            $zipper -> make(storage_path('app/problems/'.$id.'/data.zip')) 
-                -> extractTo(storage_path('app/problems/'.$id.'/'));
+            $zipper -> make(storage_path('app/problems/'.$id.'/data.zip')) -> extractTo(storage_path('app/problems/'.$id.'/'));
             return redirect(route('problem.data', $id));
         } else {
             return redirect('404');
