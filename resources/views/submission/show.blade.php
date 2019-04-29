@@ -42,6 +42,20 @@
 								@component('includes.collapse_box', 
 									['id' => 'details'.($loop -> index + 1),
 									 'title' => 'Subtask '.($loop -> index + 1).': '.$task -> result.' ( Score = '.$task -> score.' )'])
+									@if($task->have_dependency)
+										<table class="table">
+										@if($task->dependency_info['result'] == 'Accepted') <tr class="table-success text-success"> 
+										@elseif($task->dependency_info['result'] == 'Partially Correct') <tr class="table-warning" style="color:orange"> 
+										@else <tr class="table-danger text-danger">
+										@endif
+											<th style="width:17%"> Task Dependency: </th> 
+											<th style="width:23%"> {{ $task->dependency_info['result'] }} </th> 
+											<th style="width:20%"> Score : {{ $task->dependency_info['score'] }} </th>
+											<th style="width:18%"> Time : {{ $task->dependency_info['time_used'] }} ms </th> 
+											<th style="width:22%"> Memory : {{ $task->dependency_info['memory_used'] }}kb  </th>
+										</tr>
+										</table>
+									@endif
 									@component('includes.case_info', ['case_info' => $task -> case_info])
 									@endcomponent
 								@endcomponent
