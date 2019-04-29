@@ -5,11 +5,11 @@
 			@elseif($info['result'] == 'Partially Correct') <tr class="table-warning text-danger"> 
 			@else <tr class="table-danger text-danger">
 			@endif
-				<th> Case {{ $loop -> index + 1 }}: </th> 
-				<th> {{ $info['result'] }} </th> 
-				<th> Score : {{ $info['score'] }} </th>
-				<th> Time : {{ $info['time_used'] }} ms </th> 
-				<th> Memory : {{ $info['memory_used'] }}kb  </th>
+				<th style="width:15%"> Case {{ $loop -> index + 1 }}: </th> 
+				<th style="width:25%"> {{ $info['result'] }} </th> 
+				<th style="width:20%"> Score : {{ $info['score'] }} </th>
+				<th style="width:18%"> Time : {{ $info['time_used'] }} ms </th> 
+				<th style="width:22%"> Memory : {{ $info['memory_used'] }}kb  </th>
 			</tr>
 		@endforeach
 	</tbody>
