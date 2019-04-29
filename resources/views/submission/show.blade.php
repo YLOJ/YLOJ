@@ -41,7 +41,7 @@
 							@foreach($sub -> subtask as $task)
 								@component('includes.collapse_box', 
 									['id' => 'details'.($loop -> index + 1),
-									 'title' => 'Subtask '.($loop -> index + 1).': '.$task -> result.' Score = '.$task -> score])
+									 'title' => 'Subtask '.($loop -> index + 1).': '.$task -> result.' ( Score = '.$task -> score.' )'])
 									@component('includes.case_info', ['case_info' => $task -> case_info])
 									@endcomponent
 								@endcomponent

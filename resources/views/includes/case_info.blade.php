@@ -2,7 +2,7 @@
 	<tbody>
 		@foreach($case_info as $info)
 			@if($info['result'] == 'Accepted') <tr class="table-success text-success"> 
-			@elseif($info['result'] == 'Partially Correct') <tr class="table-warning text-danger"> 
+			@elseif($info['result'] == 'Partially Correct') <tr class="table-warning" style="color:orange"> 
 			@else <tr class="table-danger text-danger">
 			@endif
 				<th style="width:15%"> Case {{ $loop -> index + 1 }}: </th> 
