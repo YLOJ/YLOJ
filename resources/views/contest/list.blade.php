@@ -49,12 +49,11 @@
                             <td> {{ $contest -> begin_time }} </td>
                             <td> {{ $contest -> end_time }} </td>
                             <td> 
-                                <?php
-                                    $len = strtotime($contest -> end_time) - strtotime($contest -> begin_time);
-                                    echo floor($len / 3600).' h ';
-                                    if ($len % 3600) echo floor($len % 3600 / 60).' m ';
-                                    if ($len % 60) echo ($len % 60).' s ';
-                                ?>
+                            <?php
+								$len = strtotime($contest -> end_time) - strtotime($contest -> begin_time);
+								$str = sprintf("%02d:%02d:%02d", floor($len / 3600), floor($len % 3600 / 60), $len % 60);
+								echo $str;
+							?>
                             </td>
                             <?php $x = (($contest -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>
 

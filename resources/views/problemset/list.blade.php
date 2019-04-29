@@ -21,48 +21,27 @@
     @endauth
 
 <?php
-$cnt=0;
-$flag=Auth::check()&&Auth::user()->permission>0;
+$flag = Auth::check() && Auth::user() -> permission > 0;
+$links = $problemset -> links();
+if (!$flag) {
+	$newset = array();
+	foreach ($problemset as $problem) {
+		if ($problem -> visibility == true)
+			array_push($newset, $problem);
+	}
+	$problemset = $newset;
+}
 ?>
 
     <div class="row">
         <div class="col">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th style="width:13%">Problem ID</th>
-                        <th style="width:78%">Title</th>
-                        <th style="width:9%">Rating</th>
-                    </tr>
-                </thead>
-                <tbody>
-				@foreach ($problemset as $problem)
-					@if ($flag == 1|| $problem -> visibility == true)
-						@if (($cnt = $cnt + 1) % 2 == 1) <tr style="background-color:#F3F3F3">
-							@else
-						<tr>
-							@endif
-							<td> {{ $problem -> id }} </td>
-							<td> <a href="/problem/{{ $problem->id }}"> {{$problem->title}} </a> </td>
-							<?php $x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>
-
-							@if ($x > 0)
-							<td class="text-success"> <b> {{ $x }} </b> </td>
-							@elseif ($x == 0)
-							<td class="text-muted"> <b> {{ $x }} </b> </td>
-							@else
-							<td class="text-danger"> <b> {{ $x }} </b> </td>
-							@endif
-						</tr>
-					@endif
-				@endforeach
-                </tbody>
-            </table>
+			@component('includes.problem_table', ['problemset' => $problemset])
+			@endcomponent 
         </div>
     </div>
 
     <div class="row justify-content-center">
-        {{ $problemset -> links() }}
+        {{ $links }}
     </div>
 
 </div>
