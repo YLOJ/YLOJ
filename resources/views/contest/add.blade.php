@@ -17,15 +17,12 @@
                 <label>Title</label>
                 <input type="text" name="title" class="form-control">
             </div>
-            <div class="form-inline">
+			<div class="form-inline">
                 <label> Begin At &nbsp </label>
-                <input type="text" class="flatpickr" onclick="document.getElementsByClassName('flatpickr').flatpickr({
-                  enableTime: true,
-                  dateFormat: 'Y-m-d H:i',
-                });">
-                <label> &nbsp&nbsp End At &nbsp </label>
-                <input type="datetime-local" name="end_time" class="form-control input-sm">
-            </div>
+                <input type="text" name="begin_time" class="flatpickr form-control bg-white">
+				<label> &nbsp&nbsp End At &nbsp </label>
+                <input type="text" name="end_time" class="flatpickr form-control bg-white">
+			</div>
             <div class="form-group">
                 <label> Contest Info </label> <br>
                 <textarea rows="20" name="contest_info" class="form-control"></textarea>
@@ -33,5 +30,6 @@
             @include('buttons.submit' , ['text' => 'Add'])
             @csrf
         </form>
+
     </div>
 @endsection

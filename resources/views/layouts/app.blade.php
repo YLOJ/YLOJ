@@ -88,21 +88,21 @@
                             </li>
                         @endguest
                     </ul>
-                </div>
+				</div>
             </div>
         </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
     </div>
+	
+	<main class="py-4">
+        @yield('content')
+    </main>
+
+	<script type="text/javascript">
+		document.getElementsByClassName("flatpickr").flatpickr({
+		  enableTime: true,
+		  dateFormat: "Y-m-d H:i",
+		});
+	</script>
+
 </body>
-
-<script type="text/javascript">
-document.getElementsByClassName("flatpickr").flatpickr({
-  enableTime: true,
-  dateFormat: "Y-m-d H:i",
-});
-</script>
-
 </html>
