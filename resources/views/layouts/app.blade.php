@@ -25,8 +25,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </head>
 <body>
@@ -43,7 +46,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-							<a class="nav-link" href="{{ route('contest.index') }}"> Contests </a>
+                            <a class="nav-link" href="{{ route('contest.index') }}"> Contests </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('problem.index') }}">{{ __('Problemset') }}</a>
@@ -94,4 +97,12 @@
         </main>
     </div>
 </body>
+
+<script type="text/javascript">
+document.getElementsByClassName("flatpickr").flatpickr({
+  enableTime: true,
+  dateFormat: "Y-m-d H:i",
+});
+</script>
+
 </html>

@@ -19,7 +19,10 @@
             </div>
             <div class="form-inline">
                 <label> Begin At &nbsp </label>
-                <input type="datetime-local" name="begin_time" class="form-control input-sm"> 
+                <input type="text" class="flatpickr" onclick="document.getElementsByClassName('flatpickr').flatpickr({
+                  enableTime: true,
+                  dateFormat: 'Y-m-d H:i',
+                });">
                 <label> &nbsp&nbsp End At &nbsp </label>
                 <input type="datetime-local" name="end_time" class="form-control input-sm">
             </div>
