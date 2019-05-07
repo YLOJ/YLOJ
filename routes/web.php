@@ -52,4 +52,7 @@ Route::name('contest.')->prefix('contest')->group(function() {
 
     Route::any('/add', 'ContestController@add')->name('add');
     Route::post('/add_submit', 'ContestController@add_submit');
+   
+	Route::any('/edit/{id}', 'ContestController@edit')->name('edit')->where('id', '[0-9]+');
+    Route::post('/edit_submit/{id}', 'ContestController@edit_submit')->where('id', '[0-9]+');
 });

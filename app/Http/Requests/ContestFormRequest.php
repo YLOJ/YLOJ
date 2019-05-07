@@ -29,6 +29,8 @@ class ContestFormRequest extends FormRequest
             'contest_info' => 'required|string|max:65000',
             'begin_time' => 'required|date',
             'end_time' => 'required|date|after:begin_time',
+			'rule' => 'required|string',
+			'problemset' => ['required', 'string', 'max:1000']
         ];
     }
 }
