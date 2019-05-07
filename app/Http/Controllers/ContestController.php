@@ -13,8 +13,7 @@ class ContestController extends Controller
 {
     public function index()
     {
-        $contests = DB::table('contest')->paginate(20);
-        return view('contest.list', ['contests' => $contests]);
+        return view('contest.list');
     }
 
     public function show($id) 
