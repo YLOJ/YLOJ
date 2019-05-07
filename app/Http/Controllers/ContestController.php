@@ -19,13 +19,6 @@ class ContestController extends Controller
     public function show($id) 
     {
         $contest = DB::table('contest')->where('id', $id)->first();
-
-        if (Auth::check() && Auth::user()->permission > 0) {
-
-        } else if (NOW() < $contest->begin_time) {
-            return redirect('404');
-        }
-
         return view('contest.show', ['contest' => $contest]);
     }
 
@@ -113,4 +106,70 @@ class ContestController extends Controller
         return redirect(route('contest.index'));
     }
 
+    public function showproblem($cid, $pid) 
+    {
+        $markdowner = new Markdowner();
+        $contest = DB::table('contest')->where('id', $cid)->first();
+        $problem = DB::table('problemset')->where('id', $pid)->first();
+
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+        if (NOW() < $contest->begin_time && Auth::user()->permission <= 0) {
+            return redirect('404');
+        }
+
+        return view('contest.showproblem', [
+            'pid' => $pid,
+            'title' => '['.$contest->title.'] '.$problem->title,
+            'time_limit' => $problem->time_limit,
+            'memory_limit' => $problem->memory_limit,
+            'content_html' => $markdowner->toHTML($problem->content_md),
+            'cid' => $cid,
+        ]);
+    }
+
+    public function submitpage($cid, $pid) 
+    {
+        $contest = DB::table('contest')->where('id', $cid)->first();
+
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+        if (NOW() < $contest->begin_time && Auth::user()->permission <= 0) {
+            return redirect('404');
+        }
+
+        $title = DB::table('problemset')->where('id',$pid)->first()->title;
+        return view('contest.submitpage', ['pid' => $pid,'title' => $title,'cid' => $cid]);
+    }
+
+    public function submitcode(Request $request, $cid, $pid) 
+    {
+        DB::insert('insert into submission (
+            problem_id,
+            problem_name,
+            user_id,
+            user_name,
+            result,
+            score,
+            time_used,
+            memory_used,
+            source_code,
+            created_at,
+            contest_id
+        ) value(?,?,?,?,?,?,?,?,?,?,?)',[
+            $pid,
+            DB::select('select * from problemset where id=?',[$id])[0]->title,
+            Auth::User()->id,
+            Auth::User()->name,
+            "Waiting",
+            -1,
+            -1,
+            -1,
+            $request->input('source_code'),
+            NOW(),
+            $cid,
+        ]);
+    }
 }
