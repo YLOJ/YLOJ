@@ -52,4 +52,8 @@ Route::name('contest.')->prefix('contest')->group(function() {
 
     Route::any('/add', 'ContestController@add')->name('add');
     Route::post('/add_submit', 'ContestController@add_submit');
+
+    Route::get('/{cid}/problem/{pid}', 'ContestController@showproblem')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
+    Route::get('/{cid}/submit/{pid}', 'ContestController@submitpage')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
+    Route::post('/{cid}/submit/{pid}', 'ContestController@submitcode')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
 });

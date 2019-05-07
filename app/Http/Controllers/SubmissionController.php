@@ -158,19 +158,19 @@ class SubmissionController extends Controller
 
     public function submitpage($id) 
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+        if (DB::table('problemset')->where('id','=',$id)->first()->visibility==false && Auth::user()->permission<=0){
+            return redirect('404');
+        }
+
         $title = DB::table('problemset')-> where('id','=',$id) -> first() -> title;
         return view('submission.submit', ['id' => $id,'title' => $title]);
     }
 
     public function submitcode(Request $request, $id) 
     {
-        if (!Auth::check()) {
-            return redirect('login');
-        }
-        if (DB::table('problemset')->where('id','=',$id)->first()->visibility== false &&Auth::user()->permission<=0){
-            return redirect('login');
-        }
-
         DB::insert('insert into submission (
             problem_id,
             problem_name,
