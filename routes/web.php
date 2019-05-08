@@ -56,6 +56,8 @@ Route::name('contest.')->prefix('contest')->group(function() {
 	Route::any('/edit/{id}', 'ContestController@edit')->name('edit')->where('id', '[0-9]+');
     Route::post('/edit_submit/{id}', 'ContestController@edit_submit')->where('id', '[0-9]+');
 
+	Route::get('/standings/{id}', 'ContestController@standings')->name('standings')->where('id', '[0-9]+');
+
     Route::get('/{cid}/problem/{pid}', 'ContestController@showproblem')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
     Route::get('/{cid}/submit/{pid}', 'ContestController@submitpage')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
     Route::post('/{cid}/submit/{pid}', 'ContestController@submitcode')->where('cid', '[0-9]+')->where('pid', '[0-9]+');

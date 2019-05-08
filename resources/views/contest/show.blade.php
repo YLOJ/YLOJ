@@ -9,7 +9,7 @@
     <?php $id = $contest -> id ?>
     <div class="btn-group-md" style="text-align:center">
       @include('buttons.jump-icon' , ['href' => url('/contest/submission/'.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
-      @include('buttons.jump-icon' , ['href' => url('/contest/standing/'.$id) , 'icon' => 'statistics' , 'text' => 'Standing'])
+      @include('buttons.jump-icon' , ['href' => url('/contest/standings/'.$id) , 'icon' => 'statistics' , 'text' => 'Standings'])
       @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
 
       @auth

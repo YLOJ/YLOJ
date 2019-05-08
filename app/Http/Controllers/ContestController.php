@@ -160,7 +160,7 @@ class ContestController extends Controller
             contest_id
         ) value(?,?,?,?,?,?,?,?,?,?,?)',[
             $pid,
-            DB::select('select * from problemset where id=?',[$id])[0]->title,
+            DB::select('select * from problemset where id = ?',[$pid])[0] -> title,
             Auth::User()->id,
             Auth::User()->name,
             "Waiting",
@@ -171,5 +171,42 @@ class ContestController extends Controller
             NOW(),
             $cid,
         ]);
+		return redirect('submission');
     }
+
+	public function standings($cid)
+	{
+		$contest = DB::table('contest') -> where('id', $cid) -> first();
+		$data = DB::table('submission') -> where('contest_id', $cid) 
+			-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
+		$standings = $data -> select('user_id') -> groupby('user_id') -> get() -> toarray();
+
+		foreach ($standings as &$user) {
+			$user -> result = array();
+			$user -> user_name = DB::table('users') -> where('id', $user -> user_id) -> first() -> name;
+			$user -> score = 0;
+		}
+
+		$contest -> problemset = explode(',', $contest -> problemset);
+		foreach ($contest -> problemset as $pid)
+			foreach ($standings as &$user) {
+				$data = DB::table('submission') -> where('contest_id', $cid) 
+					-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
+				$data = $data -> where('problem_id', $pid);
+				if ($contest -> rule == 0) // OI rule
+					$data = $data -> orderby('created_at', 'desc');
+				else 
+					$data = $data -> orderby('score', 'desc') -> orderby('created_at', 'desc');
+				$user -> result[$pid] = $data -> where('user_id', $user -> user_id) -> first();
+				if ($user -> result[$pid] != null)
+					$user -> score += $user -> result[$pid] -> score;
+			}
+
+		$cmp = function($a, $b) {
+			return $a -> score < $b -> score;
+		};
+		usort($standings, $cmp);
+
+		return view('contest.standings', ['standings' => $standings, 'contest' => $contest]);
+	}
 }
