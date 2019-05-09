@@ -2,7 +2,6 @@
 
 @section('content')
   <div class="container">
-
     @auth
       @if ( Auth::user()->permission > 0 )
         <div>
@@ -15,21 +14,19 @@
       @endif
     @endauth
 
-	@component('includes.contest_table', [
-		'contests' => DB::table('contest') -> where('begin_time', '<=', now()) -> where('end_time', '>', now()) -> paginate(1000),
-		'title' => 'Running Contests'])
+    @component('includes.contest_table', [
+      'contests' => $running_contests,
+      'title' => 'Running Contests'])
     @endcomponent 
 
-	@component('includes.contest_table', [
-		'contests' => DB::table('contest') -> where('begin_time', '>', now()) -> orderby('begin_time', 'asc') -> paginate(1000),
-		'title' => 'Upcoming Contests'])
+    @component('includes.contest_table', [
+      'contests' => $upcoming_contests,
+      'title' => 'Upcoming Contests'])
     @endcomponent 
 
-	@component('includes.contest_table', [
-		'contests' => DB::table('contest') -> where('end_time', '<=', now()) -> orderby('end_time', 'desc') -> paginate(20),
-		'title' => 'Past Contests'])
+    @component('includes.contest_table', [
+      'contests' => $past_contests,
+      'title' => 'Past Contests'])
     @endcomponent 
-
   </div>
-
 @endsection
