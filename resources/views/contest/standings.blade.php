@@ -5,7 +5,7 @@
 		<br>
 		<h2 style='text-align:center;'> Standinds </h2>
 		<br>
-		<table class="table table-bordered">
+		<table id="standings" class="table table-bordered tablesorter">
 			<thead>
 				<tr>
 					<th style="width:20%">User Name</th>
@@ -41,4 +41,11 @@
 			</tbody>
 		</table>
 	</div>
+
+	<script type="text/javascript" defer>
+		$(document).ready(function() { 
+			$("#standings").tablesorter(); 
+		}); 
+	</script>
+
 @endsection
