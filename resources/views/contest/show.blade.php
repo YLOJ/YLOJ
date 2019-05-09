@@ -69,53 +69,49 @@
     </table>
 
     <script type="text/javascript"> 
-var info;
-function countTime(cnt) {  
-var h, m, s;
-if (cnt > 0) {
-h = Math.floor(cnt / 3600);  
-m = Math.floor(cnt % 3600 / 60);  
-s = Math.floor(cnt % 60);
-} else if (cnt <= 0) {
-location.reload();
-alert(info);
-}
-if (h < 10) h = "0" + h;
-if (m < 10) m = "0" + m;
-if (s < 10) s = "0" + s;
-document.getElementById("time_remained").innerHTML = h + ":" + m + ":" + s;  
-setTimeout("countTime(" + (cnt - 1) + ")", 1000);
-}
+      var info;
+      function countTime(cnt) {  
+        var h, m, s;
+        if (cnt > 0) {
+          h = Math.floor(cnt / 3600);  
+          m = Math.floor(cnt % 3600 / 60);  
+          s = Math.floor(cnt % 60);
+        } else if (cnt <= 0) {
+          location.reload();
+          alert(info);
+        }
+        if (h < 10) h = "0" + h;
+        if (m < 10) m = "0" + m;
+        if (s < 10) s = "0" + s;
+        document.getElementById("time_remained").innerHTML = h + ":" + m + ":" + s;  
+        setTimeout("countTime(" + (cnt - 1) + ")", 1000);
+      }
     </script>
 
     @if(NOW() < $contest -> begin_time)
-      <?php
-        $len = strtotime($contest -> begin_time) - strtotime(NOW());
-      ?>
-              <script>
-info = "Contest Started!";
-countTime({{ $len }});
-              </script>
-            @elseif(NOW() < $contest -> end_time)
-              <?php
-                $len = strtotime($contest -> end_time) - strtotime(NOW());
-              ?>
-              <script>
-info = "Contest Ended!";
-countTime({{ $len }});
-              </script>
-            @endif
+      <?php $len = strtotime($contest -> begin_time) - strtotime(NOW()); ?>
+      <script>
+        info = "Contest Started!";
+        countTime({{ $len }});
+      </script>
+    @elseif(NOW() < $contest -> end_time)
+      <?php $len = strtotime($contest -> end_time) - strtotime(NOW()); ?>
+      <script>
+        info = "Contest Ended!";
+        countTime({{ $len }});
+      </script>
+    @endif
 
-            <hr>
-            <h4> Annoucements: </h4> <br>
-            {{ $contest -> contest_info }}
-            <hr>
+    <hr>
+    <h4> Annoucements: </h4> <br>
+      {{ $contest -> contest_info }}
+    <hr>
 
-            <div class="row">
-              <div class="col">
-                @component("includes.problem_table", ['problemset' => array()]) 
-                @endcomponent
-              </div>
-            </div>
+    <div class="row">
+      <div class="col">
+        @component("includes.contest_problem_table", ['cid' => $contest -> id, 'problemset' => $contest -> problemset]) 
+        @endcomponent
+      </div>
+    </div>
   </div>
 @endsection

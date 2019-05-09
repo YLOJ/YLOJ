@@ -22,15 +22,15 @@
         <input type="text" name="begin_time" class="flatpickr form-control bg-white" placeholder="Pick date and time">
         <label> &nbsp To &nbsp </label>
         <input type="text" name="end_time" class="flatpickr form-control bg-white" placeholder="Pick date and time">
-		<label> &nbsp&nbsp Rule &nbsp </label>
-		<select id="rule" name="rule" class="form-control">
-			<option value="0" selected> OI </option>
-		</select>
+        <label> &nbsp&nbsp Rule &nbsp </label>
+        <select id="rule" name="rule" class="form-control">
+          <option value="0" selected> OI </option>
+        </select>
       </div>
-	  <div class="form-group">
-	    <label> Problem IDs (divide with ',' and avoid using spaces, e.g.'233,234,236') </label>
-		<input type="text" name="problemset" class="form-control"> 
-	  </div>
+      <div class="form-group">
+        <label> Problem IDs (divide with ',' and avoid using spaces, e.g.'233,234,236') </label>
+        <input type="text" name="problemset" class="form-control"> 
+      </div>
       <div class="form-group">
         <label> Contest Info </label> <br>
         <textarea rows="20" name="contest_info" class="form-control"></textarea>
@@ -38,6 +38,5 @@
       @include('buttons.submit' , ['text' => 'Add'])
       @csrf
     </form>
-
   </div>
 @endsection
