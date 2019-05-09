@@ -4,9 +4,7 @@
 <head>
   <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/xcode.min.css" rel="stylesheet">
   <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
-  <script>
-    hljs.initHighlightingOnLoad();
-  </script>
+  <script> hljs.initHighlightingOnLoad(); </script>
 </head>
 
 @section('content')

@@ -10,16 +10,16 @@
     <title>{{ config('app.name', 'YLOJ') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-	<script src="{{ asset('js/tablesorter.min.js') }}"></script>
-	<script src="{{ asset('js/tablesorter.widgets.min.js') }}"></script>
-	
-	<script type="text/javascript" async
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/tablesorter.min.js') }}" defer></script>
+    <script src="{{ asset('js/tablesorter.widgets.min.js') }}" defer></script>
+    <script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
     <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+      MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
     </script>
 
     <!-- Fonts -->
@@ -98,7 +98,7 @@
     </div>
 
     <main class="py-4">
-    @yield('content')
+      @yield('content')
     </main>
 
     <script type="text/javascript">
@@ -107,6 +107,5 @@
         dateFormat: "Y-m-d H:i",
       });
     </script>
-
-	</body>
+  </body>
 </html>

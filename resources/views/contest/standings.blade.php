@@ -42,8 +42,8 @@
     </table>
   </div>
   <script type="text/javascript" defer>
-	$(document).ready(function() { 
-	  $("#standings").tablesorter(); 
-	}); 
+    $(document).ready(function() { 
+      $("#standings").tablesorter(); 
+    }); 
   </script>
 @endsection
