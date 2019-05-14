@@ -10,7 +10,7 @@
     </h4>
     <form action="{{url('/contest/'.$cid.'/submit/'.$pid)}}" method="post">
       <div class="form-group">
-        <textarea rows="20" name="source_code" , class="form-control"></textarea>
+        <textarea rows="20" name="source_code" class="form-control"></textarea>
       </div>
       @include('buttons.submit' , ['text' => 'Submit'])
       @csrf

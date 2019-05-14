@@ -151,8 +151,10 @@ class ContestController extends Controller
     if (!Auth::check()) {
       return redirect('login');
     }
-    if (NOW() < $contest->begin_time && Auth::user()->permission <= 0) {
-      return redirect('404');
+    if (Auth::user()->permission <= 0) {
+      if (NOW() < $contest->begin_time || NOW() > $contest->end_time) {
+        return redirect('404');
+      }
     }
 
     $title = DB::table('problemset')->where('id',$pid)->first()->title;
