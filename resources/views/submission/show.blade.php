@@ -33,51 +33,49 @@
             @component('includes.collapse_box', ['id' => 'error_info', 'title' => 'Error Details'])
               <pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
             @endcomponent
-          @elseif($sub -> result != 'Waiting')
+          @elseif($sub -> result != 'Waiting' && $sub -> result != 'Running')
             @component('includes.collapse_box', ['id' => 'details', 'title' => 'Details'])
-              @if(isset($sub -> subtask))
-                @foreach($sub -> subtask as $task)
+
+                @foreach($sub -> judge_info as $subtask)
                   @component('includes.collapse_box', 
                     ['id' => 'details'.($loop -> index + 1),
-                    'title' => 'Subtask '.($loop -> index + 1).': '.$task -> result.' ( Score = '.$task -> score.' )'])
-                    @if($task->have_dependency)
-                      <table class="table">
-                        @if($task->dependency_info['result'] == 'Accepted') 
-                          <tr class="table-success text-success"> 
-                        @elseif($task->dependency_info['result'] == 'Partially Correct') 
-                          <tr class="table-warning" style="color:orange"> 
-                        @else 
-                          <tr class="table-danger text-danger">
-                        @endif
-                        <th style="width:17%"> Task Dependency: </th> 
-                        <th style="width:23%"> {{ $task->dependency_info['result'] }} </th> 
-                        <th style="width:20%"> Score : {{ $task->dependency_info['score'] }} </th>
-                        <th style="width:18%"> Time : {{ $task->dependency_info['time_used'] }} ms </th> 
-                        <th style="width:22%"> Memory : {{ $task->dependency_info['memory_used'] }}kb  </th>
-                          </tr>
-                      </table>
-                    @endif
-                    @component('includes.case_info', ['case_info' => $task -> case_info])
-                    @endcomponent
-                  @endcomponent
-                @endforeach
-              @else
-                @component('includes.case_info', ['case_info' => $sub -> case_info])
-                @endcomponent	
-              @endif
-            @endcomponent
-          @endif
-        </div>
+                    'title' => 'Subtask '.($loop -> index + 1).': '.$subtask[0][0].' ( Score = '.$subtask[0][1],' )'])
 
-        <br>
-        @auth
-          @if(Auth::user() -> permission > 0)
-            @include('buttons.jump-danger', ['href' => url('submission/rejudge/'.$sub -> id), 'text' => 'Rejudge'])
-            &nbsp
-            @include('buttons.jump-danger', ['href' => url('submission/delete/'.$sub -> id), 'text' => 'Delete'])
-          @endif
-        @endauth
-      </div>
-    </div>
+					<table class="table">
+					  <tbody>
+					@foreach($subtask as $info)
+						@if($loop-> index == 0)
+							@continue
+						@endif
+
+						@if($info[0] == 'Accepted') <tr class="table-success text-success"> 
+						@elseif($info[0] == 'Partially Correct') <tr class="table-warning" style="color:orange"> 
+						@else <tr class="table-danger text-danger">
+						@endif
+						<th style="width:17%"> Case {{ $loop -> index}}: </th> 
+						<th style="width:23%"> {{ $info[0] }} </th> 
+						<th style="width:20%"> Score : {{ $info[5] }} </th>
+						<th style="width:18%"> Time : {{ $info[1] }} ms </th> 
+						<th style="width:22%"> Memory : {{ $info[2] }}kb  </th>
+						</tr>
+					@endforeach
+  					</tbody>
+					</table>
+				  @endcomponent
+				@endforeach
+			@endcomponent
+		  @endif
+		</div>
+
+		<br>
+		@auth
+		  @if(Auth::user() -> permission > 0)
+			@include('buttons.jump-danger', ['href' => url('submission/rejudge/'.$sub -> id), 'text' => 'Rejudge'])
+			&nbsp
+			@include('buttons.jump-danger', ['href' => url('submission/delete/'.$sub -> id), 'text' => 'Delete'])
+		  @endif
+		@endauth
+	  </div>
+	</div>
   </div>
 @endsection

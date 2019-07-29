@@ -77,82 +77,8 @@ class SubmissionController extends Controller
                 return redirect('404');
             }
         }
-        $result_id = array(
-            'Accepted', 
-            'Wrong Answer', 
-            'Time Limit Exceeded', 
-            'Memory Limit Exceeded', 
-            'Presentation Error',
-            'Runtime Error',
-            'Judgement Failed', 
-            'Partially Correct',
-            'Skipped');
-
-        if ($sub -> result != 'Compile Error' && $sub -> result != 'Waiting' && $sub -> score != -1) {
-            $details = explode('|', $sub -> judge_info);
-            if ($details[0] == '0') {
-                $details = explode(';', $details[1]);
-                $case_id = 0;
-                $sub -> case_info = array();
-                foreach ($details as $case) {
-                    $buffer = explode(',', $case);
-                    if (count($buffer) < 3) continue;
-                    $sub -> case_info[$case_id++] = array(
-                        'result' => $result_id[$buffer[0]],
-                        'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
-                        'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2],
-                        'score' => $buffer[3]
-                    );
-                }
-            } else {
-                array_shift($details);
-                $subtask_id = 0;
-                foreach ($details as $subdetails) {
-                    $subdetails = explode(';', $subdetails);
-                    $buffer = explode(',', $subdetails[0]);
-
-                    if (count($buffer) < 3) continue;
-
-                    $sub -> subtask[$subtask_id] = (object)null;
-                    $sub -> subtask[$subtask_id] -> case_info = array();
-                    $sub -> subtask[$subtask_id] -> result = $result_id[$buffer[0]];
-                    $sub -> subtask[$subtask_id] -> time_used = $buffer[1] < 0 ? '\\' : $buffer[1];
-                    $sub -> subtask[$subtask_id] -> memory_used = $buffer[2] < 0 ? '\\' : $buffer[2];
-                    $sub -> subtask[$subtask_id] -> score = $buffer[3];
-
-                    array_shift($subdetails);
-                    $buffer = explode(',', $subdetails[0]);
-                    $sub -> subtask[$subtask_id] -> dependency = $buffer;
-                    $sub -> subtask[$subtask_id] -> have_dependency = $buffer[0] != "";
-
-                    if ($sub -> subtask[$subtask_id] -> have_dependency) {
-                        array_shift($subdetails);
-                        $buffer = explode(',', $subdetails[0]);
-                        $sub -> subtask[$subtask_id] -> dependency_info = array(
-                            'result' => $result_id[$buffer[0]],
-                            'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
-                            'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2],
-                            'score' => $buffer[3]
-                        );
-                    }
-
-                    array_shift($subdetails);
-                    $case_id = 0;
-                    foreach ($subdetails as $case) {
-                        $buffer = explode(',', $case);
-                        if (count($buffer) < 3) continue;
-                        $sub -> subtask[$subtask_id] -> case_info[$case_id++] = array(
-                            'result' => $result_id[$buffer[0]],
-                            'time_used' => $buffer[1] < 0 ? '\\' : $buffer[1],
-                            'memory_used' => $buffer[2] < 0 ? '\\' : $buffer[2],
-                            'score' => $buffer[3]
-                        );
-                    }
-                    $subtask_id++;
-                }
-            }
-        }	
-
+		if($sub->result=="Accepted" or $sub->result=="Unaccepted")
+			$sub->judge_info=json_decode($sub->judge_info);
         return view('submission.show', ['sub' => $sub]);
     }
 

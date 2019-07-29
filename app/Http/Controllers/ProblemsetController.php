@@ -127,13 +127,13 @@ class ProblemsetController extends Controller
     public function data_submit(Request $request, $id)
     {
         if (Auth::check() && Auth::user() -> permission > 0) {
-            Storage::deleteDirectory('problems/'.$id);
-            Storage::disk('problems') -> put(
+            Storage::deleteDirectory('data/'.$id);
+            Storage::disk('data') -> put(
                 $id . '/data.zip',
                 file_get_contents( $request -> file('data') )
             );
             $zipper = new Zipper;
-            $zipper -> make(storage_path('app/problems/'.$id.'/data.zip')) -> extractTo(storage_path('app/problems/'.$id.'/'));
+            $zipper -> make(storage_path('app/data/'.$id.'/data.zip')) -> extractTo(storage_path('app/data/'.$id.'/'));
             return redirect(route('problem.data', $id));
         } else {
             return redirect('404');
@@ -143,7 +143,7 @@ class ProblemsetController extends Controller
     public function data_download($id)
     {
         if (Auth::check() && Auth::user()->permission > 0) {
-            return Storage::disk('problems')->download("$id/data.zip", "data_$id.zip");
+            return Storage::disk('data')->download("$id/data.zip", "data_$id.zip");
         } else {
             return redirect('404');
         }
@@ -154,7 +154,7 @@ class ProblemsetController extends Controller
         if (Auth::check() && Auth::user()->permission > 0) {
             DB::table('problemset') -> where('id', '=', $id) -> delete();
             DB::table('submission') -> where('problem_id', '=', $id) -> delete();
-            Storage::disk('problems') -> deleteDirectory($id);
+            Storage::disk('data') -> deleteDirectory($id);
         } else {
             return redirect('404');
         }

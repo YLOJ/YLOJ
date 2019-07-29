@@ -1,0 +1,9 @@
+subtask_num: 1
+time_limit: 1000
+memory_limit: 256000
+input_file: a.in 
+output_file: a.out
+subtask1:
+  data_num: 2
+  type: min
+  score: 100 

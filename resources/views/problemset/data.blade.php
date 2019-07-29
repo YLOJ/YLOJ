@@ -9,7 +9,7 @@
       Problem #{{ $id }} : Manage Data
     </h2>
 
-    @if (Storage::disk('problems')->exists($id))
+    @if (Storage::disk('data')->exists($id))
       <h3 class="text-success"> Data Uploaded </h3>
     @else 
       <h3 class="text-danger"> No Data Exists </h3>
@@ -24,7 +24,7 @@
     </form>
     <br>
 
-    @if (Storage::disk('problems')->exists($id)) 
+    @if (Storage::disk('data')->exists($id)) 
       @include('buttons.jump',['href' => '/problem/data_download/'.$id , 'text' => 'Download'])
     @endif
   </div>
