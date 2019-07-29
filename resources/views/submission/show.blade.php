@@ -29,7 +29,7 @@
             @component('includes.collapse_box', ['id' => 'compile_info', 'title' => 'Compile Info'])
               <pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
             @endcomponent
-          @elseif($sub -> result == 'Data Error')
+          @elseif($sub -> result == 'Judgement Failed')
             @component('includes.collapse_box', ['id' => 'error_info', 'title' => 'Error Details'])
               <pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
             @endcomponent
