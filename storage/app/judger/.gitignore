@@ -1,5 +1,5 @@
-sandbox/
-user/
-data/
-temp/
-__pycache__/
+sandbox
+user
+data
+temp
+__pycache__
