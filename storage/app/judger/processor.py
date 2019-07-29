@@ -1,7 +1,7 @@
 import os
 import yaml
 import pymysql
-
+import time
 from oj.env import *
 
 cmd_select = "SELECT * FROM submission WHERE `result` = 'Waiting' ORDER BY `id` ASC"
@@ -25,6 +25,7 @@ while cnt:
         sub = cursor.fetchone()
 
         if (sub == None):
+            time.sleep(1)
             continue
         os.system("rm -rf data user temp 2>/dev/null")
         os.system("cp -r ../data/{} data".format(sub['problem_id']))
