@@ -27,13 +27,9 @@
 
           @if($sub -> result == 'Compile Error')	
             @component('includes.collapse_box', ['id' => 'compile_info', 'title' => 'Compile Info'])
-              <pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
+              <pre><code>{{ $sub -> judge_info }}</code></pre>
             @endcomponent
-          @elseif($sub -> result == 'Judgement Failed')
-            @component('includes.collapse_box', ['id' => 'error_info', 'title' => 'Error Details'])
-              <pre><code class="cpp">{{ $sub -> judge_info }}</code></pre>
-            @endcomponent
-          @elseif($sub -> result != 'Waiting' && $sub -> result != 'Running')
+          @elseif($sub -> result == 'Accepted' || $sub -> result == 'Unaccepted')
             @component('includes.collapse_box', ['id' => 'details', 'title' => 'Details'])
 
                 @foreach($sub -> judge_info as $subtask)
@@ -64,6 +60,10 @@
 				  @endcomponent
 				@endforeach
 			@endcomponent
+          @elseif($sub -> result != 'Waiting' && $sub->result!='Running')
+            @component('includes.collapse_box', ['id' => 'error_info', 'title' => 'Error Details'])
+              <pre><code>{{ $sub -> judge_info }}</code></pre>
+            @endcomponent
 		  @endif
 		</div>
 

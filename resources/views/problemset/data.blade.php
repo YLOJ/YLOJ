@@ -17,13 +17,38 @@
     <br>
 
     <form action="/problem/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
-      <label> <b> Upload data.zip: </b> </label> <br>
+      <label> <b> 上传data.zip: </b> </label> <br>
       <input type="file" name="data"> <br> <br>
-      @include('buttons.submit',['text' => 'Upload'])
+
+      @include('buttons.submit',['text' => '上传'])
       @csrf
     </form>
     <br>
-
+    <form action="/problem/save_config/{{$id}}" method="post" enctype="multipart/form-data">
+      <label> <b> 修改config.yml: </b> </label> <br>
+		<textarea name='config' rows=10>{{$config}}</textarea>
+      <br> <br>
+      @include('buttons.submit',['text' => '更新'])
+      @csrf
+    </form>
+    <br>
+    <form action="/problem/data_format/{{$id}}" method="post" enctype="multipart/form-data">
+      @include('buttons.submit',['text' => '生成数据列表'])
+      @csrf
+	</form>
+	<br>
+	@if($log!='')
+		<pre><code>{{$log}}</code></pre>
+	<br>
+    	<form action="/problem/format_check/{{$id}}" method="post" enctype="multipart/form-data">
+			  <button name="check" type="submit" value=1>确定</button>
+			  <button name="check" type="submit" value=0>取消</button>
+      		  @csrf
+		</form>
+	@else
+	  <h4> 并没有生成过数据列表 </h4>
+	@endif
+	<br>
     @if (Storage::disk('data')->exists($id)) 
       @include('buttons.jump',['href' => '/problem/data_download/'.$id , 'text' => 'Download'])
     @endif

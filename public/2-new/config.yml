@@ -1,0 +1,7 @@
+time_limit: 1000
+memory_limit: 256000
+subtask_num: 1
+subtask1:
+ - data_num: 0
+ - type: sum
+ - score: 100

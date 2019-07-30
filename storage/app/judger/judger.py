@@ -15,26 +15,32 @@ def compileCode():
     if lang==0:
         code=moveIntoSandbox("user/code.cpp")
         status=runCommand("g++ /tmp/{} -o /tmp/{} -O2".format(code,code[:-4]))
-    if(status.status==0):
-        pass
-    elif(status.status==2):
+    if(status.status==OK):
+        moveOutFromSandbox(code[:-4],"code")
+    elif(status.status==TLE):
         report(Result(score=0,result="Compiler Time Limit Exceeded"))
         sys.exit()
     else:
         report(Result(score=0,result="Compile Error",judge_info=status.message))
         sys.exit()
-    moveOutFromSandbox(code[:-4],"code")
 
 def compileSpj():
+    global checkerType
     init()
-    moveIntoSandbox("data/chk.cpp",newName="chk.cpp")
-    moveIntoSandbox("data/testlib.h",newName="testlib.h")
+    if(checkerType is None): 
+        moveIntoSandbox("data/chk.cpp",newName="chk.cpp")
+    else:
+        moveIntoSandbox("builtin/{}.cpp".format(checkerType),newName="chk.cpp")
+    moveIntoSandbox("testlib.h",newName="testlib.h")
     status=runCommand("g++ /tmp/chk.cpp -o /tmp/chk -O2")
-    if(status.status != 0):
-        report(Result(score=0,result="Special Judge Compile Error",message=status.message))
+    if(status.status==OK):
+        moveOutFromSandbox("chk")
+    elif(status.status==TLE):
+        report(Result(score=0,result="Special Judge Compiler Time Limit Exceeded"))
         sys.exit()
     else:
-        moveOutFromSandbox("chk")
+        report(Result(score=0,result="Special Judge Compile Error",judge_info=status.message))
+        sys.exit()
 
 def runSpecialJudge(Input,Output,Answer,dataid):
     init()
@@ -87,14 +93,14 @@ totalScore=0
 totalTime=0
 maxMemory=0
 try:
-    compileSpj()
-    #judgingMessage("Compiling")
-    compileCode()
     timeLimit=config.get("time_limit",1000)
     memoryLimit=config.get("memory_limit",256000)
     subtaskNum=config.get("subtask_num",0)
     inputFile=config.get("input_file",None)
     outputFile=config.get("output_file",None)
+    checkerType=config.get('checker',None)
+    compileSpj()
+    compileCode()
     score=0
     subScore=[0]*(subtaskNum+1)
     info=[]
@@ -114,7 +120,7 @@ try:
                 break
 #            judgingMessage("Judging Test {} of Subtask {}".format(dataId,subId))
             dataStatus=runProgram("data/{}/data{}.in".format(subId,dataId),"data/{}/data{}.ans".format(subId,dataId),"{}.{}".format(subId,dataId))
-            subScore[subId]=min(subScore[subId],dataStatus.score) if Type=="min" else score + dataStatus.score
+            subScore[subId]=min(subScore[subId],dataStatus.score) if Type=="min" else subScore[subId]+ dataStatus.score
             subInfo[dataId]=toList(dataStatus)
             totalTime+=dataStatus.time
             maxMemory=max(maxMemory,dataStatus.memory)
@@ -133,6 +139,7 @@ try:
         time=totalTime,
         memory=maxMemory,
         judge_info=json.dumps(info)))
-except:
+except Exception as e:
+    print(e)
     report(Result(score=0,result="Judgement Failed"))
 

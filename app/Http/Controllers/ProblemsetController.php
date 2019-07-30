@@ -118,12 +118,40 @@ class ProblemsetController extends Controller
     public function data($id)
     {
         if (Auth::check() && Auth::user()->permission > 0) {
-            return view('problemset.data', [ 'id' => $id, ]);
+			if (Storage::disk('data')->exists($id.'-new/log'))
+				$log=Storage::disk('data')->get($id.'-new/log');
+			else
+				$log='';
+			if (Storage::disk('data')->exists($id.'/config.yml'))
+				$config=Storage::disk('data')->get($id.'/config.yml');
+			else
+				$config='';
+			
+			return view('problemset.data', [ 'id' => $id, 'config'=>$config, 'log'=>$log]);
         } else {
             return redirect('404');
         }
     }
-
+	public function data_format(Request $request, $id){
+	    if (Auth::check() && Auth::user() -> permission > 0) {
+			Storage::disk('data')->put('dataconfig',$id);
+			exec('cd '.base_path().'/storage/app/data && python3 makedata.py');
+			return redirect(route('problem.data', $id));
+        } else {
+            return redirect('404');
+        }
+	}
+	public function format_check(Request $request, $id){
+	    if (Auth::check() && Auth::user() -> permission > 0) {
+			if($request -> input('check')==1){
+            	Storage::deleteDirectory('data/'.$id);
+				Storage::move('data/'.$id.'-new','data/'.$id);
+			}
+            return redirect(route('problem.data', $id));
+        } else {
+            return redirect('404');
+        }
+	}
     public function data_submit(Request $request, $id)
     {
         if (Auth::check() && Auth::user() -> permission > 0) {
@@ -134,12 +162,25 @@ class ProblemsetController extends Controller
             );
             $zipper = new Zipper;
             $zipper -> make(storage_path('app/data/'.$id.'/data.zip')) -> extractTo(storage_path('app/data/'.$id.'/'));
+			if (!Storage::disk('data')->exists($id.'/config.yml')){
+				Storage::disk('data')->put($id.'/config.yml','');
+			}
             return redirect(route('problem.data', $id));
         } else {
             return redirect('404');
         }
     }
-
+	public function save_config(Request $request, $id){
+        if (Auth::check() && Auth::user() -> permission > 0) {
+            Storage::disk('data') -> put(
+                $id . '/config.yml',
+                $request -> input('config')
+            );
+            return redirect(route('problem.data', $id));
+        } else {
+            return redirect('404');
+        }
+	}
     public function data_download($id)
     {
         if (Auth::check() && Auth::user()->permission > 0) {
