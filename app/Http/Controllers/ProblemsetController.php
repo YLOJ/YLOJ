@@ -156,6 +156,7 @@ class ProblemsetController extends Controller
     {
         if (Auth::check() && Auth::user() -> permission > 0) {
             Storage::deleteDirectory('data/'.$id);
+			Storage::makeDirectory('data/'.$id);
             Storage::disk('data') -> put(
                 $id . '/data.zip',
                 file_get_contents( $request -> file('data') )
