@@ -6,8 +6,10 @@
       <div class="col">
         <div class="text-center">
           <h1> {{ $title }} </h1>
-          Time Limit : {{ $time_limit }} Ms <br>
-          Memory Limit : {{ $memory_limit }} Mb <br> <br>
+          Time Limit : {{ $time_limit }} <br>
+          Memory Limit : {{ $memory_limit }} <br>
+		  Input File: {{ $input_file }} <br>
+		  Output File: {{ $output_file }} <br><br>
 
           <div class="btn-group-md">
             @include('buttons.jump-icon' , ['href' => url('/contest/'.$cid.'/submit/'.$pid) , 'icon' => 'paper-plane' , 'text' => 'Submit'])
