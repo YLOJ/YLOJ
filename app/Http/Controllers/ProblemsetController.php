@@ -29,16 +29,26 @@ class ProblemsetController extends Controller {
 				$config=Yaml::parse(Storage::disk('data')->get($id.'/config.yml'));
 				if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
 				else $time_limit=1000;
+				$time_limit.=' ms';
 
 				if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
 				else $memory_limit=256000;
+				$memory_limit.=' KB';
+
+				if(array_key_exists('input_file',$config))$input_file=$config['input_file'];
+				else $input_file='Standard Input';
+
+				if(array_key_exists('output_file',$config))$output_file=$config['output_file'];
+				else $output_file='Standard Output';
 			}else
-				$time_limit=$memory_limit="data not found!";
+				$time_limit=$memory_limit=$input_file=$output_file="data not found!";
             return view('problemset.show', [
                 'id' => $id,
                 'title' => $problem->title,
                 'time_limit' => $time_limit,
                 'memory_limit' => $memory_limit,
+				'input_file' => $input_file,
+				'output_file' => $output_file,
                 'content_html' => $markdowner->toHTML($problem->content_md),
             ]);
         } else {
