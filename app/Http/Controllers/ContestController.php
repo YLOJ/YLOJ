@@ -224,7 +224,6 @@ class ContestController extends Controller
 
 	public function submission(Request $request, $id)
 	{
-
 		$contest = DB::table('contest')->where('id', $id)->first();
 		if ((Auth::check() && Auth::user() -> permission > 0 )||(NOW()>$contest->end_time)) {
 			$submission = DB::table('submission')->orderby('id', 'desc')->where('contest_id','=',$id);
@@ -243,7 +242,11 @@ class ContestController extends Controller
 			return redirect('login');
 		}
 		$submission = DB::table('submission')->orderby('id', 'desc')->where('contest_id','=',$id)->where('user_name','=',Auth::User()->name);
-		return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10')]);
+		$contest = DB::table('contest')->where('id', $id)->first();
+		if ($contest->rule==0 && ($contest->begin_time<=NOW() && NOW()<=$contest->end_time)) {
+			return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'BAN'=>1]);
+		}
+		else return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'BAN'=>0]);
 	}
 
 	public function standings($cid)

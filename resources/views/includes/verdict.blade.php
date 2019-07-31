@@ -11,15 +11,6 @@
 	    $sub->created_at="2333-33-33 33:33:33";
 	}
   }
-  else{
-	$contest=DB::table('contest')->where('id','=',$sub->contest_id)->first();
-	if ($contest->begin_time <= NOW() && NOW()<=$contest->end_time){
-		$sub->result ="Unshown";
-	    $sub->time_used =-1;
-	    $sub->memory_used =-1;
-	}
-  }
-
 if (!isset($sub -> url))
   $sub -> url = url("submission/".$sub -> id);
 ?>

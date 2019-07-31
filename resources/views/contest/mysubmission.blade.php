@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 @extends('layouts.app')
-
+<?php
+if($BAN){
+	foreach ($submissionset as $id => $sub){
+		$submissionset[$id]->result='Unshown';
+		$submissionset[$id]->score='Unshown';
+		$submissionset[$id]->time='Unshown';
+		$submissionset[$id]->memory='Unshown';
+	}
+}
+?>
 @section('content')
   <div class="container">
     <p class="text-sm"> </p>
