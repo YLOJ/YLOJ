@@ -17,12 +17,6 @@
         <label>Title</label>
         <input type="text" name="title" class="form-control" value="{{$title}}">
       </div>
-      <div class="form-inline">
-        <label> Time Limit &nbsp </label>
-        <input type="text" name="time_limit" class="form-control input-sm" value="{{$time_limit}}">Ms
-        <label> &nbsp&nbsp Memory Limit &nbsp </label>
-        <input type="text" name="memory_limit" class="form-control input-sm" value="{{$memory_limit}}">Mb
-      </div>
       <div class="form-group">
         <label>Content</label> <br>
         <textarea rows="16" name="content_md" , class="form-control">{{$content_md}}</textarea>

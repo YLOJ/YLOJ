@@ -12,9 +12,8 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
 use Chumper\Zipper\Zipper;
-
-class ProblemsetController extends Controller
-{
+use Symfony\Component\Yaml\Yaml;
+class ProblemsetController extends Controller {
     public function index()
     {
         $problemset = DB::table('problemset')->paginate(20);
@@ -25,13 +24,21 @@ class ProblemsetController extends Controller
     {
         $markdowner = new Markdowner();
         $problem = DB::table('problemset')->where('id', $id)->first();
-
         if ($problem -> visibility == true || Auth::check() && Auth::user()->permission > 0) {
+			if (Storage::disk('data')->exists($id.'/config.yml')){
+				$config=Yaml::parse(Storage::disk('data')->get($id.'/config.yml'));
+				if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
+				else $time_limit=1000;
+
+				if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
+				else $memory_limit=256000;
+			}else
+				$time_limit=$memory_limit="data not found!";
             return view('problemset.show', [
                 'id' => $id,
                 'title' => $problem->title,
-                'time_limit' => $problem->time_limit,
-                'memory_limit' => $problem->memory_limit,
+                'time_limit' => $time_limit,
+                'memory_limit' => $memory_limit,
                 'content_html' => $markdowner->toHTML($problem->content_md),
             ]);
         } else {
@@ -52,13 +59,9 @@ class ProblemsetController extends Controller
     {
         DB::insert('insert into `problemset` (
             `title`, 
-            `time_limit`, 
-            `memory_limit`, 
             `content_md`
         ) values (?, ?, ?, ?)', [
             $request->input('title'),
-            $request->input('time_limit'),
-            $request->input('memory_limit'),
             $request->input('content_md'),
         ]);
 
@@ -72,8 +75,6 @@ class ProblemsetController extends Controller
             return view('problemset.edit', [
                 'id' => $id,
                 'title' => $problem->title,
-                'time_limit' => $problem->time_limit,
-                'memory_limit' => $problem->memory_limit,
                 'content_md' => $problem->content_md,
                 'visibility' => $problem->visibility
             ]);
@@ -87,15 +88,11 @@ class ProblemsetController extends Controller
         DB::update(
             "update `problemset` set 
             `title` = ?, 
-            `time_limit` = ?,
-            `memory_limit` = ?,
             `content_md` = ?,
             `visibility` = ?
             where `id` = ?",
             [
                 $request->input('title'),
-                $request->input('time_limit'),
-                $request->input('memory_limit'),
                 $request->input('content_md'),
                 $request->input('visibility') != null,
                 $id,

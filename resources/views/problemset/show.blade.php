@@ -7,7 +7,7 @@
         <div class="text-center">
           <h1> #{{$id}}. {{ $title }} </h1>
           Time Limit : {{ $time_limit }} Ms <br>
-          Memory Limit : {{ $memory_limit }} Mb <br> <br>
+          Memory Limit : {{ $memory_limit }} Kb <br> <br>
 
           <div class="btn-group-md">
             @include('buttons.jump-icon' , ['href' => url('/problem/submit/'.$id) , 'icon' => 'paper-plane' , 'text' => 'Submit'])

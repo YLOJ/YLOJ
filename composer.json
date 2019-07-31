@@ -15,7 +15,8 @@
         "laravel/tinker": "^1.0",
         "michelf/php-markdown": "^1.8",
         "michelf/php-smartypants": "^1.8",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "symfony/yaml": "^4.3"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -62,5 +63,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }
