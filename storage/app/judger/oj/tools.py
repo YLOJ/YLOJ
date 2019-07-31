@@ -31,8 +31,10 @@ class runStatus(object):
 def runCommand(command,timeLimit=10000,memoryLimit=512000,stdin=None,stdout=None):
     max_memory = 0
     time_used = 0
+    with open(pathOfSandbox+"/a.sh","w") as f:
+        f.write('cd tmp\nsudo -u oj '+command)
     begin_time=time.time()
-    child = subprocess.Popen("chroot {} sudo -u oj {}".format(pathOfSandbox,command).split(),stdin=stdin,stdout=stdout,stderr=subprocess.PIPE)
+    child = subprocess.Popen("chroot {} bash a.sh".format(pathOfSandbox,command).split(),stdin=stdin,stdout=stdout,stderr=subprocess.PIPE)
     with open("/sys/fs/cgroup/memory/oj/cgroup.procs","w") as f:
         f.write(str(child.pid)+'\n')
     while child.poll() is None:
@@ -68,14 +70,11 @@ def judgingMessage(message):
     pass
     # TODO
     # print("judging:",message)
-class Result(object):
-    def __init__(self,result="",score=0,time=0,memory=0,judge_info=""):
-        self.result,self.score,self.time,self.memory,self.judge_info=result,score,time,memory,judge_info
-def report(result):
+def report(result='',score=0,time=-1,memory=-1,judge_info=''):
     db=pymysql.connect(host,user,password,database)
     cursor=db.cursor()
-    sql="update submission set result='{}',score={},time_used={},memory_used={},judge_info='{}' where id={}".format(result.result,result.score,result.time,result.memory,pymysql.escape_string(result.judge_info),sys.argv[1])
+    sql="update submission set result='{}',score={},time_used={},memory_used={},judge_info='{}' where id={}".format(result,score,time,memory,pymysql.escape_string(judge_info),sys.argv[1])
     cursor.execute(sql)
     db.commit()
-    
+    sys.exit() 
 

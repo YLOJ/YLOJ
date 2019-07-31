@@ -6,6 +6,8 @@ import os,random,sys
 from functools import cmp_to_key
 config="""time_limit: 1000
 memory_limit: 256000
+# input_file: 
+# output_file: 
 """
 def str_cmp(a,b):
     if len(a)<len(b):

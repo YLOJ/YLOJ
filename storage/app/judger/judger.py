@@ -4,7 +4,7 @@ __author__ = 'QAQ AutoMaton'
 # lang=["C++"]
 import yaml,sys,json
 from oj import *
-RunCommand=["/tmp/{}"]
+RunCommand=["./{}"]
 with open("data/config.yml") as f: 
     config=yaml.load(f,Loader=yaml.SafeLoader)
 with open("user/lang") as f: 
@@ -14,7 +14,7 @@ def compileCode():
     init()
     if lang==0:
         code=moveIntoSandbox("user/code.cpp")
-        status=runCommand("g++ /tmp/{} -o /tmp/{} -O2".format(code,code[:-4]))
+        status=runCommand("g++ {} -o {} -O2".format(code,code[:-4]))
     if(status.status==OK):
         moveOutFromSandbox(code[:-4],"code")
     elif(status.status==TLE):
@@ -28,19 +28,21 @@ def compileSpj():
     global checkerType
     init()
     if(checkerType is None): 
+        if not os.path.isfile('data/chk.cpp'):
+            report('Data Error',judge_info="Checker Not Found")
         moveIntoSandbox("data/chk.cpp",newName="chk.cpp")
     else:
+        if not os.path.isfile("builtin/{}.cpp".format(checkerType)):
+            report('Data Error',judge_info="Checker Not Found")
         moveIntoSandbox("builtin/{}.cpp".format(checkerType),newName="chk.cpp")
     moveIntoSandbox("testlib.h",newName="testlib.h")
-    status=runCommand("g++ /tmp/chk.cpp -o /tmp/chk -O2")
+    status=runCommand("g++ chk.cpp -o chk -O2")
     if(status.status==OK):
         moveOutFromSandbox("chk")
     elif(status.status==TLE):
         report(Result(score=0,result="Special Judge Compiler Time Limit Exceeded"))
-        sys.exit()
     else:
         report(Result(score=0,result="Special Judge Compile Error",judge_info=status.message))
-        sys.exit()
 
 def runSpecialJudge(Input,Output,Answer,dataid):
     init()
@@ -48,7 +50,7 @@ def runSpecialJudge(Input,Output,Answer,dataid):
     Output=moveIntoSandbox(Output)
     Answer=moveIntoSandbox(Answer)
     spj=moveIntoSandbox("temp/chk")
-    status=runCommand("/tmp/{} /tmp/{} /tmp/{} /tmp/{}".format(spj,Input,Output,Answer))
+    status=runCommand("./{} {} {} {}".format(spj,Input,Output,Answer))
     if status.code==0:
         # AC
         return AC,100,status.message
@@ -71,6 +73,10 @@ def runSpecialJudge(Input,Output,Answer,dataid):
 def runProgram(Input,Answer,dataid):
     global inputFile,outputFile,lang,timeLimit,memoryLimit
     init()
+    if not os.path.exists(Input) :
+        report(result='Data Error',judge_info='file '+Input+' not found')
+    if not os.path.exists(Answer):
+        report(result='Data Error',judge_info='file '+Answer+' not found')
     if not(inputFile is None):
         moveIntoSandbox(Input,inputFile)
     Output="temp/output"
@@ -84,7 +90,6 @@ def runProgram(Input,Answer,dataid):
         if(not (outputFile is None)):
             moveOutFromSandbox(outputFile,"output")
         status.status,status.score,status.message=runSpecialJudge(Input,Output,Answer,dataid)
-
     return status 
 def toList(status):
     return [status.status,status.time,status.memory,status.code,status.message,status.score]
@@ -93,8 +98,12 @@ totalScore=0
 totalTime=0
 maxMemory=0
 try:
-    timeLimit=config.get("time_limit",1000)
+    timeLimit=int(config.get("time_limit",1000))
+    if timeLimit>20000:
+        report(result="Data Error",judge_info="time limit is too huge")
     memoryLimit=config.get("memory_limit",256000)
+    if memoryLimit>1024000:
+        report(result="Data Error",judge_info="memory limit is too huge")
     subtaskNum=config.get("subtask_num",0)
     inputFile=config.get("input_file",None)
     outputFile=config.get("output_file",None)
@@ -133,13 +142,12 @@ try:
         for i in subInfo:
             i[0]=judgeStatus[i[0]]
         info.append(subInfo)
-    report(Result(
-        result="Accepted" if totalScore==100 else "Unaccepted",
+    report(result="Accepted" if totalScore==100 else "Unaccepted",
         score=totalScore,
         time=totalTime,
         memory=maxMemory,
-        judge_info=json.dumps(info)))
+        judge_info=json.dumps(info))
 except Exception as e:
     print(e)
-    report(Result(score=0,result="Judgement Failed"))
+    report(score=0,result="Judgement Failed",judge_info=str(e))
 
