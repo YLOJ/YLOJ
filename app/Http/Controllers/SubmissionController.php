@@ -22,7 +22,7 @@ class SubmissionController extends Controller
 
     public function index(Request $request)
     {
-        $submission = DB::table('submission')->orderby('id', 'desc');
+        $submission = DB::table('submission')->orderby('id', 'desc')->where('contest_id','=',NULL);
         $submission = $this->check($submission, $request, 'problem_id');
         $submission = $this->check($submission, $request, 'user_name');
         $submission = $this->check($submission, $request, 'min_score', 'score', '>=');
