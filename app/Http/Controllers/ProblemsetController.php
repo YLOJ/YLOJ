@@ -70,7 +70,7 @@ class ProblemsetController extends Controller {
         DB::insert('insert into `problemset` (
             `title`, 
             `content_md`
-        ) values (?, ?, ?, ?)', [
+        ) values (?, ?)', [
             $request->input('title'),
             $request->input('content_md'),
         ]);
