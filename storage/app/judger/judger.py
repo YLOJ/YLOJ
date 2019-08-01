@@ -18,10 +18,10 @@ def compileCode():
     if(status.status==OK):
         moveOutFromSandbox(code[:-4],"code")
     elif(status.status==TLE):
-        report(Result(score=0,result="Compiler Time Limit Exceeded"))
+        report(score=0,result="Compiler Time Limit Exceeded")
         sys.exit()
     else:
-        report(Result(score=0,result="Compile Error",judge_info=status.message))
+        report(score=0,result="Compile Error",judge_info=status.message)
         sys.exit()
 
 def compileSpj():
@@ -40,9 +40,9 @@ def compileSpj():
     if(status.status==OK):
         moveOutFromSandbox("chk")
     elif(status.status==TLE):
-        report(Result(score=0,result="Special Judge Compiler Time Limit Exceeded"))
+        report(score=0,result="Special Judge Compiler Time Limit Exceeded")
     else:
-        report(Result(score=0,result="Special Judge Compile Error",judge_info=status.message))
+        report(score=0,result="Special Judge Compile Error",judge_info=status.message)
 
 def runSpecialJudge(Input,Output,Answer,dataid):
     init()
