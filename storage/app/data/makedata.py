@@ -95,7 +95,7 @@ else:
             if mp.get(g[l])==None:
                 mp[g[l]]={}
             push(l+1,r,mp[g[l]],g)
-    config+='subtask_num:{sub_num}\n'
+    config+='subtask_num: {sub_num}\n'
     subid=dataid=0
     def dfs(l,r,mp,g,sub):
         global subid,match,dataid,s
