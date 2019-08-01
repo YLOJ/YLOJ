@@ -5,6 +5,7 @@ __author__ = 'QAQ AutoMaton'
 import yaml,sys,json
 from oj import *
 RunCommand=["./{}"]
+init()
 with open("data/config.yml") as f: 
     config=yaml.load(f,Loader=yaml.SafeLoader)
 with open("user/lang") as f: 

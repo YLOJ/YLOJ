@@ -25,7 +25,7 @@ class ProblemsetController extends Controller {
         $markdowner = new Markdowner();
         $problem = DB::table('problemset')->where('id', $id)->first();
         if ($problem -> visibility == true || Auth::check() && Auth::user()->permission > 0) {
-			if (Storage::disk('data')->exists($id.'/config.yml')){
+			if (Storage::disk('data')->exists($id.'/config.yml') && Storage::disk('data')->get($id.'/config.yml')){
 				$config=Yaml::parse(Storage::disk('data')->get($id.'/config.yml'));
 				if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
 				else $time_limit=1000;
@@ -141,7 +141,7 @@ class ProblemsetController extends Controller {
     }
 	public function data_format(Request $request, $id){
 	    if (Auth::check() && Auth::user() -> permission > 0) {
-			Storage::disk('data')->put('dataconfig',$id);
+			Storage::disk('data')->put('dataconfig',$id."\n".$request->matchrule);
 			exec('cd '.base_path().'/storage/app/data && python3 makedata.py');
 			return redirect(route('problem.data', $id));
         } else {

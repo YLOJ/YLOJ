@@ -34,6 +34,10 @@
     <br>
     <form action="/problem/data_format/{{$id}}" method="post" enctype="multipart/form-data">
       @include('buttons.submit',['text' => '生成数据列表'])
+
+      <label> <b> 规则：（自动匹配留空） </b> </label> <br>
+
+		<textarea name='matchrule' rows=10></textarea>
       @csrf
 	</form>
 	<br>
