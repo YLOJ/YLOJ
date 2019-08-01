@@ -25,6 +25,7 @@
         <label> &nbsp&nbsp Rule &nbsp </label>
         <select id="rule" name="rule" class="form-control">
           <option value="0" selected> OI </option>
+          <option value="1" selected> IOI </option>
         </select>
       </div>
       <div class="form-group">

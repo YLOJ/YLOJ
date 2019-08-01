@@ -24,8 +24,15 @@
         <input type="text" name="end_time" value="{{ $contest -> end_time }}"class="flatpickr form-control bg-white" placeholder="Pick date and time">
         <label> &nbsp&nbsp Rule &nbsp </label>
         <select id="rule" name="rule" class="form-control">
-          <option value="0" selected> OI </option>
+          <option value="0"> OI </option>
+          <option value="1"> IOI </option>
         </select>
+	    <script type="text/javascript">
+			onload = function() {
+				document.getElementById("rule").selectedIndex = {{$contest -> rule}};
+   			}
+   		</script>
+
       </div>
       <div class="form-group">
         <p class="text-small"> </p>

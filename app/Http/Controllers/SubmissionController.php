@@ -72,10 +72,18 @@ class SubmissionController extends Controller
     public function show($id) 
     {
         $sub = DB::table('submission') -> where('id', $id) -> first();
-        if (DB::table('problemset') -> where('id', '=', $sub -> problem_id) -> first() -> visibility == false) {
-            if (!Auth::check() || Auth::user() -> permission <= 0) {
-                return redirect('404');
-            }
+        if (!Auth::check() || Auth::user() -> permission <= 0) {
+			if($sub -> contest_id!=NULL){
+				$contest=DB::table('contest')->where('id',$sub->contest_id)->first();
+				if($contest->begin_time<=NOW() && NOW()<=$contest->end_time){
+					if($sub->user_id != Auth::user()->id)return redirect('404');
+					$sub->judge_info='';
+					if($contest -> rule==0){$sub->result='Unshown';$sub->score=$sub->time_used=$sub->memory_used=-1;}
+				}
+			}
+        	else if (DB::table('problemset') -> where('id', '=', $sub -> problem_id) -> first() -> visibility == false) {
+				return redirect('404');
+        	}
         }
 		if($sub->result=="Accepted" or $sub->result=="Unaccepted")
 			$sub->judge_info=json_decode($sub->judge_info);

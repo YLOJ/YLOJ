@@ -31,7 +31,7 @@
             @endcomponent
           @elseif($sub -> result == 'Accepted' || $sub -> result == 'Unaccepted')
             @component('includes.collapse_box', ['id' => 'details', 'title' => 'Details'])
-
+				@if($sub->judge_info!='')
                 @foreach($sub -> judge_info as $subtask)
                   @component('includes.collapse_box', 
                     ['id' => 'details'.($loop -> index + 1),
@@ -59,6 +59,7 @@
 					</table>
 				  @endcomponent
 				@endforeach
+				@endif
 			@endcomponent
           @elseif($sub -> result != 'Waiting' && $sub->result!='Running')
             @component('includes.collapse_box', ['id' => 'error_info', 'title' => 'Error Details'])
