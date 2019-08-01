@@ -17,12 +17,6 @@
         <label>Title</label>
         <input type="text" name="title" class="form-control">
       </div>
-      <div class="form-inline">
-        <label>Time Limit &nbsp </label>
-        <input type="text" name="time_limit" class="form-control input-sm" value="1000">Ms 
-        <label> &nbsp&nbsp Memory Limit &nbsp </label>
-        <input type="text" name="memory_limit" class="form-control input-sm" value="256">Mb
-      </div>
       <div class="form-group">
         <label>Content</label> <br>
         <textarea rows="20" name="content_md" class="form-control"></textarea>
