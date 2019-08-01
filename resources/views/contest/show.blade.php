@@ -18,8 +18,7 @@
           <button class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();">
             <img src="{{ asset('svg/icons/edit.ico') }}" class="icon-sm"/> Edit </button>
           <form id="myform" method="post" action="/contest/edit/{{$id}}">
-            @csrf
-          </form>
+            @csrf </form>
         @endif
       @endauth
     </div>
@@ -32,7 +31,7 @@
           <th style="width:22%"> End Time </th>
           <th style="width:22%"> Duration </th>
           <th style="width:22%"> Contest Status </th>
-          <th style="width:10%"> Rating </th>
+          <th style="width:10%"> Rule</th> 
         </tr>
       </thead>
       <tbody>
@@ -57,14 +56,11 @@
               @endif
             </b>
           </td>
-          <?php $x = (($contest -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>
-          @if ($x > 0)
-            <td class="text-success"> <b> {{ $x }} </b> </td>
-          @elseif ($x == 0)
-            <td class="text-muted"> <b> {{ $x }} </b> </td>
-          @else
-            <td class="text-danger"> <b> {{ $x }} </b> </td>
-          @endif
+			@if($contest->rule==0)
+            	<td class="text-success"> <b> OI </b> </td>
+			@elseif($contest->rule==1)
+            	<td class="text-success"> <b> IOI </b> </td>
+			@endif
         </tr>
       </tbody>
     </table>
