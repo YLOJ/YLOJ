@@ -43,7 +43,7 @@ def compileSpj():
     elif(status.status==TLE):
         report(score=0,result="Special Judge Compiler Time Limit Exceeded")
     else:
-        report(score=0,result="Special Judge Compile Error",judge_info=status.message)
+        report(score=0,result="Special Judge Compile Error",judge_info=judgeStatus[status.status]+'\n'+status.message)
 
 def runSpecialJudge(Input,Output,Answer,dataid):
     init()

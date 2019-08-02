@@ -13,6 +13,7 @@ WHERE `id` = {}
 cnt = 1
 while cnt:
     try:
+        time.sleep(1)
         conn = pymysql.connect(
             host = host,
             user = user,
@@ -25,7 +26,6 @@ while cnt:
         sub = cursor.fetchone()
 
         if (sub == None):
-            time.sleep(1)
             continue
         os.system("rm -rf data user temp 2>/dev/null")
         os.system("cp -r ../data/{} data".format(sub['problem_id']))
