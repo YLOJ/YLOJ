@@ -73,7 +73,7 @@ subtask1:
  type: sum
  score: 100
 """.format(t)
-    with open(s[0]+'-new/config.yml',"w") as f:
+    with open(s+'-new/config.yml',"w") as f:
         f.write(config)
 else:
     patt='./'+s[0]+'/'+s[1].replace('<','({tuple[').replace('>',']})')
