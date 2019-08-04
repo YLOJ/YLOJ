@@ -105,7 +105,7 @@ class SubmissionController extends Controller
 
     public function submitcode(Request $request, $id) 
     {
-        $id=DB::insert('insert into submission (
+        DB::insert('insert into submission (
             problem_id,
             problem_name,
             user_id,
@@ -129,7 +129,8 @@ class SubmissionController extends Controller
             NOW(),
     	    ]
 	    );
-		Redis::rpush('submission','test '.$id);
+		$xid=DB::getPdo()->lastInsertId();
+		Redis::rpush('submission','test '.$xid);
         return redirect('submission');
     }
 
