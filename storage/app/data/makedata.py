@@ -43,7 +43,7 @@ sys.stdout=open("{}-new/log".format(s[0]),"w")
 for i in range(len(ls)):
     if(ls[i][-1]=='\n'):
         ls[i]=ls[i][:-1]
-if '{}/chk.cpp'.format(s[0]) in ls:
+if './{}/chk.cpp'.format(s[0]) in ls:
     os.system("cp {0}/chk.cpp {0}-new/chk.cpp".format(s[0]))
     print("checker found") 
 else:
