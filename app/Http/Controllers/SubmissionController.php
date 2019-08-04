@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
-
 class SubmissionController extends Controller
 {
     public function check($sub, $request, $para, $_para = "", $operator = '=') 
@@ -105,7 +105,7 @@ class SubmissionController extends Controller
 
     public function submitcode(Request $request, $id) 
     {
-        DB::insert('insert into submission (
+        $id=DB::insert('insert into submission (
             problem_id,
             problem_name,
             user_id,
@@ -127,9 +127,9 @@ class SubmissionController extends Controller
             -1,
             $request->input('source_code'),
             NOW(),
-        ]
-    );
-
+    	    ]
+	    );
+		Redis::rpush('submission','test '.$id);
         return redirect('submission');
     }
 
