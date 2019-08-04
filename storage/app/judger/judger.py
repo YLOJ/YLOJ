@@ -140,8 +140,11 @@ try:
         subInfo[0][0]=AC if subtaskScore==Full else PC if subtaskScore>0 else WA
         subInfo[0][1]=subtaskScore
         totalScore+=subtaskScore
-        for i in subInfo:
-            i[0]=judgeStatus[i[0]]
+        qaq=[]
+        for i in range(dataNum+1):
+            qaq.append(judgeStatus[subInfo[i][0]])
+        for i in range(dataNum+1):
+            subInfo[i][0]=qaq[i]
         info.append(subInfo)
     report(result="Accepted" if totalScore==100 else "Unaccepted",
         score=totalScore,

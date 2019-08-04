@@ -28,7 +28,7 @@ class runStatus(object):
         self.score=score
     def __str__(self):
         return "runStatus(status:{},time:{},memory:{},code:{},message:{})".format(self.status,self.time,self.memory,self.code,self.message)
-def runCommand(command,timeLimit=20000,memoryLimit=512000,stdin=None,stdout=None):
+def runCommand(command,timeLimit=50000,memoryLimit=1024000,stdin=None,stdout=None):
     max_memory = 0
     time_used = 0
     with open(pathOfSandbox+"/a.sh","w") as f:
