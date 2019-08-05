@@ -41,6 +41,8 @@
     @include('buttons.jump-danger', ['href' => '/submission/delete_problem/'.$id , 'text' => 'Delete All Submission'])
     &nbsp &nbsp
     @include('buttons.jump-danger', ['href' => '/submission/rejudge_problem/'.$id , 'text' => 'Rejudge All Submission'])
+    &nbsp &nbsp
+    @include('buttons.jump-danger', ['href' => '/submission/rejudge_problem_ac/'.$id , 'text' => 'Rejudge All AC Submission'])
 
   </div>
 @endsection

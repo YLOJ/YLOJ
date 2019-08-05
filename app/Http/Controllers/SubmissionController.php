@@ -140,6 +140,7 @@ class SubmissionController extends Controller
             return redirect('404');
         }
         DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+		Redis::rpush('submission','test '.$id);
         return redirect('submission/'.$id);
     }
 
@@ -148,10 +149,27 @@ class SubmissionController extends Controller
         if (!Auth::check() || Auth::User() -> permission <= 0) {
             return redirect('404');
         }
+
+		$sublist=DB::select('select * from submission where problem_id=?',[$id]);
         DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+		foreach($sublist as $sub){
+			Redis::rpush('submission','test '.$sub->id);
+		}
         return redirect('submission');
     }
+    public function rejudge_problem_ac($id)
+    {
+        if (!Auth::check() || Auth::User() -> permission <= 0) {
+            return redirect('404');
+        }
 
+		$sublist=DB::select('select * from submission where problem_id=? and result="Accepted"',[$id]);
+        DB::table('submission') -> where('problem_id', '=', $id) ->where('result','=','Accepted') ->  update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+		foreach($sublist as $sub){
+			Redis::rpush('submission','test '.$sub->id);
+		}
+        return redirect('submission');
+    }
     public function delete_submission($id)
     {
         if (!Auth::check() || Auth::User() -> permission <= 0) {

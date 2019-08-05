@@ -45,6 +45,7 @@ Route::get('/submission/{id}', 'SubmissionController@show')->where('id', '[0-9]+
 
 Route::get('/submission/rejudge/{id}', 'SubmissionController@rejudge')->where('id', '[0-9]+');
 Route::get('/submission/rejudge_problem/{id}', 'SubmissionController@rejudge_problem')->where('id', '[0-9]+');
+Route::get('/submission/rejudge_problem_ac/{id}', 'SubmissionController@rejudge_problem_ac')->where('id', '[0-9]+');
 
 Route::get('/submission/delete/{id}', 'SubmissionController@delete_submission')->where('id', '[0-9]+');
 Route::get('/submission/delete_problem/{id}', 'SubmissionController@delete_problem_submission')->where('id', '[0-9]+');

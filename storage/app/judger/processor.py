@@ -12,22 +12,20 @@ UPDATE submission SET
 WHERE `id` = {}
 """
 r=redis.Redis(host=redishost,port=redisport,password=redispassword)
-conn = pymysql.connect(
-    host = host,
-    user = user,
-    password = password,
-    database = database,
-    charset = 'utf8'
-)
-cursor = conn.cursor(cursor = pymysql.cursors.DictCursor)
 while True:
     try:
         Type,sid=r.blpop('submission')[1].split()
+        conn = pymysql.connect(
+            host = host,
+            user = user,
+            password = password,
+            database = database,
+            charset = 'utf8'
+        )
+        cursor = conn.cursor(cursor = pymysql.cursors.DictCursor)
+
         Type=Type.decode()
         sid=int(sid)
-        cursor = conn.cursor(cursor = pymysql.cursors.DictCursor)
-        print(Type,sid)
-
         if Type=='test':
             cursor.execute(cmd_select.format(sid))
             sub = cursor.fetchone()
