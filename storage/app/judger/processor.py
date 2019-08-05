@@ -32,6 +32,16 @@ while True:
             os.system("rm -rf data user temp 2>/dev/null")
             os.system("cp -r ../data/{} data".format(sub['problem_id']))
             os.system("mkdir temp user")
+            if('pragma' in sub['source_code']):
+                cursor.execute("""
+UPDATE submission SET
+`result` = 'Judgement Failed',
+`score` = 0,
+`judge_info` = '拒绝评测'
+WHERE `id` = {}
+""".format(sid))
+                conn.commit()
+                continue
             with open("user/code.cpp","w") as f:
                 f.write(sub['source_code'])
             with open("user/lang","w") as f:
