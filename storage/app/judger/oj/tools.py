@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 __author__ = 'QAQ AutoMaton'
-import sys,pymysql
+import sys,pymysql,signal
 from .env import *
 from .constant import *
 import random,os,subprocess,psutil,time
@@ -28,13 +28,20 @@ class runStatus(object):
         self.score=score
     def __str__(self):
         return "runStatus(status:{},time:{},memory:{},code:{},message:{})".format(self.status,self.time,self.memory,self.code,self.message)
+
+def kill(pid):
+    for i in os.popen("ps -ef"):
+        if(i.split()[2]==str(pid)):
+            kill(i.split()[1])
+    os.system("kill {}".format(pid))
+
 def runCommand(command,timeLimit=50000,memoryLimit=1024000,stdin=None,stdout=None):
     max_memory = 0
     time_used = 0
     with open(pathOfSandbox+"/a.sh","w") as f:
         f.write('cd tmp\nsudo -u oj '+command)
     begin_time=time.time()
-    child = subprocess.Popen("chroot {} bash a.sh".format(pathOfSandbox,command).split(),stdin=stdin,stdout=stdout,stderr=subprocess.PIPE)
+    child = subprocess.Popen("chroot {} sh a.sh".format(pathOfSandbox,command).split(),stdin=stdin,stdout=stdout,stderr=subprocess.PIPE)
     with open("/sys/fs/cgroup/memory/oj/cgroup.procs","w") as f:
         f.write(str(child.pid)+'\n')
     while child.poll() is None:
@@ -45,12 +52,10 @@ def runCommand(command,timeLimit=50000,memoryLimit=1024000,stdin=None,stdout=Non
             time_used = int((curTime - begin_time)*1000)
             max_memory = max(max_memory, memory)
             if memory > memoryLimit:
-                child.kill()
-                child.poll()
+                kill(child.pid)
                 return runStatus(MLE, time_used, max_memory)
             if time_used > timeLimit:
-                child.kill()
-                child.poll()
+                kill(child.pid)
                 return runStatus(TLE, time_used, max_memory)
         finally:
             pass
