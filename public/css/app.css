@@ -1727,7 +1727,8 @@ pre code {
 .table-success th,
 .table-success td,
 .table-success thead th,
-.table-success tbody + tbody {
+.table-success tbody + tbody ,
+.table-success div{
   border-color: #98dfb6;
 }
 
@@ -1736,7 +1737,9 @@ pre code {
 }
 
 .table-hover .table-success:hover > td,
-.table-hover .table-success:hover > th {
+.table-hover .table-success:hover > th 
+
+{
   background-color: #b3e8ca;
 }
 
@@ -1749,7 +1752,8 @@ pre code {
 .table-info th,
 .table-info td,
 .table-info thead th,
-.table-info tbody + tbody {
+.table-info tbody + tbody,
+.table-info div{ 
   border-color: #b3d7f5;
 }
 
@@ -1771,7 +1775,8 @@ pre code {
 .table-warning th,
 .table-warning td,
 .table-warning thead th,
-.table-warning tbody + tbody {
+.table-warning tbody + tbody ,
+.table-warning div{
   border-color: #fff6a1;
 }
 
@@ -1793,7 +1798,8 @@ pre code {
 .table-danger th,
 .table-danger td,
 .table-danger thead th,
-.table-danger tbody + tbody {
+.table-danger tbody + tbody ,
+.table-danger div{
   border-color: #f09593;
 }
 
@@ -10666,4 +10672,9 @@ a.text-dark:focus {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
-
+.text-summary {
+ padding: .75rem;
+ font-weight: 700;
+ display:inline-block;
+ margin-right: -3px;
+}

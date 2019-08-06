@@ -36,27 +36,40 @@
                   @component('includes.collapse_box', 
                     ['id' => 'details'.($loop -> index + 1),
                     'title' => 'Subtask '.($loop -> index + 1).': '.$subtask[0][0].' ( Score = '.$subtask[0][1],' )'])
-
-					<table class="table">
-					  <tbody>
+					<?php
+						$subid=$loop->index+1;
+					?>
 					@foreach($subtask as $info)
 						@if($loop-> index == 0)
 							@continue
 						@endif
-
-						@if($info[0] == 'Accepted') <tr class="table-success text-success"> 
-						@elseif($info[0] == 'Partially Correct') <tr class="table-warning" style="color:orange"> 
-						@else <tr class="table-danger text-danger">
+						<?php
+							$caseid=$loop->index;
+						?>
+						@if($info[0] == 'Accepted') <div class="table-success text-success" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
+						@elseif($info[0] == 'Partially Correct') <div class="table-warning" style="color:orange;width:100%" onClick="updatehide({{$subid}},{{$caseid}})" > 
+						@else <div class="table-danger text-danger" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
 						@endif
-						<th style="width:17%"> Case {{ $loop -> index}}: </th> 
-						<th style="width:23%"> {{ $info[0] }} </th> 
-						<th style="width:20%"> Score : {{ $info[5] }} </th>
-						<th style="width:18%"> Time : {{ $info[1] }} ms </th> 
-						<th style="width:22%"> Memory : {{ $info[2] }}kb  </th>
-						</tr>
+						<div>
+						<div class="text-summary" style="width:17%"> Case {{ $loop -> index}}: </div> 
+						<div class="text-summary" style="width:23%"> {{ $info[0] }} </div> 
+						<div class="text-summary" style="width:20%"> Score : {{ $info[5] }} </div>
+						<div class="text-summary" style="width:18%"> Time : {{ $info[1] }} ms </div> 
+						<div class="text-summary" style="width:22%"> Memory : {{ $info[2] }}kb  </div>
+						</div>
+						</div>
+						<div class="text-detail" style="display:none" id="{{$subid}}-{{$caseid}}details">
+						测试信息：
+						<pre><code>{{$info[4]}}</code></pre>	
+						</div>
+						<script>
+						function updatehide(subid,caseid){
+							s=subid+'-'+caseid+'details';
+
+							$('#'+s).toggle();
+						}
+						</script>
 					@endforeach
-  					</tbody>
-					</table>
 				  @endcomponent
 				@endforeach
 				@endif

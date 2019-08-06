@@ -35,7 +35,7 @@ def kill(pid):
             kill(i.split()[1])
     os.system("kill {}".format(pid))
 
-def runCommand(command,timeLimit=50000,memoryLimit=1024000,stdin=None,stdout=None):
+def runCommand(command,timeLimit=10000,memoryLimit=1024000,stdin=None,stdout=None):
     max_memory = 0
     time_used = 0
     with open(pathOfSandbox+"/a.sh","w") as f:
@@ -63,9 +63,9 @@ def runCommand(command,timeLimit=50000,memoryLimit=1024000,stdin=None,stdout=Non
     returncode = child.returncode
 
     if not (returncode is None or returncode==0):
-        return runStatus(RE, time_used, max_memory,returncode,message=child.stderr.read(100))
+        return runStatus(RE, time_used, max_memory,returncode,message=child.stderr.read(200))
     else:
-        return runStatus(OK, time_used, max_memory,returncode,message=child.stderr.read(100))
+        return runStatus(OK, time_used, max_memory,returncode,message=child.stderr.read(200))
 def moveOutFromSandbox(oldName,newName=None):
     if(newName is None):
         newName=oldName
