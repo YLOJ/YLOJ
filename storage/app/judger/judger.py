@@ -140,8 +140,12 @@ try:
         subInfo[0][0]="Skipped"if subInfo[0][0]==SKIP else "Accepted" if subtaskScore==Full else "Partially Correct" if subtaskScore>0 else "Unaccepted"
         subInfo[0][1]=subtaskScore
         totalScore+=subtaskScore
+        status=[""]*(dataNum+1)
         for i in range(1,dataNum+1):
-            subInfo[i][0]=judgeStatus[subInfo[i][0]]
+            status[i]=judgeStatus[subInfo[i][0]]
+
+        for i in range(1,dataNum+1):
+            subInfo[i][0]=status[i]
         info.append(subInfo)
     report(result="Accepted" if totalScore==100 else "Unaccepted",
         score=totalScore,
