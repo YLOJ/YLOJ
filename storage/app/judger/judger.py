@@ -140,9 +140,6 @@ try:
         subInfo[0][0]="Skipped"if subInfo[0][0]==SKIP else "Accepted" if subtaskScore==Full else "Partially Correct" if subtaskScore>0 else "Unaccepted"
         subInfo[0][1]=subtaskScore
         totalScore+=subtaskScore
-        qaq=[]
-        for i in range(dataNum+1):
-            qaq.append(judgeStatus[subInfo[i][0]])
         for i in range(1,dataNum+1):
             subInfo[i][0]=qaq[i]
         info.append(subInfo)
