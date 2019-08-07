@@ -15,6 +15,9 @@ def compileCode():
     init()
     if lang==0:
         code=moveIntoSandbox("user/code.cpp")
+        s=runCommand('g++ {} -E | grep "pragma GCC optimize"'.format(code,code[:-4]),stdout=subprocess.PIPE)
+        if s.status==OK:
+            report(score=0,result="Judgement Failed",judge_info="拒绝评测")
         status=runCommand("g++ {} -o {} -O2".format(code,code[:-4]))
     if(status.status==OK):
         moveOutFromSandbox(code[:-4],"code")
@@ -137,7 +140,7 @@ try:
         subtaskScore=Full*subScore[subId]//100
         if Type=="sum":
             subtaskScore//=dataNum
-        subInfo[0][0]="Skipped"if subInfo[0][0]==SKIP else "Accepted" if subtaskScore==Full else "Partially Correct" if subtaskScore>0 else "Unaccepted"
+        subInfo[0][0]="Accepted" if subtaskScore==Full else "Unaccepted"
         subInfo[0][1]=subtaskScore
         totalScore+=subtaskScore
         status=[""]*(dataNum+1)
@@ -152,7 +155,7 @@ try:
         time=totalTime,
         memory=maxMemory,
         judge_info=json.dumps(info))
-except Exception as e:
+except Exception as e: 
     print(e)
     report(score=0,result="Judgement Failed",judge_info=str(e))
 

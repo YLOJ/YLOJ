@@ -35,7 +35,7 @@ def kill(pid):
             kill(i.split()[1])
     os.system("kill {}".format(pid))
 
-def runCommand(command,timeLimit=10000,memoryLimit=1024000,stdin=None,stdout=None):
+def runCommand(command,timeLimit=20000,memoryLimit=1024000,stdin=None,stdout=None):
     max_memory = 0
     time_used = 0
     with open(pathOfSandbox+"/a.sh","w") as f:
