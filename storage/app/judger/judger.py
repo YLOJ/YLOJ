@@ -141,7 +141,7 @@ try:
         subInfo[0][1]=subtaskScore
         totalScore+=subtaskScore
         for i in range(1,dataNum+1):
-            subInfo[i][0]=qaq[i]
+            subInfo[i][0]=judgeStatus[subInfo[i][0]]
         info.append(subInfo)
     report(result="Accepted" if totalScore==100 else "Unaccepted",
         score=totalScore,
