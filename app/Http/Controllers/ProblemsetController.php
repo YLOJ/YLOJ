@@ -99,12 +99,12 @@ class ProblemsetController extends Controller {
 		if (in_array($id,$this->problemManageList())){
 			$list=explode("\n",$request->content);
 			foreach($list as $one){
-				$s=str_replace(array(" ","\n","\r","\r\n"),'',$one);
+				$s=str_replace(array(" ","\n","\r","\r\n"),"",$one);
 				if(strlen($s)>1){
 					if($s[0]=='+'){
-						if(DB::select('select * from problem_manager where problem_id=? and username=?',[$id,substr($s,1)])==false && 
-							DB::select('select * from users where name=? and permission>0',[substr($s,1)])==true)
-							DB::insert('insert into problem_manager (username,problem_id) value(?,?)',[substr($s,1),$id]);
+						if(DB::select("select * from problem_manager where problem_id=? and username=?",[$id,substr($s,1)])==false && 
+							DB::select("select * from users where name=? and permission>=0",[substr($s,1)])!=false)
+							DB::insert("insert into problem_manager (username,problem_id) value(?,?)",[substr($s,1),$id]);
 					}
 					else if($s[0]=='-'){
 						DB::delete('delete from problem_manager where problem_id=? and username=?',[$id,substr($s,1)]);
