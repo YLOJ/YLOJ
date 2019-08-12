@@ -20,16 +20,7 @@
     @endauth
 
     <?php
-      $flag = Auth::check() && Auth::user() -> permission > 0;
       $links = $problemset -> links();
-      if (!$flag) {
-        $newset = array();
-        foreach ($problemset as $problem) {
-          if ($problem -> visibility == true)
-            array_push($newset, $problem);
-        }
-        $problemset = $newset;
-      }
     ?>
 
     <div class="row">

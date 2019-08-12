@@ -35,7 +35,8 @@
     <br>
     @include('buttons.jump', ['href' => url('/problem/data/'.$id) , 'text' => 'Manage Data'])
 
-    <br> 
+    @include('buttons.jump', ['href' => url('/problem/edit/manager/'.$id) , 'text' => 'Manage Managers'])
+    <br>
     <br>
 
     @include('buttons.jump-danger', ['href' => '/submission/delete_problem/'.$id , 'text' => 'Delete All Submission'])

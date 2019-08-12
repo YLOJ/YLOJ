@@ -2,7 +2,6 @@
 
 @section('content')
   <div class="container">
-
     <?php use Illuminate\Support\Facades\Storage; ?>
 
     <h2> 
@@ -14,8 +13,8 @@
     @else 
       <h3 class="text-danger"> No Data Exists </h3>
     @endif
-    <br>
-
+	<div>
+	<div id="uploadData" style='float: left'>
     <form action="/problem/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
       <label> <b> 上传data.zip: </b> </label> <br>
       <input type="file" name="data"> <br> <br>
@@ -23,24 +22,28 @@
       @include('buttons.submit',['text' => '上传'])
       @csrf
     </form>
-    <br>
+	</div>
+	<div id="updateConfig" style='float: left'>
     <form action="/problem/save_config/{{$id}}" method="post" enctype="multipart/form-data">
       <label> <b> 修改config.yml: </b> </label> <br>
 		<textarea name='config' rows=10>{{$config}}</textarea>
       <br> <br>
       @include('buttons.submit',['text' => '更新'])
       @csrf
-    </form>
-    <br>
+	</form>
+	</div>
+	<div id="formatData" style='float: left'>
     <form action="/problem/data_format/{{$id}}" method="post" enctype="multipart/form-data">
-      @include('buttons.submit',['text' => '生成数据列表'])
-
-      <label> <b> 规则：（自动匹配留空） </b> </label> <br>
+      <label> <b> 生成数据列表规则：（自动匹配留空） </b> </label> <br>
 
 		<textarea name='matchrule' rows=10></textarea>
       @csrf
+	  <br><br>
+      @include('buttons.submit',['text' => '生成'])
 	</form>
 	<br>
+	</div>
+	<div id="formatResult" style='float: left'>
 	@if($log!='')
 		<pre><code>{{$log}}</code></pre>
 	<br>
@@ -52,9 +55,9 @@
 	@else
 	  <h4> 并没有生成过数据列表 </h4>
 	@endif
+	</div>
+	</div>
 	<br>
-    @if (Storage::disk('data')->exists($id)) 
-      @include('buttons.jump',['href' => '/problem/data_download/'.$id , 'text' => 'Download'])
-    @endif
+	
   </div>
 @endsection

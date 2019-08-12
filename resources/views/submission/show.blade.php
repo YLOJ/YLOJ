@@ -83,7 +83,7 @@
 
 		<br>
 		@auth
-		  @if(Auth::user() -> permission > 0)
+		  @if($permission)
 			@include('buttons.jump-danger', ['href' => url('submission/rejudge/'.$sub -> id), 'text' => 'Rejudge'])
 			&nbsp
 			@include('buttons.jump-danger', ['href' => url('submission/delete/'.$sub -> id), 'text' => 'Delete'])

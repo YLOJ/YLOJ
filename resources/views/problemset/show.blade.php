@@ -17,7 +17,7 @@
             @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
 
             @auth
-              @if ( Auth::user()->permission > 0)
+              @if ($is_admin)
                 <button class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();">
                   <img src="{{ asset('svg/icons/edit.ico') }}" class="icon-sm"/> Edit </button>
                 <form id="myform" method="post" action="/problem/edit/{{$id}}">

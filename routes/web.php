@@ -23,6 +23,8 @@ Route::name('problem.')->prefix('problem')->group(function() {
     Route::any('/add', 'ProblemsetController@add')->name('add');
     Route::post('/add_submit', 'ProblemsetController@add_submit');
 
+    Route::any('/edit/manager/{id}', 'ProblemsetController@manager')->name('manager')->where('id', '[0-9]+');
+    Route::post('/update_manager/{id}', 'ProblemsetController@update_manager')->name('update_manager')->where('id', '[0-9]+');
     Route::any('/edit/{id}', 'ProblemsetController@edit')->name('edit')->where('id', '[0-9]+');
     Route::post('/edit_submit/{id}', 'ProblemsetController@edit_submit')->name('edit_submit')->where('id', '[0-9]+');
     

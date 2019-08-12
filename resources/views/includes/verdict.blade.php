@@ -1,17 +1,6 @@
 <?php
   $prob=DB::table('problemset')->where('id','=',$sub->problem_id)->first();
-  if($sub->contest_id==NULL){
-	if($prob->visibility == false && (!Auth::check()||Auth::user()->permission<=0)) {
-	    $sub->result ="Unshown";
-	    $sub->time_used =-1;
-	    $sub->memory_used =-1;
-	    $sub->user_name ="Unshown";
-	    $sub->problem_id="Unshown";
-	    $sub->problem_name="Unshown";
-	    $sub->created_at="2333-33-33 33:33:33";
-	}
-  }
-if (!isset($sub -> url))
+  if (!isset($sub -> url))
   $sub -> url = url("submission/".$sub -> id);
 ?>
 

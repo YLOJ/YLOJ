@@ -22,22 +22,20 @@ class SubmissionController extends Controller
 
     public function index(Request $request)
     {
-        $submission = DB::table('submission')->orderby('id', 'desc')->where('contest_id','=',NULL);
+		$submission = DB::table('submission')->orderby('id', 'desc');
+        if (!Auth::check() || Auth::User() -> permission <= 0) 
+			$submission=$submission->where('contest_id','=',NULL);
         $submission = $this->check($submission, $request, 'problem_id');
         $submission = $this->check($submission, $request, 'user_name');
         $submission = $this->check($submission, $request, 'min_score', 'score', '>=');
         $submission = $this->check($submission, $request, 'max_score', 'score', '<=');
-
+		$submission = $submission->whereIn('problem_id',$this->problemShowList());
         return view('submission.list', ['submissionset' => $submission -> paginate('10')]);
     }
 
     public function statistics($id, Request $request)
-    {
-        if(DB::table('problemset')->where('id','=',$id)->first()->visibility==false){
-            if(!Auth::check()||Auth::user()->permission<=0){
-                return redirect('404');
-            }
-        }
+	{
+		if(!in_array($id,$this->problemShowList()))return redirect('404');
         $raw_data = DB::table('submission') -> where('score', '=', 100) -> where('problem_id', '=', $id);
         $raw_data = $raw_data -> orderby('time_used', 'asc') -> get() -> toArray();
         $map = array();
@@ -72,7 +70,7 @@ class SubmissionController extends Controller
     public function show($id) 
     {
         $sub = DB::table('submission') -> where('id', $id) -> first();
-        if (!Auth::check() || Auth::user() -> permission <= 0) {
+		if (!in_array($sub->problem_id,$this->problemManageList())) {
 			if($sub -> contest_id!=NULL){
 				$contest=DB::table('contest')->where('id',$sub->contest_id)->first();
 				if($contest->begin_time<=NOW() && NOW()<=$contest->end_time){
@@ -81,30 +79,35 @@ class SubmissionController extends Controller
 					if($contest -> rule==0){$sub->result='Unshown';$sub->score=$sub->time_used=$sub->memory_used=-1;}
 				}
 			}
-        	else if (DB::table('problemset') -> where('id', '=', $sub -> problem_id) -> first() -> visibility == false) {
+			else if (!in_array($sub->problem_id,$this->problemShowList()))
 				return redirect('404');
-        	}
+			$permission=0;
         }
+		else 
+			$permission=1;
 		if($sub->result=="Accepted" or $sub->result=="Unaccepted")
 			$sub->judge_info=json_decode($sub->judge_info);
-        return view('submission.show', ['sub' => $sub]);
+        return view('submission.show', ['sub' => $sub,'permission'=>$permission]);
     }
-
     public function submitpage($id) 
     {
         if (!Auth::check()) {
             return redirect('login');
         }
-        if (DB::table('problemset')->where('id','=',$id)->first()->visibility==false && Auth::user()->permission<=0){
+		if (!in_array($id,$this->problemShowList()))
             return redirect('404');
-        }
-
         $title = DB::table('problemset')-> where('id','=',$id) -> first() -> title;
         return view('submission.submit', ['id' => $id,'title' => $title]);
     }
 
     public function submitcode(Request $request, $id) 
     {
+
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+		if (!in_array($id,$this->problemShowList()))
+            return redirect('404');
         DB::insert('insert into submission (
             problem_id,
             problem_name,
@@ -136,7 +139,8 @@ class SubmissionController extends Controller
 
     public function rejudge($id)
     {
-        if (!Auth::check() || Auth::User() -> permission <= 0) {
+		$pid=DB::table('submission')->where('id',$id)->first()->problem_id;
+		if (!in_array($pid,$this->problemManageList())) {
             return redirect('404');
         }
         DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
@@ -146,9 +150,8 @@ class SubmissionController extends Controller
 
     public function rejudge_problem($id)
     {
-        if (!Auth::check() || Auth::User() -> permission <= 0) {
+		if (!in_array($id,$this->problemManageList()))
             return redirect('404');
-        }
 
 		$sublist=DB::select('select * from submission where problem_id=?',[$id]);
         DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
@@ -159,9 +162,8 @@ class SubmissionController extends Controller
     }
     public function rejudge_problem_ac($id)
     {
-        if (!Auth::check() || Auth::User() -> permission <= 0) {
+		if (!in_array($id,$this->problemManageList()))
             return redirect('404');
-        }
 
 		$sublist=DB::select('select * from submission where problem_id=? and result="Accepted"',[$id]);
         DB::table('submission') -> where('problem_id', '=', $id) ->where('result','=','Accepted') ->  update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
@@ -172,6 +174,7 @@ class SubmissionController extends Controller
     }
     public function delete_submission($id)
     {
+		$pid=DB::table('submission')->where('id',$id)->first()->problem_id;
         if (!Auth::check() || Auth::User() -> permission <= 0) {
             return redirect('404');
         }
@@ -181,9 +184,9 @@ class SubmissionController extends Controller
 
     public function delete_problem_submission($id)
     {
-        if (!Auth::check() || Auth::User() -> permission <= 0) {
+
+		if (!in_array($id,$this->problemManageList()))
             return redirect('404');
-        }
         DB::table('submission') -> where('problem_id', '=', $id) -> delete();
         return redirect('problem/edit/'.$id);
     }
