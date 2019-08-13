@@ -14,7 +14,7 @@ class ProblemFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check() && Auth::user()->permission > 0;
+		return Auth::check();
     }
 
     /**
