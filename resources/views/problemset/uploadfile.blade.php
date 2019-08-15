@@ -4,7 +4,8 @@
   <div class="container">
     <h2> 
       Problem #{{ $id }} 
-    </h3>
+    </h2>
+    @include('buttons.jump', ['href' => url('/problem/edit/'.$id) , 'text' => '回到编辑题目页面'])
 	<div>
 	<div id="uploadFile" style="float: left">
     <form action="/problem/upload_file/{{$id}}" method="post" enctype="multipart/form-data">

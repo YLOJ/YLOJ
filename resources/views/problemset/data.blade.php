@@ -8,6 +8,7 @@
       Problem #{{ $id }} : Manage Data
     </h2>
 
+    @include('buttons.jump', ['href' => url('/problem/edit/'.$id) , 'text' => '回到编辑题目页面'])
     @if (Storage::disk('data')->exists($id))
       <h3 class="text-success"> Data Uploaded </h3>
     @else 

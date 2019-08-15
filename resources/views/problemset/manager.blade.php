@@ -12,6 +12,8 @@
       </div>
     @endif
     <h3><a href="{{url('/problem/'.$id)}}">Problem #{{$id}}</a> </h3>
+
+    @include('buttons.jump', ['href' => url('/problem/edit/'.$id) , 'text' => '回到编辑题目页面'])
 	<p>
 	用法：
 
