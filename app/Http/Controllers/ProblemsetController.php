@@ -160,7 +160,38 @@ class ProblemsetController extends Controller {
 			return redirect(route('problem.edit', $id));
 		}else return redirect('404');
 	}
-
+	public function view_file($id,$file){
+		if(in_array($id,$this->problemShowList()) && Storage::disk('uploads')->exists('problems/'.$id.'/'.$file))
+			return response()->file(storage_path('app/uploads').'/problems/'.$id.'/'.$file);
+		else return redirect('404');
+	}
+	public function upload($id){
+		if(!in_array($id,$this->problemManageList()))return redirect('404');
+		$list=Storage::disk('uploads')->files('problems/'.$id.'/');
+		$s=strlen('problems/'.$id.'/');
+		foreach($list as $loop=>$one){
+			$list[$loop]=substr($one,$s);
+		}
+		return view('problemset.uploadfile',[
+			'id'=>$id,
+			'filelist'=>$list
+		]);
+	}
+	public function upload_file(Request $request,$id){
+		if(!in_array($id,$this->problemManageList()))return redirect('404');
+		$file=$request->file('source');
+		if($file->isValid()){
+			Storage::disk('uploads')->put('problems/'.$id.'/'.$file->getClientOriginalName(),file_get_contents( $request -> file('source') ));
+		}
+		return redirect('/problem/upload/'.$id);
+	}
+	public function delete_file($id,$file){
+		if(!in_array($id,$this->problemManageList()))return redirect('404');
+		if(Storage::disk('uploads')->exists('problems/'.$id.'/'.$file)){
+			Storage::disk('uploads')->delete('problems/'.$id.'/'.$file);
+		}		
+		return redirect('/problem/upload/'.$id);
+	}
 	public function data($id)
 	{
 		if (in_array($id,$this->problemManageList())){

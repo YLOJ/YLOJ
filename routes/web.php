@@ -19,6 +19,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::name('problem.')->prefix('problem')->group(function() {
     Route::get('/', 'ProblemsetController@index')->name('index');
     Route::get('/{id}', 'ProblemsetController@show')->name('show')->where('id', '[0-9]+');
+    Route::get('/{id}/{file}', 'ProblemsetController@view_file')->name('view_file')->where('id', '[0-9]+')->where('file','\S+');
     
     Route::any('/add', 'ProblemsetController@add')->name('add');
     Route::post('/add_submit', 'ProblemsetController@add_submit');
@@ -27,6 +28,10 @@ Route::name('problem.')->prefix('problem')->group(function() {
     Route::post('/update_manager/{id}', 'ProblemsetController@update_manager')->name('update_manager')->where('id', '[0-9]+');
     Route::any('/edit/{id}', 'ProblemsetController@edit')->name('edit')->where('id', '[0-9]+');
     Route::post('/edit_submit/{id}', 'ProblemsetController@edit_submit')->name('edit_submit')->where('id', '[0-9]+');
+
+    Route::any('/upload/{id}', 'ProblemsetController@upload')->name('upload')->where('id', '[0-9]+');
+    Route::post('/upload_file/{id}', 'ProblemsetController@upload_file')->name('upload_file')->where('id', '[0-9]+');
+    Route::any('/delete_file/{id}/{file}', 'ProblemsetController@delete_file')->name('delete_file')->where('id', '[0-9]+')->where('file','\S+');;
     
     Route::any('/data/{id}', 'ProblemsetController@data')->name('data')->where('id', '[0-9]+');
     Route::post('/data_submit/{id}', 'ProblemsetController@data_submit')->name('data_submit')->where('id', '[0-9]+');
@@ -51,6 +56,7 @@ Route::get('/submission/rejudge_problem_ac/{id}', 'SubmissionController@rejudge_
 
 Route::get('/submission/delete/{id}', 'SubmissionController@delete_submission')->where('id', '[0-9]+');
 Route::get('/submission/delete_problem/{id}', 'SubmissionController@delete_problem_submission')->where('id', '[0-9]+');
+
 
 Route::name('contest.')->prefix('contest')->group(function() {
     Route::get('/', 'ContestController@index')->name('index');

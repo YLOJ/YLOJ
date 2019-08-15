@@ -1,101 +1,65 @@
 # YLOJ
+## 编译命令
+当前只支持C++，编译命令为`g++ code.cpp -o code -O2`
+## 题目数据
+### 手动格式化
+请将数据存储为形如X/dataY.in / X/dataY.ans的格式（其中X是subtask编号，从1开始，Y是数据点编号，从1开始）
 
-## 配置题目数据
+还要写个config.yml，然后打包上传。
 
-在题目数据上传页面下上传数据的压缩包, 
-包含所有测试文件以及配置文件 `config.yml`, 其中:
-
-- `test_cases` 表示题目数据组数, 从 0 开始标号.
-- `problem_name` 表示测试数据的前缀, 
-输入数据的格式形如 `{problem_name}{id}.in`, 
-输出数据的格式形如 `{problem_name}{id}.out`.
-- `time_limit` 和 `memory_limit` 表示时空限制, 
-单位分别为 s 和 mb.
-
-### 子任务
-
-如需配置子任务，应在配置文件中加入`subtasks`一项. 对于每个subtask：
-
-- `score`表示该subtask满分，必须为整数.
-- `test_cases`表示该subtask包含的测试点编号的集合. 可用`[l, r]`表示一段区间内的所有测试点，或用`[l1, r1, l2, r2, ...]`指定多段区间，也可直接用`{a, b, c, ...}`表示测试点编号的集合.
-- `dependency`表示该subtask依赖的subtask的集合. subtask从0开始标号，必须保证依赖的subtask在这个subtask之前. 如没有依赖可省略这一项.
-
+示例：
 ```yaml
-subtasks:
-    - score: 30
-      test_cases: [0, 2] # same as {0, 1, 2}
-    - score: 37
-      test_cases: [5, 6, 8, 10] # same as {5, 6, 8, 9, 10}
-    - score: 33
-      test_cases: {3, 4, 233, 666}
-      dependency: {0, 1}
+time_limit: 2000 #时间限制，单位为毫秒
+memory_limit: 256000 #空间限制，单位为KB
+input_file: sequence.in #可选，输入文件名，默认为标准输入
+output_file: sequence.out #可选，输出文件名，默认为标准输出
+subtask_num: 3 #subtask编号
+subtask1: #表示第1个subtask的信息
+checker: fcmp #使用的内置checker，自定义则不需要这一行
+data_num: 3 #测试点数 
+ type: min #类型：sum表示得分取每个点得分的平均数,min表示取每个点得分的最小值
+ score: 10 #subtask满分
+subtask2:
+ dependency: #可选，表示子任务依赖（仅类型为min时有效），该子任务的得分和这些子任务的得分取min
+  - 1 # 列表形式
+ data_num: 7  
+ type: min
+ score: 30
+subtask3:
+ dependency: 
+   - 2
+ data_num: 8  
+ type: min
+ score: 60
 ```
+**注意要按照yaml的语法，格式**
+### 自动匹配
+点击“生成”，就会自动递归匹配zip中所有对应的.in 与.out或者.ans(ans优先)，并且按照长度第一关键字，字典序第二关键字匹配。并且会显示
+### 数据校验器(checker)
+内置校验器有以下一些(转载自 [link](https://universaloj.github.io/post/传统题配置.html)):
 
-### 修改题目类型
+|校验器|功能|
+|------|----|
+|`ncmp`|（单行整数序列）比较有序64位整数序列|
+|`wcmp`|（单行字符串序列）比较字符串序列|
+|`fcmp`|（多行数据）逐行进行全文比较，**不忽略行末空格**，忽略文末回车。|
+|`icmp`|比较单个整数|
+|`ncmp`|（单行整数序列）比较有序64位整数序列|
+|`uncmp`|（单行整数序列）比较无序64位整数序列，即排序后比较|
+|`acmp`或`rcmp`|比较单个双精度浮点数，最大绝对误差为 1.5e-6|
+|`dcmp`|比较单个双精度浮点数，最大绝对或相对误差为 1.0e-6|
+|`rcmp4`|比较双精度浮点数序列，最大绝对或相对误差为 1.0e-4|
+|`rcmp6`|比较双精度浮点数序列，最大绝对或相对误差为 1.0e-6|
+|`rcmp9`|比较双精度浮点数序列，最大绝对或相对误差为 1.0e-9|
+|`rncmp`|比较双精度浮点数序列，最大绝对误差为 1.5e-5|
+|`hcmp`|比较单个有符号大整数|
+|`lcmp`|逐行逐字符串进行全文比较，多个空白字符视为一个|
+|`caseicmp`|多组数据，比较单个整数，输出形如：`Case <caseNumber>: <number>`|
+|`casencmp`|多组数据，比较整数序列，输出形如：`Case <caseNumber>: <number> <number> ... <number>`|
+|`casewcmp`|多组数据，比较字符串序列，输出形如：`Case <caseNumber>: <token> <token> ... <token>`|
+|`yesno`|比较单个`YES`和`NO`|
 
-更改 `problem_type` 来配置不同类型的题目, 
-可选项有: `[traditional, interactive, answer-only]`, 
-分别表示传统题, 交互题和提交答案题, 默认值为 `traditional`.
+当然你也可以自己写，使用testlib。
 
-#### 配置交互题
 
-将交互库命名为 `grader.cpp` 以及其他依赖文件和数据一起上传, 
-评测机在测试的时候会将 `grader.cpp` 和选手提交的代码共同编译.
-
-### 配置比较器
-
-比较器基于 [testlib](https://github.com/MikeMirzayanov/testlib).
-
-更改 `checker_type` 来使用不同的比较器, 
-可选项有: `[builtin, custom]`, 默认值为 `builtin`.
-
-#### 内置比较器
-
-更改 `checker_name` 来指定 [特定的比较器](https://github.com/MikeMirzayanov/testlib/tree/master/checkers),
-默认值为 `ncmp`.
-
-#### 自定义比较器
-
-将写好的比较器与数据一起上传, 并在 `checker_name` 一栏中填上比较器程序的名称.
-
-### 示例
-
-一般传统题示例
-
-```yaml
-problem_name: aplusb
-test_cases: 2
-time_limit: 1
-memory_limit: 128
-checker_type: builtin
-checker_name: ncmp
-```
-
-自定义比较器示例
-
-```yaml
-problem_name: aplusb
-test_cases: 2
-time_limit: 1
-memory_limit: 128
-checker_type: custom
-checker_name: spj
-```
-
-有subtask的题示例
-
-```yaml
-problem_name: aplusb
-time_limit: 1
-memory_limit: 128
-checker_type: builtin
-checker_name: fcmp
-subtasks:
-    - score: 30
-      test_cases: [0, 2]
-    - score: 37
-      test_cases: [5, 6, 8, 10]
-    - score: 33
-      test_cases: {3, 4, 233, 666}
-      dependency: {0, 1}
-```
+## 

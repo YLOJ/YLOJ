@@ -33,6 +33,8 @@
     </form>
 
     <br>
+    @include('buttons.jump', ['href' => url('/problem/upload/'.$id) , 'text' => 'Upload Files'])
+
     @include('buttons.jump', ['href' => url('/problem/data/'.$id) , 'text' => 'Manage Data'])
 
     @include('buttons.jump', ['href' => url('/problem/edit/manager/'.$id) , 'text' => 'Manage Managers'])
