@@ -76,6 +76,3 @@ Route::name('contest.')->prefix('contest')->group(function() {
     Route::get('/{cid}/submit/{pid}', 'ContestController@submitpage')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
     Route::post('/{cid}/submit/{pid}', 'ContestController@submitcode')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
 });
-Route::get('/404', function () {
-	return view('404');
-});
