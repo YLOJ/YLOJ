@@ -4,7 +4,7 @@ __author__ = 'QAQ AutoMaton'
 import sys,pymysql,signal
 from .env import *
 from .constant import *
-import random,os,subprocess,psutil,time
+import random,os,subprocess,psutil,time,requests
 def init():
     os.system("rm -rf {}/tmp/*".format(pathOfSandbox))
 def randomString():
@@ -75,11 +75,22 @@ def judgingMessage(message):
     pass
     # TODO
     # print("judging:",message)
-def report(result='',score=0,time=-1,memory=-1,judge_info=''):
+
+def reportCur(result='',score=0,time=-1,memory=-1,judge_info=''):
     db=pymysql.connect(host,user,password,database)
     cursor=db.cursor()
     sql="update submission set result='{}',score={},time_used={},memory_used={},judge_info='{}' where id={}".format(result,score,time,memory,pymysql.escape_string(judge_info),sys.argv[1])
     cursor.execute(sql)
     db.commit()
-    sys.exit() 
+    requests.post(link,{
+    'token':token,
+    'id': sys.argv[1],
+    'result':result,
+    'score':score,
+    'time':time,
+    'memory':memory
+        });
 
+def report(result='',score=0,time=-1,memory=-1,judge_info=''):
+    reportCur(result,score,time,memory,judge_info)
+    sys.exit()

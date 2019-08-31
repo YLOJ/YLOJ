@@ -6,9 +6,7 @@
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
+| routes are loaded by the RouteServiceProvider within a group which | contains the "web" middleware group. Now create something great!  |
 */
 
 Auth::routes();
@@ -56,7 +54,6 @@ Route::get('/submission/rejudge_problem_ac/{id}', 'SubmissionController@rejudge_
 
 Route::get('/submission/delete/{id}', 'SubmissionController@delete_submission')->where('id', '[0-9]+');
 Route::get('/submission/delete_problem/{id}', 'SubmissionController@delete_problem_submission')->where('id', '[0-9]+');
-
 
 Route::name('contest.')->prefix('contest')->group(function() {
     Route::get('/', 'ContestController@index')->name('index');

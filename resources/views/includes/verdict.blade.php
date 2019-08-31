@@ -13,7 +13,7 @@
 <td> 
   {{ $sub -> user_name }} 
 </td>
-<td>
+<td id="result">
   @if ($sub -> result == "Waiting") 
     <a class="text-primary" href={{ $sub -> url }}>
   @elseif ($sub -> result == "Accepted") 
@@ -21,27 +21,19 @@
   @elseif ($sub -> result == "Data Error") 
     <a style="color:#2F4F4F" href={{ $sub -> url }}>
   @elseif ($sub -> result == "Judgement Failed") 
-    <a style="color:#2F4F4F" href={{ $sub -> url }}>
-  @elseif ($sub -> result == "Runtime Error") 
-    <a style="color:#FF8C00" href={{ $sub -> url }}>
+	<a style="color:#2F4F4F" href={{ $sub -> url }}>
   @elseif ($sub -> result == "Compile Error") 
     <a style="color:#696969" href={{ $sub -> url }}>
-  @elseif ($sub -> result == "Time Limit Exceeded") 
-    <a style="color:#8B008B" href={{ $sub -> url }}>
-  @elseif ($sub -> result == "Memory Limit Exceeded") 
-    <a style="color:#8B4513" href={{ $sub -> url }}>
-  @elseif ($sub -> result == "Presentation Error") 
-    <a style="color:#556B2F" href={{ $sub -> url }}>
-  @elseif ($sub -> result == "Partially Correct") 
-    <a style="color:#3CB371" href={{ $sub -> url }}>
-  @else 
+  @elseif (substr($sub->result,0,7)=="Running")
+    <a style="color:#0033CC" href={{ $sub -> url }}>
+  @else
     <a class="text-danger" href={{ $sub -> url }}>
   @endif
   <b> {{ $sub -> result }} </b> </a>
 </td>
-<td>
+<td id="score">
   @if ($sub -> result == "Waiting" || $sub -> score == -1)
-    <a> / </a>
+    <a class="text-primary" href={{$sub -> url}}> <b>/</b> </a>
   @else
     @if ($sub -> score == 100) 
       <a class="text-success" href={{$sub -> url}}>
@@ -52,17 +44,19 @@
     <b> {{ $sub -> score }} </b> </a>
   @endif
 </td>
-
+<td id="time">
 @if ($sub -> time_used >= 0)
-  <td> {{ $sub -> time_used }}ms </td>
+  {{ $sub -> time_used }}ms
 @else 
-  <td> / </td>
+  /
 @endif
-
+</td>
+<td id="memory">
 @if ($sub -> memory_used >= 0)
-  <td> {{ $sub -> memory_used }}kb </td>
+  {{ $sub -> memory_used }}kb
 @else 
-  <td> / </td>
+  /
 @endif
+</td>
 
 <td> {{ $sub -> created_at }} </td>

@@ -24,6 +24,8 @@
         "vue-template-compiler": "^2.6.8"
     },
     "dependencies": {
-        "flatpickr": "^4.5.7"
+        "flatpickr": "^4.5.7",
+        "laravel-echo": "^1.5.4",
+        "socket.io-client": "^2.2.0"
     }
 }

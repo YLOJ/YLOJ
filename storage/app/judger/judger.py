@@ -102,6 +102,7 @@ totalScore=0
 totalTime=0
 maxMemory=0
 try:
+    reportCur(result="Compiling")
     timeLimit=int(config.get("time_limit",1000))
     if timeLimit>20000:
         report(result="Data Error",judge_info="time limit is too huge")
@@ -114,7 +115,6 @@ try:
     checkerType=config.get('checker',None)
     compileSpj()
     compileCode()
-    score=0
     subScore=[0]*(subtaskNum+1)
     info=[]
     for subId in range(1,subtaskNum+1):
@@ -129,6 +129,10 @@ try:
         dataNum=sub.get("data_num",0)
         subInfo=[[SKIP,0]]+[[SKIP,0,0,0,"",0]]*dataNum
         for dataId in range(1,dataNum+1):
+            reportCur(result="Running on Test {}.{}".format(subId,dataId),
+            score=totalScore+(subScore[subId]*Full//100 if Type=="min" else subScore[subId]*Full//100//dataNum),
+            time=totalTime,
+            memory=maxMemory)
             if Type=="min" and subScore[subId]==0:
                 break
 #            judgingMessage("Judging Test {} of Subtask {}".format(dataId,subId))

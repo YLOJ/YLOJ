@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Events\Submission;
 class SubmissionController extends Controller
 {
     public function check($sub, $request, $para, $_para = "", $operator = '=') 
@@ -99,7 +100,11 @@ class SubmissionController extends Controller
         $title = DB::table('problemset')-> where('id','=',$id) -> first() -> title;
         return view('submission.submit', ['id' => $id,'title' => $title]);
     }
-
+	public function update(Request $request){
+		$req=$request->all();
+		if($req ['token'] != env('UPDATE_SUBMISSION_TOKEN'))return redirect('404');
+		broadcast(new Submission($req));
+	}
     public function submitcode(Request $request, $id) 
     {
 
@@ -190,7 +195,6 @@ class SubmissionController extends Controller
         DB::table('submission') -> where('problem_id', '=', $id) -> delete();
         return redirect('problem/edit/'.$id);
     }
-
     public function customtests() 
     {
         return view('submission.customtests');

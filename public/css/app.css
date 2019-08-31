@@ -10666,9 +10666,4 @@ a.text-dark:focus {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
-.text-summary {
- padding: .75rem;
- font-weight: 700;
- display:inline-block;
- margin-right: -3px;
-}
+
