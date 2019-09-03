@@ -100,10 +100,10 @@ Echo.channel('Submission')
 						<?php
 							$caseid=$loop->index;
 						?>
-						@if($info[0] == 'Accepted') <div class="table-success text-success" style="width:100%;;color: #38c172 !important" onClick="updatehide({{$subid}},{{$caseid}})" >
+						@if($info[0] == 'Accepted') <div class="table-success text-success" style="width:100%;" onClick="updatehide({{$subid}},{{$caseid}})" >
   
-						@elseif($info[0] == 'Partially Correct') <div class="table-warning" style="color:orange;width:100%;color: #38c172 !important" onClick="updatehide({{$subid}},{{$caseid}})" > 
-						@else <div class="table-danger text-danger" style="width:100%;color: #38c172 !important" onClick="updatehide({{$subid}},{{$caseid}})" >
+						@elseif($info[0] == 'Partially Correct') <div class="table-warning" style="color:orange;width:100%" onClick="updatehide({{$subid}},{{$caseid}})" > 
+						@else <div class="table-danger text-danger" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
 						@endif
 						<div class="text-summary" style="width:17%;float:left"> Case {{ $loop -> index}}: </div> 
 						<div class="text-summary" style="width:23%;float:left"> {{ $info[0] }} </div> 

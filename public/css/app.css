@@ -1732,13 +1732,13 @@ pre code {
   border-color: #98dfb6;
 }
 .table-success div{
-  background-color: #c7eed8;
+  background-color: #c7eed8 !important;
 }
 .table-warning div{
-  background-color: #fffacc;
+  background-color: #fffacc !important;
 }
 .table-danger div{
-  background-color: #f7c6c5;
+  background-color: #f7c6c5 !important;
 }
 .table-hover .table-success:hover {
   background-color: #b3e8ca;
