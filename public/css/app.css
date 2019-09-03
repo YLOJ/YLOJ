@@ -1722,6 +1722,7 @@ pre code {
 .table-success > th,
 .table-success > td {
   background-color: #c7eed8;
+
 }
 
 .table-success th,
@@ -1730,7 +1731,15 @@ pre code {
 .table-success tbody + tbody {
   border-color: #98dfb6;
 }
-
+.table-success div{
+  background-color: #c7eed8;
+}
+.table-warning div{
+  background-color: #fffacc;
+}
+.table-danger div{
+  background-color: #f7c6c5;
+}
 .table-hover .table-success:hover {
   background-color: #b3e8ca;
 }
