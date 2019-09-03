@@ -105,8 +105,8 @@ Echo.channel('Submission')
 						@else <div class="table-danger text-danger" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
 						@endif
 						<div>
-						<div class="text-summary" style="width:17%"> Case {{ $loop -> index}}: </div> 
-						<div class="text-summary" style="width:23%"> {{ $info[0] }} </div> 
+						<div class="text-summary" style="width:16%"> Case {{ $loop -> index}}: </div> 
+						<div class="text-summary" style="width:22%"> {{ $info[0] }} </div> 
 						<div class="text-summary" style="width:20%"> Score : {{ $info[5] }} </div>
 						<div class="text-summary" style="width:18%"> Time : {{ $info[1] }} ms </div> 
 						<div class="text-summary" style="width:22%"> Memory : {{ $info[2] }}kb  </div>

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Yaml\Yaml;
 class ContestController extends Controller
@@ -194,6 +195,10 @@ class ContestController extends Controller
 
 	public function submitcode(Request $request, $cid, $pid) 
 	{
+
+        if (!Auth::check()) {
+            return redirect('login');
+        }
 		DB::insert('insert into submission (
 			problem_id,
 			problem_name,
@@ -219,6 +224,8 @@ class ContestController extends Controller
 			NOW(),
 			$cid,
 		]);
+		$xid=DB::getPdo()->lastInsertId();
+		Redis::rpush('submission','test '.$xid);
 		return redirect('/contest/mysubmission/'.$cid);
 	}
 
