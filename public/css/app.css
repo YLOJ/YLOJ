@@ -10675,4 +10675,14 @@ a.text-dark:focus {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+.text-summary{
+ font-size: 15px;
+}
+.case-table{
+}
+.case-td{
+	float:left;
+	padding:1%;
+	position: relative;
+}
 

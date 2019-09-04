@@ -100,16 +100,17 @@ Echo.channel('Submission')
 						<?php
 							$caseid=$loop->index;
 						?>
-						@if($info[0] == 'Accepted') <div class="table-success text-success" style="width:100%;" onClick="updatehide({{$subid}},{{$caseid}})" >
+						@if($info[0] == 'Accepted') <div class="table-success text-success case-table" style="width:100%;" onClick="updatehide({{$subid}},{{$caseid}})" >
   
-						@elseif($info[0] == 'Partially Correct') <div class="table-warning" style="color:orange;width:100%" onClick="updatehide({{$subid}},{{$caseid}})" > 
-						@else <div class="table-danger text-danger" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
+						@elseif($info[0] == 'Partially Correct') <div class="table-warning case-table" style="color:orange;width:100%" onClick="updatehide({{$subid}},{{$caseid}})" > 
+						@else <div class="table-danger text-danger case-table" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
 						@endif
-						<div class="text-summary" style="width:17%;float:left"> Case {{ $loop -> index}}: </div> 
-						<div class="text-summary" style="width:23%;float:left"> {{ $info[0] }} </div> 
-						<div class="text-summary" style="width:20%;float:left"> Score : {{ $info[5] }} </div>
-						<div class="text-summary" style="width:18%;float:left"> Time : {{ $info[1] }} ms </div> 
-						<div class="text-summary" style="width:22%;float:left"> Memory : {{ $info[2] }}kb  </div>
+						
+						<div class="text-summary case-td" style="width:17%"> Case {{ $loop -> index}}: </div> 
+						<div class="text-summary case-td" style="width:23%"> {{ $info[0] }} </div> 
+						<div class="text-summary case-td" style="width:20%"> Score : {{ $info[5] }} </div>
+						<div class="text-summary case-td" style="width:18%"> Time : {{ $info[1] }} ms </div> 
+						<div class="text-summary case-td" style="width:22%"> Memory : {{ $info[2] }}kb  </div>
 						</div>
 						<div class="text-detail" style="display:none" id="{{$subid}}-{{$caseid}}details">
 						测试信息：
