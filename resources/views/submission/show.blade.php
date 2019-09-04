@@ -105,7 +105,6 @@ Echo.channel('Submission')
 						@elseif($info[0] == 'Partially Correct') <div class="table-warning case-table" style="color:orange;width:100%" onClick="updatehide({{$subid}},{{$caseid}})" > 
 						@else <div class="table-danger text-danger case-table" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
 						@endif
-						
 						<div class="text-summary case-td" style="width:17%"> Case {{ $loop -> index}}: </div> 
 						<div class="text-summary case-td" style="width:23%"> {{ $info[0] }} </div> 
 						<div class="text-summary case-td" style="width:20%"> Score : {{ $info[5] }} </div>
@@ -116,6 +115,10 @@ Echo.channel('Submission')
 						测试信息：
 						<pre><code>{{$info[4]}}</code></pre>	
 						</div>
+						<div style="height:1px"></div>
+					@endforeach
+				  @endcomponent
+				@endforeach
 						<script>
 						function updatehide(subid,caseid){
 							s=subid+'-'+caseid+'details';
@@ -123,10 +126,9 @@ Echo.channel('Submission')
 							$('#'+s).toggle();
 						}
 						</script>
-					@endforeach
-				  @endcomponent
-				@endforeach
+
 				@endif
+
 			@endcomponent
           @elseif($sub -> result != 'Waiting' && $sub->result!='Running')
             @component('includes.collapse_box', ['id' => 'error_info', 'title' => 'Error Details'])

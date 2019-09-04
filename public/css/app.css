@@ -10679,10 +10679,13 @@ a.text-dark:focus {
  font-size: 15px;
 }
 .case-table{
+	position:relative;
+	height:auto;
+	overflow:hidden;
+	border-radius:10px;
 }
 .case-td{
 	float:left;
 	padding:1%;
-	position: relative;
 }
 
