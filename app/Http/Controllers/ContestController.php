@@ -53,7 +53,7 @@ class ContestController extends Controller
 
 	public function add() 
 	{
-		if (Auth::check() && Auth::user()->permission > 0) {
+		if (Auth::check() && $this->is_admin()) {
 			return view('contest.add');
 		} else {
 			return redirect('404');
@@ -93,7 +93,7 @@ class ContestController extends Controller
 
 	public function edit($id) 
 	{
-		if (Auth::check() && Auth::user()->permission > 0) {
+		if (Auth::check() && $this->is_admin()) {
 			$contest = DB::table('contest') -> where('id', $id) -> first();
 			return view('contest.edit', ['contest' => $contest]);
 		} else {
@@ -144,7 +144,7 @@ class ContestController extends Controller
 		if (!Auth::check()) {
 			return redirect('login');
 		}
-		if (NOW() < $contest->begin_time && Auth::user()->permission <= 0) {
+		if (NOW() < $contest->begin_time && !$this->is_admin()) {
 			return redirect('404');
 		}
 		if (Storage::disk('data')->exists($pid.'/config.yml')){
@@ -183,7 +183,7 @@ class ContestController extends Controller
 		if (!Auth::check()) {
 			return redirect('login');
 		}
-		if (Auth::user()->permission <= 0) {
+		if (!$this->is_admin()) {
 			if (NOW() < $contest->begin_time || NOW() > $contest->end_time) {
 				return redirect('404');
 			}
@@ -232,7 +232,7 @@ class ContestController extends Controller
 	public function submission(Request $request, $id)
 	{
 		$contest = DB::table('contest')->where('id', $id)->first();
-		if ((Auth::check() && Auth::user() -> permission > 0 )||(NOW()>$contest->end_time)) {
+		if ((Auth::check() && $this->is_admin() )||(NOW()>$contest->end_time)) {
 			$submission = DB::table('submission')->orderby('id', 'desc')->where('contest_id','=',$id);
 			$submission = $this->check($submission, $request, 'problem_id');
 			$submission = $this->check($submission, $request, 'user_name');
@@ -259,7 +259,7 @@ class ContestController extends Controller
 	public function standings($cid)
 	{
 		$contest = DB::table('contest')->where('id', $cid)->first();
-		if ((Auth::check() && Auth::user() -> permission > 0 )||(NOW()>$contest->end_time)) {
+		if ((Auth::check() && $this->is_admin() )||(NOW()>$contest->end_time)) {
 			$data = DB::table('submission') -> where('contest_id', $cid) 
 								   -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
 			$standings = $data -> select('user_id') -> groupby('user_id') -> get() -> toarray();

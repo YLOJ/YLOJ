@@ -24,7 +24,7 @@ class SubmissionController extends Controller
     public function index(Request $request)
     {
 		$submission = DB::table('submission')->orderby('id', 'desc');
-        if (!Auth::check() || Auth::User() -> permission <= 0) 
+		if (!Auth::check() || Auth::User() -> permission <= 1) 
 			$submission=$submission->where('contest_id','=',NULL);
         $submission = $this->check($submission, $request, 'problem_id');
         $submission = $this->check($submission, $request, 'user_name');
@@ -180,7 +180,7 @@ class SubmissionController extends Controller
     public function delete_submission($id)
     {
 		$pid=DB::table('submission')->where('id',$id)->first()->problem_id;
-        if (!Auth::check() || Auth::User() -> permission <= 0) {
+        if (!Auth::check() || Auth::User() -> permission <= 1) {
             return redirect('404');
         }
         DB::table('submission') -> where('id', '=', $id) -> delete();

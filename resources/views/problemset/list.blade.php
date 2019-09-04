@@ -8,7 +8,7 @@
     </div>
 
     @auth
-      @if ( Auth::user()->permission > 0 )
+      @if ( Auth::user()->permission > 1 )
         <div>
           <form method="post" action="problem/add">
             @include('buttons.submit' , ['text' => 'Add Problem'])

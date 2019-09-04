@@ -12,15 +12,19 @@ use Illuminate\Support\Facades\Auth;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+	public function is_admin(){
+		return Auth::check() && Auth::user()->permission>1;
+	}
 	public function problemShowListSQL(){
 		if(Auth::check()){
-			if(Auth::user()->permission>0)return DB::table('problemset'); 
+			if($this->is_admin())return DB::table('problemset'); 
 			else{
 				$managerlist=array_column(DB::select('select problem_id from problem_manager where username=?',[Auth::user()->name]),'problem_id');
-				return DB::table('problemset')->whereIn('id',$managerlist)->orWhere('visibility','=','1');
+				return DB::table('problemset')->whereIn('id',$managerlist)->orWhere('visibility','<=',Auth::user()->permission);
 			}
+			return DB::table('problemset')->where('visibility','<=',Auth::user()->permission);
 		}
-		return DB::table('problemset')->where('visibility','=','1');
+		return DB::table('problemset')->where('visibility','=',0);
 	}
 
 	public function problemShowList(){
@@ -28,7 +32,7 @@ class Controller extends BaseController
 	}
 	public function problemManageList(){
 		if(Auth::check()){
-			if(Auth::user()->permission>0)return array_column(DB::select('select id from problemset'),'id');
+			if($this->is_admin())return array_column(DB::select('select id from problemset'),'id');
 			else return array_column(DB::select('select problem_id from problem_manager where username=?',[Auth::user()->name]),'problem_id');	
 		}
 		else return array();		

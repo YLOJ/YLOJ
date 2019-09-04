@@ -3,7 +3,7 @@
 @section('content')
   <div class="container">
     @auth
-      @if ( Auth::user()->permission > 0 )
+      @if ( Auth::user()->permission > 1 )
         <div>
           <form method="post" action="contest/add">
             @include('buttons.submit' , ['text' => 'Add Contest'])

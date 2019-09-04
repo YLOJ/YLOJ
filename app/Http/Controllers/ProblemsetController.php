@@ -60,7 +60,7 @@ class ProblemsetController extends Controller {
 
     public function add()
     {
-        if (Auth::check() && Auth::user()->permission > 0) {
+        if (Auth::check() && $this->is_admin()) {
             return view('problemset.add');
         } else {
             return redirect('404');
@@ -70,7 +70,7 @@ class ProblemsetController extends Controller {
     public function add_submit(ProblemFormRequest $request)
     {
 
-		if (Auth::check() && Auth::user()->permission > 0) {
+		if (Auth::check() && $this->is_admin()) {
 			DB::insert('insert into `problemset` (
 				`title`, 
 				`content_md`
@@ -132,7 +132,6 @@ class ProblemsetController extends Controller {
 
 	public function edit_submit(ProblemFormRequest $request, $id)
 	{
-
 		if (in_array($id,$this->problemManageList())){
 			DB::update(
 				"update `problemset` set 
@@ -143,7 +142,7 @@ class ProblemsetController extends Controller {
 				[
 					$request->input('title'),
 					$request->input('content_md'),
-					$request->input('visibility') != null,
+					$request->input('visibility'),
 					$id,
 				]
 			);
@@ -270,7 +269,7 @@ class ProblemsetController extends Controller {
 
 	public function delete_problem($id)
 	{
-		if (Auth::check() && Auth::user()->permission > 0) {
+		if (Auth::check() && $this->is_admin()) {
 			DB::table('problemset') -> where('id', '=', $id) -> delete();
 			DB::table('submission') -> where('problem_id', '=', $id) -> delete();
 			Storage::disk('data') -> deleteDirectory($id);
