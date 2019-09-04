@@ -21,8 +21,9 @@
 		<table class="table table-bordered">
 		  <thead>
 		    <tr>
-			  <th style="width: 70%">文件名</th>
+			  <th style="width: 20%">文件名</th>
 			  <th style="width: 10%">删除</th>
+			  <th style="width: 50%">链接</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -30,7 +31,7 @@
 		      @if ($loop -> index % 2 == 0) <tr style="background-color:#F3F3F3">
 		      @else <tr>
 		      @endif
-		      <td> <a href='/problem/{{$id}}/{{$one}}'>{{ $one }}</a> </td><td><a href='/problem/delete_file/{{$id}}/{{$one}}'><img src="{{ asset('svg/icons/delete.svg') }}"/></a> </td>
+			  <td> <a href='/problem/{{$id}}/{{$one}}'>{{ $one }}</a> </td><td><a href='/problem/delete_file/{{$id}}/{{$one}}'><img src="{{ asset('svg/icons/delete.svg') }}"/></a> </td><td><pre>[{{$one}}](/problem/{{$id}}/{{$one}})</pre></td>
 		      </tr>
 		    @endforeach
 		  </tbody>
