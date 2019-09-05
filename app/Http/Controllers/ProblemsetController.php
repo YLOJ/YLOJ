@@ -160,7 +160,10 @@ class ProblemsetController extends Controller {
 		}else return redirect('404');
 	}
 	public function view_file($id,$file){
-		if(in_array($id,$this->problemShowList()) && Storage::disk('uploads')->exists('problems/'.$id.'/'.$file))
+		$contests=array_column(DB::table('contest_problems')->where('problem',$id)->get()->toArray(),'id');
+		if(
+			(in_array($id,$this->problemShowList()) || $this->contestShowListSQL()->where('begin_time','<=',now())->whereIn('id',$contests)->count())&& 
+			Storage::disk('uploads')->exists('problems/'.$id.'/'.$file))
 			return response()->file(storage_path('app/uploads').'/problems/'.$id.'/'.$file);
 		else return redirect('404');
 	}
