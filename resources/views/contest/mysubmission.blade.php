@@ -5,8 +5,8 @@ if($BAN){
 	foreach ($submissionset as $id => $sub){
 		$submissionset[$id]->result='Unshown';
 		$submissionset[$id]->score='Unshown';
-		$submissionset[$id]->time='Unshown';
-		$submissionset[$id]->memory='Unshown';
+		$submissionset[$id]->time_used='Unshown';
+		$submissionset[$id]->memory_used='Unshown';
 	}
 }
 ?>
