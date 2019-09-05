@@ -3,7 +3,7 @@
 @section('content')
   <div class="container">
     <br>
-    <h2 style='text-align:center;'> Standinds </h2>
+    <h2 style='text-align:center;'> Standings </h2>
     <br>
     <table id="standings" class="table table-bordered tablesort">
       <thead>
