@@ -8,6 +8,7 @@
 </head>
 
 @section('content')
+@if($sub->result !="Unshown")
 <script src=/js/app.js></script>
 <script>
 var style={};
@@ -62,6 +63,7 @@ Echo.channel('Submission')
 	}
 });
 </script>
+@endif
   <div class="container">
     <div class="row">
       <div class="col">
