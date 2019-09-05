@@ -11,7 +11,8 @@
         </ul>
       </div>
     @endif
-
+	<h2> <a href="/contest/{{$contest->id}}">Contest {{$contest->id}}</h2>
+    @include('buttons.jump', ['href' => url('/contest/edit/problemset/'.$contest->id) , 'text' => '编辑比赛题目'])
     <form action="/contest/edit_submit/{{ $contest -> id }}" method="post">    
       <div class="form-group">
         <label>Title</label>
@@ -33,11 +34,6 @@
    			}
    		</script>
 
-      </div>
-      <div class="form-group">
-        <p class="text-small"> </p>
-        <label> Problem IDs (divide with ',' and avoid using spaces, e.g.'233,234,236') </label>
-        <input type="text" name="problemset" value="{{ $contest -> problemset }}" class="form-control"> 
       </div>
       <div class="form-group">
         <label> Contest Info </label> <br>

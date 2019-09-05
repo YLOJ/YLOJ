@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Yaml\Yaml;
 class ContestController extends Controller
 {
-
 	public function check($sub, $request, $para, $_para = "", $operator = '=') 
 	{
 		if ($_para == "") {
@@ -28,32 +27,35 @@ class ContestController extends Controller
 	public function index()
 	{
 		return view('contest.list', [
-			'running_contests' => DB::table('contest') -> where('begin_time', '<=', now()) -> where('end_time', '>', now()) -> paginate(1000),
-			'upcoming_contests' => DB::table('contest') -> where('begin_time', '>', now()) -> orderby('begin_time', 'asc') -> paginate(1000),
-			'past_contests' => DB::table('contest') -> where('end_time', '<=', now()) -> orderby('end_time', 'desc') -> paginate(20)
+			'running_contests' => $this->contestShowListSQL()-> where('begin_time', '<=', now()) -> where('end_time', '>', now()) -> paginate(1000),
+			'upcoming_contests' =>$this->contestShowListSQL()-> where('begin_time', '>', now()) -> orderby('begin_time', 'asc') -> paginate(1000),
+			'past_contests' => $this->contestShowListSQL()-> where('end_time', '<=', now()) -> orderby('end_time', 'desc') -> paginate(20)
 		]);
 	}
+	public function getProblemList($id){
+		$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
+		return $problems;
 
+	}
 	public function show($id) 
 	{
+		if(!in_array($id,$this->contestShowList()))return redirect('404');
 		$contest = DB::table('contest')->where('id', $id)->first();
-		if ($contest -> problemset != null) {
-			$contest -> problemset = explode(',', $contest -> problemset);
-			foreach ($contest -> problemset as &$problem) {
-				$pid = $problem;
-				$problem = (object)null;
-				$problem -> id = $pid;
-				$problem -> title = DB::table('problemset')->where('id', $pid)->first()->title;
-			}
-		} else {
-			$contest -> problemset = array();
+		$list=$this->getProblemList($id);
+		$contest->problemset=array();
+		foreach($list as $pid){
+			$problem=(object)null;
+			$problem -> id = $pid;
+			$problem -> title = DB::table('problemset')->where('id', $pid)->first()->title;
+			$contest->problemset[]=$problem;
 		}
+
 		return view('contest.show', ['contest' => $contest]);
 	}
 
 	public function add() 
 	{
-		if (Auth::check() && $this->is_admin()) {
+		if ($this->is_admin()) {
 			return view('contest.add');
 		} else {
 			return redirect('404');
@@ -62,29 +64,18 @@ class ContestController extends Controller
 
 	public function add_submit(ContestFormRequest $request) 
 	{
-		$set = explode(',', $request -> input('problemset'));
-		$map = array();
-		$newset = array();
-		foreach ($set as $id) {
-			if (DB::table('problemset') -> where('id', $id) -> count() > 0 && !isset($map[$id])) {
-				$map[$id] = 1;
-				array_push($newset, $id);
-			}
-		}
-
+		if(!$this->is_admin())return redirect('404');
 		DB::insert('insert into `contest` (
 			`title`,
 			`contest_info`,
 			`begin_time`,
 			`end_time`,
-			`problemset`,
 			`rule`
 		) values (?, ?, ?, ?, ?, ?)', [
 			$request -> input('title'),
 			$request -> input('contest_info'),
 			$request -> input('begin_time'),
 			$request -> input('end_time'),
-			implode(',', $newset),
 			$request -> input('rule')
 		]);
 
@@ -93,32 +84,19 @@ class ContestController extends Controller
 
 	public function edit($id) 
 	{
-		if (Auth::check() && $this->is_admin()) {
-			$contest = DB::table('contest') -> where('id', $id) -> first();
-			return view('contest.edit', ['contest' => $contest]);
-		} else {
-			return redirect('404');
-		}
+		if(!in_array($id,$this->contestManageList()))return redirct('404');
+		$contest = DB::table('contest') -> where('id', $id) -> first();
+		return view('contest.edit', ['contest' => $contest]);
 	}
 
 	public function edit_submit(ContestFormRequest $request, $cid) 
 	{
-		$set = explode(',', $request -> input('problemset'));
-		$map = array();
-		$newset = array();
-		foreach ($set as $id) {
-			if (DB::table('problemset') -> where('id', $id) -> count() > 0 && !isset($map[$id])) {
-				$map[$id] = 1;
-				array_push($newset, $id);
-			}
-		}
-
+		if(!in_array($cid,$this->contestManageList()))return redirct('404');
 		DB::update("update `contest` set
 			`title` = ?,
 			`contest_info` = ?,
 			`begin_time` = ?,
 			`end_time` = ?,
-			`problemset` = ?,
 			`rule` = ?
 			where `id` = ?", 
 			[
@@ -126,7 +104,6 @@ class ContestController extends Controller
 				$request -> input('contest_info'),
 				$request -> input('begin_time'),
 				$request -> input('end_time'),
-				implode(',', $newset),
 				$request -> input('rule'),
 				$cid
 			]
@@ -134,9 +111,51 @@ class ContestController extends Controller
 
 		return redirect(route('contest.index'));
 	}
+	public function edit_problems($id)
+	{
+		if (in_array($id,$this->contestManageList())){
+			$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
+			$problemset=array();
+			foreach($problems as $pid){
+				$problem=(object)null;
+				$problem -> id = $pid;
+				$problem -> title = DB::table('problemset')->where('id', $pid)->first()->title;
+				$problemset[]=$problem;
+			}
+			return view('contest.problemset',[
+				'id' => $id,
+				'problemset' => $problemset
+			]);
+		}
+		else return redirect('404');
+
+	}
+	public function problemset_update(Request $request,$id){
+		if (in_array($id,$this->contestManageList())){
+			$list=explode("\n",$request->content);
+			foreach($list as $one){
+				$s=str_replace(array(" ","\n","\r","\r\n"),"",$one);
+				if(strlen($s)>1){
+					if($s[0]=='+'){
+						if(in_array(substr($s,1),$this->problemManageList())){
+							if(DB::select("select * from contest_problems where id=? and problem=?",[$id,substr($s,1)])==false && DB::select("select * from problemset where id=?",[substr($s,1)])!=false)
+								DB::insert("insert into contest_problems (problem,id) value(?,?)",[substr($s,1),$id]);
+						}
+					}
+					else if($s[0]=='-'){
+						DB::delete('delete from contest_problems where id=? and problem=?',[$id,substr($s,1)]);
+					}
+				}
+			}
+			return redirect('/contest/edit/problemset/'.$id);
+		}
+		else return redirect('404');
+	}
 
 	public function showproblem($cid, $pid) 
 	{
+		if(!(in_array($cid,$this->contestShowList()) && in_array($pid,$this->getProblemList($cid))))
+			return redirect('404');
 		$markdowner = new Markdowner();
 		$contest = DB::table('contest')->where('id', $cid)->first();
 		$problem = DB::table('problemset')->where('id', $pid)->first();
@@ -178,13 +197,14 @@ class ContestController extends Controller
 
 	public function submitpage($cid, $pid) 
 	{
+		if(!(in_array($cid,$this->contestShowList()) && in_array($pid,$this->getProblemList($cid))))
+			return redirect('404');
 		$contest = DB::table('contest')->where('id', $cid)->first();
-
 		if (!Auth::check()) {
 			return redirect('login');
 		}
 		if (!$this->is_admin()) {
-			if (NOW() < $contest->begin_time || NOW() > $contest->end_time) {
+			if (NOW() < $contest->begin_time) {
 				return redirect('404');
 			}
 		}
@@ -199,6 +219,11 @@ class ContestController extends Controller
         if (!Auth::check()) {
             return redirect('login');
         }
+		if(!(in_array($cid,$this->contestShowList()) && in_array($pid,$this->getProblemList($cid))))
+			return redirect('404');
+		$contest = DB::table('contest')->where('id', $cid)->first();
+		if(!in_array($cid,$this->contestManageList()) && now()<$contest->begin_time)
+			return redirect('404');
 		DB::insert('insert into submission (
 			problem_id,
 			problem_name,
@@ -232,7 +257,8 @@ class ContestController extends Controller
 	public function submission(Request $request, $id)
 	{
 		$contest = DB::table('contest')->where('id', $id)->first();
-		if ((Auth::check() && $this->is_admin() )||(NOW()>$contest->end_time)) {
+
+		if (in_array($id,$this->contestManageList())||(NOW()>$contest->end_time && in_array($id,$this->contestShowList()))) {
 			$submission = DB::table('submission')->orderby('id', 'desc')->where('contest_id','=',$id);
 			$submission = $this->check($submission, $request, 'problem_id');
 			$submission = $this->check($submission, $request, 'user_name');
@@ -248,6 +274,7 @@ class ContestController extends Controller
 		if (!Auth::check()) {
 			return redirect('login');
 		}
+		if(!in_array($id,$this->contestShowList()))return redirect('404');
 		$submission = DB::table('submission')->orderby('id', 'desc')->where('contest_id','=',$id)->where('user_name','=',Auth::User()->name);
 		$contest = DB::table('contest')->where('id', $id)->first();
 		if ($contest->rule==0 && ($contest->begin_time<=NOW() && NOW()<=$contest->end_time)) {
@@ -259,7 +286,7 @@ class ContestController extends Controller
 	public function standings($cid)
 	{
 		$contest = DB::table('contest')->where('id', $cid)->first();
-		if ((Auth::check() && $this->is_admin() )||(NOW()>$contest->end_time)) {
+		if (in_array($cid,$this->contestManageList())||(NOW()>$contest->end_time && in_array($cid,$this->contestShowList()))) {
 			$data = DB::table('submission') -> where('contest_id', $cid) 
 								   -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
 			$standings = $data -> select('user_id') -> groupby('user_id') -> get() -> toarray();
@@ -269,9 +296,8 @@ class ContestController extends Controller
 				$user -> user_name = DB::table('users') -> where('id', $user -> user_id) -> first() -> name;
 				$user -> score = 0;
 			}
-
+			$contest->problemset=$this->getProblemList($cid);
 			if ($contest -> problemset != null) {
-				$contest -> problemset = explode(',', $contest -> problemset);
 				foreach ($contest -> problemset as $pid) {
 					foreach ($standings as &$user) {
 						$data = DB::table('submission') -> where('contest_id', $cid) 

@@ -29,10 +29,6 @@
         </select>
       </div>
       <div class="form-group">
-        <label> Problem IDs (divide with ',' and avoid using spaces, e.g.'233,234,236') </label>
-        <input type="text" name="problemset" class="form-control"> 
-      </div>
-      <div class="form-group">
         <label> Contest Info </label> <br>
         <textarea rows="20" name="contest_info" class="form-control"></textarea>
       </div>

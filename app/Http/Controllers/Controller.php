@@ -37,4 +37,14 @@ class Controller extends BaseController
 		}
 		else return array();		
 	} 
+	public function contestShowListSQL(){
+		return DB::table('contest');
+	}
+	public function contestShowList(){
+		return array_column($this->contestShowListSQL()->get()->toArray(),'id');
+	}
+	public function contestManageList(){
+		if($this->is_admin())return array_column(DB::select('select id from contest'),'id');
+		return array();
+	}
 }

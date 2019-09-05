@@ -30,7 +30,6 @@ class ContestFormRequest extends FormRequest
       'begin_time' => 'required|date',
       'end_time' => 'required|date|after:begin_time',
       'rule' => 'required|integer',
-      'problemset' => ['required', 'string', 'max:1000']
     ];
   }
 }
