@@ -297,37 +297,32 @@ class ContestController extends Controller
 				$user -> score = 0;
 			}
 			$contest->problemset=$this->getProblemList($cid);
-			if ($contest -> problemset != null) {
-				foreach ($contest -> problemset as $pid) {
-					foreach ($standings as &$user) {
-						$data = DB::table('submission') -> where('contest_id', $cid) 
-									  -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
-						$data = $data -> where('problem_id', $pid);
-						if ($contest -> rule == 0) // OI rule
-							$data = $data -> orderby('created_at', 'desc');
-						else 
-							$data = $data -> orderby('score', 'desc') -> orderby('created_at', 'desc');
-						$user -> result[$pid] = $data -> where('user_id', $user -> user_id) -> first();
-						if ($user -> result[$pid] != null)
-							$user -> score += $user -> result[$pid] -> score;
-					}
+			foreach ($contest -> problemset as $pid) {
+				foreach ($standings as &$user) {
+					$data = DB::table('submission') -> where('contest_id', $cid) 
+								  -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
+					$data = $data -> where('problem_id', $pid);
+					if ($contest -> rule == 0) // OI rule
+						$data = $data -> orderby('created_at', 'desc');
+					else 
+						$data = $data -> orderby('score', 'desc') -> orderby('created_at', 'desc');
+					$user -> result[$pid] = $data -> where('user_id', $user -> user_id) -> first();
+					if ($user -> result[$pid] != null)
+						$user -> score += $user -> result[$pid] -> score;
 				}
-
-				foreach ($contest -> problemset as &$problem) {
-					$pid = $problem;
-					$problem = (object)null;
-					$problem -> id = $pid;
-					$problem -> title = DB::table('problemset')->where('id', $pid)->first()->title;
-				}
-
-				$cmp = function($a, $b) {
-					return $a -> score < $b -> score;
-				};
-				usort($standings, $cmp);
-			} else {
-				$contest -> problemset = array();
 			}
 
+			foreach ($contest -> problemset as &$problem) {
+				$pid = $problem;
+				$problem = (object)null;
+				$problem -> id = $pid;
+				$problem -> title = DB::table('problemset')->where('id', $pid)->first()->title;
+			}
+
+			$cmp = function($a, $b) {
+				return $a -> score < $b -> score;
+			};
+			usort($standings, $cmp);
 			return view('contest.standings', ['standings' => $standings, 'contest' => $contest]);
 
 		} else {

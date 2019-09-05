@@ -19,7 +19,6 @@ style["Accepted"]='class="text-success"';
 style["Data Error"]='style="color:#2F4F4F"';
 style["Judgement Failed"]='style="color:#2F4F4F"';
 style["Compile Error"]='style="color:#696969"';
-var sub=@json($sub);
 Echo.channel('Submission')
 .listen('.submission.update', (e) => {
 	xsub=e.message;
