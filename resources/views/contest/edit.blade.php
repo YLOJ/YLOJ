@@ -11,8 +11,9 @@
         </ul>
       </div>
     @endif
-	<h2> <a href="/contest/{{$contest->id}}">Contest {{$contest->id}}</h2>
+	<h2> <a href="/contest/{{$contest->id}}">Contest #{{$contest->id}}</h2>
     @include('buttons.jump', ['href' => url('/contest/edit/problemset/'.$contest->id) , 'text' => '编辑比赛题目'])
+    @include('buttons.jump', ['href' => url('/contest/edit/manager/'.$contest->id) , 'text' => '编辑比赛管理员'])
     <form action="/contest/edit_submit/{{ $contest -> id }}" method="post">    
       <div class="form-group">
         <label>Title</label>

@@ -11,13 +11,16 @@
         </ul>
       </div>
     @endif
-    <h3><a href="{{url('/problem/'.$id)}}">Problem #{{$id}}</a> </h3>
+    <h3><a href="{{url('/contest/'.$id)}}">Contest #{{$id}}</a> </h3>
 
     @include('buttons.jump', ['href' => url('/contest/edit/'.$id) , 'text' => '回到编辑比赛页面'])
 	<p>
 	用法：
 
 	每行+pid 或者 -pid 表示 加入这个道题或者减掉这道题
+	</p>
+	<p>
+		注意：只能加自己有编辑权限的题。
 	</p>
 	<div id='contest_problemset_update' style='vertical-align:top;display:inline-block;width:49%'>
     <form action="/contest/problemset_update/{{$id}}" method="post">

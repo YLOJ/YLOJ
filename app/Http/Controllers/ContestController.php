@@ -50,7 +50,9 @@ class ContestController extends Controller
 			$contest->problemset[]=$problem;
 		}
 
-		return view('contest.show', ['contest' => $contest]);
+		return view('contest.show', ['contest' => $contest,
+			'is_admin' => in_array($id,$this->contestManageList())
+		]);
 	}
 
 	public function add() 
@@ -152,6 +154,38 @@ class ContestController extends Controller
 				}
 			}
 			return redirect('/contest/edit/problemset/'.$id);
+		}
+		else return redirect('404');
+	}
+	public function manager($id)
+	{
+		if (in_array($id,$this->contestManageList())){
+			$manager=array_column(DB::select('select username from contest_manager where contest_id=?',[$id]),'username');
+			return view('contest.manager',[
+				'id' => $id,
+				'manager' => $manager
+			]);
+		}
+		else return redirect('404');
+
+	}
+	public function update_manager(Request $request,$id){
+		if (in_array($id,$this->contestManageList())){
+			$list=explode("\n",$request->content);
+			foreach($list as $one){
+				$s=str_replace(array(" ","\n","\r","\r\n"),"",$one);
+				if(strlen($s)>1){
+					if($s[0]=='+'){
+						if(DB::select("select * from contest_manager where contest_id=? and username=?",[$id,substr($s,1)])==false && 
+							DB::select("select * from users where name=? and permission>=0",[substr($s,1)])!=false)
+							DB::insert("insert into contest_manager (username,contest_id) value(?,?)",[substr($s,1),$id]);
+					}
+					else if($s[0]=='-'){
+						DB::delete('delete from contest_manager where contest_id=? and username=?',[$id,substr($s,1)]);
+					}
+				}
+			}
+			return redirect('/contest/edit/manager/'.$id);
 		}
 		else return redirect('404');
 	}

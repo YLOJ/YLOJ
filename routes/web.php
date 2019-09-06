@@ -67,6 +67,10 @@ Route::name('contest.')->prefix('contest')->group(function() {
 
 	Route::any('/edit/problemset/{id}', 'ContestController@edit_problems')->name('edit_problems')->where('id', '[0-9]+');
     Route::post('/problemset_update/{id}', 'ContestController@problemset_update')->where('id', '[0-9]+');
+
+    Route::any('/edit/manager/{id}', 'ContestController@manager')->name('manager')->where('id', '[0-9]+');
+    Route::post('/update_manager/{id}', 'ContestController@update_manager')->name('update_manager')->where('id', '[0-9]+');
+
 	Route::get('/standings/{id}', 'ContestController@standings')->name('standings')->where('id', '[0-9]+');
 	Route::get('/submission/{id}', 'ContestController@submission')->name('submission')->where('id', '[0-9]+');
 	Route::get('/mysubmission/{id}', 'ContestController@mysubmission')->name('submission')->where('id', '[0-9]+');

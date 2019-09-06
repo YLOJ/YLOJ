@@ -45,7 +45,10 @@ class Controller extends BaseController
 		return array_column($this->contestShowListSQL()->get()->toArray(),'id');
 	}
 	public function contestManageList(){
-		if($this->is_admin())return array_column(DB::select('select id from contest'),'id');
+		if(Auth::check()){
+			if($this->is_admin())return array_column(DB::select('select id from contest'),'id');
+			else return array_column(DB::select('select contest_id from contest_manager where username=?',[Auth::user()->name]),'contest_id');	
+		}
 		return array();
 	}
 }
