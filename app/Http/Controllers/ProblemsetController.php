@@ -73,10 +73,12 @@ class ProblemsetController extends Controller {
 		if (Auth::check() && $this->is_admin()) {
 			DB::insert('insert into `problemset` (
 				`title`, 
-				`content_md`
-			) values (?, ?)', [
+				`content_md`,
+				`visibility`
+			) values (?, ?, ?)', [
 				$request->input('title'),
 				$request->input('content_md'),
+				2
 			]);
 
 			return redirect(route('problem.index'));
