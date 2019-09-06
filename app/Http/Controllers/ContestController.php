@@ -70,13 +70,15 @@ class ContestController extends Controller
 			`contest_info`,
 			`begin_time`,
 			`end_time`,
-			`rule`
+			`rule`,
+			`visibility`
 		) values (?, ?, ?, ?, ?, ?)', [
 			$request -> input('title'),
 			$request -> input('contest_info'),
 			$request -> input('begin_time'),
 			$request -> input('end_time'),
-			$request -> input('rule')
+			$request -> input('rule'),
+			2
 		]);
 
 		return redirect(route('contest.index'));
@@ -97,7 +99,8 @@ class ContestController extends Controller
 			`contest_info` = ?,
 			`begin_time` = ?,
 			`end_time` = ?,
-			`rule` = ?
+			`rule` = ?,
+			`visibility` = ?
 			where `id` = ?", 
 			[
 				$request -> input('title'),
@@ -105,6 +108,7 @@ class ContestController extends Controller
 				$request -> input('begin_time'),
 				$request -> input('end_time'),
 				$request -> input('rule'),
+				$request -> input('visibility'),
 				$cid
 			]
 		);

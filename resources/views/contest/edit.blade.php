@@ -39,6 +39,19 @@
         <label> Contest Info </label> <br>
         <textarea rows="20" name="contest_info" class="form-control"> {{ $contest -> contest_info }} </textarea>
       </div>
+      <div class="form-check">
+        <label>
+        	公开性	
+        </label>
+		<br>
+ 		<input type="radio" name="visibility" value=2 {{$contest->visibility==2?'checked':''}}/>隐藏
+		<br>
+ 		<input type="radio" name="visibility" value=1 {{$contest->visibility==1?'checked':''}}/>权限
+		<br>
+ 		<input type="radio" name="visibility" value=0 {{!$contest->visibility?'checked':''}}/>默认
+
+      </div>
+
       @include('buttons.submit' , ['text' => 'Save'])
       @csrf
     </form>

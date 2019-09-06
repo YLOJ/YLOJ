@@ -23,7 +23,7 @@
       </div>
       <div class="form-check">
         <label>
-         	权限
+        	公开性	
         </label>
 		<br>
  		<input type="radio" name="visibility" value=2 {{$visibility==2?'checked':''}}/>隐藏

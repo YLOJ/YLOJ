@@ -38,7 +38,8 @@ class Controller extends BaseController
 		else return array();		
 	} 
 	public function contestShowListSQL(){
-		return DB::table('contest');
+		if(Auth::check())return DB::table('contest')->where('visibility','<=',Auth::user()->permission);
+		return DB::table('contest')->where('visibility','=',0);
 	}
 	public function contestShowList(){
 		return array_column($this->contestShowListSQL()->get()->toArray(),'id');
