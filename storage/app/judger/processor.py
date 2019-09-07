@@ -6,11 +6,6 @@ import redis
 from oj.env import *
 
 cmd_select = "SELECT * FROM submission WHERE `id` = {}"
-cmd_update = """
-UPDATE submission SET 
-`result` = 'Running'
-WHERE `id` = {}
-"""
 r=redis.Redis(host=redishost,port=redisport,password=redispassword)
 while True:
     try:
@@ -46,8 +41,6 @@ WHERE `id` = {}
                 f.write(sub['source_code'])
             with open("user/lang","w") as f:
                 f.write("0\n")
-            cursor.execute(cmd_update.format(sid))
-            conn.commit()
             print('start judging submission',sid)
             os.system("python3 judger.py {}".format(sid))
             print("done")
