@@ -266,7 +266,10 @@ class ProblemsetController extends Controller {
 	public function data_download($id)
 	{
 		if (in_array($id,$this->problemManageList())){
-			return Storage::disk('data')->download("$id/data.zip", "data_$id.zip");
+			$files = glob(storage_path('app/data/'.$id.'/'));
+			$zipper=new Zipper();
+			$zipper->make(storage_path('app/data/'.$id.'.zip'))->add($files)->close();
+			return Storage::disk('data')->download("$id.zip", "data_$id.zip");
 		} else {
 			return redirect('404');
 		}

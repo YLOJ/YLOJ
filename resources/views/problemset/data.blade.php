@@ -23,6 +23,8 @@
       @include('buttons.submit',['text' => '上传'])
       @csrf
     </form>
+	<br>
+    @include('buttons.jump', ['href' => url('/problem/data_download/'.$id) , 'text' => '下载数据'])
 	</div>
 	<div id="updateConfig" style='float: left'>
     <form action="/problem/save_config/{{$id}}" method="post" enctype="multipart/form-data">
