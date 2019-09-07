@@ -3,11 +3,8 @@
 <?php
 if($BAN){
 	foreach ($submissionset as $id => $sub){
-		if(substr($submissionset[$id]->result,0,7)!="Running"){
-			$submissionset[$id]->result='Unshown';
-		}
-		else $submissionset[$id]->result="Running";
-		if($submissionset[$id]->score>0)$submissionset[$id]->score='>0';
+		$submissionset[$id]->result='Unshown';
+		$submissionset[$id]->score="-1";
 		$submissionset[$id]->time_used='-1';
 		$submissionset[$id]->memory_used='-1';
 	}
