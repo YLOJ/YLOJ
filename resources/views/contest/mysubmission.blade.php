@@ -4,7 +4,7 @@
 if($BAN){
 	foreach ($submissionset as $id => $sub){
 		$submissionset[$id]->result='Unshown';
-		$submissionset[$id]->score='Unshown';
+		if($submissionset[$id]->score>0)$submissionset[$id]->score='>0';
 		$submissionset[$id]->time_used='-1';
 		$submissionset[$id]->memory_used='-1';
 	}
