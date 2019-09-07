@@ -14,6 +14,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/help', 'HomeController@help')->name('help');
 Route::name('problem.')->prefix('problem')->group(function() {
     Route::get('/', 'ProblemsetController@index')->name('index');
     Route::get('/{id}', 'ProblemsetController@show')->name('show')->where('id', '[0-9]+');

@@ -103,6 +103,8 @@ else:
             if(subid>0):
                 global config
                 config+="""subtask{}:
+# dependency:
+#  - 
  data_num: {}  
 """.format(subid,dataid)+""" type: {type}
  score: 1

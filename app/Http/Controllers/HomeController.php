@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use App\Services\Markdowner;
 class HomeController extends Controller
 {
     /**
@@ -15,14 +16,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
+    public function index(){
         return view('home');
     }
 
-    public function test() 
-    {
-        $tmp=DB::select('select * from problemset where id=1');
-        dd($tmp[0]->title);
+    public function help(){
+        $markdowner = new Markdowner();
+		return view('help',[
+			'content' => $markdowner->toHTML(
+				Storage::disk('local')->get('help.md')
+			),]);
     }
 }

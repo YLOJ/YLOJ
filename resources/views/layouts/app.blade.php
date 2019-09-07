@@ -58,6 +58,8 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('submission') }}">{{ __('Submission') }}</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('help') }}">{{ __('Help') }}</a>
             </ul>
 
             <!-- Right Side Of Navbar -->
