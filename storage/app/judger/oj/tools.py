@@ -42,12 +42,14 @@ def runCommand(command,timeLimit=10000,memoryLimit=1024000,stdin=None,stdout=Non
         f.write('cd tmp\nsudo -u oj '+command)
     begin_time=time.time()
     child = subprocess.Popen("chroot {} sh a.sh".format(pathOfSandbox,command).split(),stdin=stdin,stdout=stdout,stderr=subprocess.PIPE)
+    with open("/sys/fs/cgroup/memory/oj/memory.usage_in_bytes","r") as f:
+        before=int(f.read())
     with open("/sys/fs/cgroup/memory/oj/cgroup.procs","w") as f:
         f.write(str(child.pid)+'\n')
     while child.poll() is None:
         try:
             with open("/sys/fs/cgroup/memory/oj/memory.usage_in_bytes","r") as f:
-                memory=int(f.read())/1024
+                memory=(int(f.read())-before)/1024
             curTime=time.time()
             time_used = int((curTime - begin_time)*1000)
             max_memory = max(max_memory, memory)
