@@ -326,7 +326,8 @@ class ContestController extends Controller
 		$contest = DB::table('contest')->where('id', $cid)->first();
 		if (in_array($cid,$this->contestManageList())||(NOW()>$contest->end_time && in_array($cid,$this->contestShowList()))) {
 			$data = DB::table('submission') -> where('contest_id', $cid) 
-								   -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
+								   -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)
+							   -> where('score','>=',0);
 			$standings = $data -> select('user_id') -> groupby('user_id') -> get() -> toarray();
 
 			foreach ($standings as &$user) {
@@ -338,7 +339,7 @@ class ContestController extends Controller
 			foreach ($contest -> problemset as $pid) {
 				foreach ($standings as &$user) {
 					$data = DB::table('submission') -> where('contest_id', $cid) 
-								  -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
+								  -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('score','>=',0);
 					$data = $data -> where('problem_id', $pid);
 					if ($contest -> rule == 0) // OI rule
 						$data = $data -> orderby('created_at', 'desc');
