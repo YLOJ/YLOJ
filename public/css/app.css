@@ -1620,7 +1620,6 @@ pre code {
   width: 100%;
   margin-bottom: 1rem;
   color: #212529;
-  background-color: #FFFFFF;
 }
 
 .table th,
@@ -3232,7 +3231,9 @@ input[type=button].btn-block {
 .collapse:not(.show) {
   display: none;
 }
-
+.col{
+  background-color: #FFFFFF;
+}
 .collapsing {
   position: relative;
   height: 0;
