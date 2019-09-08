@@ -10,8 +10,7 @@
 :root {
   --blue: #3490dc;
   --indigo: #6574cd;
-  --purple: #9561e2;
-  --pink: #f66D9b;
+  --purple: #9561e2; --pink: #f66D9b;
   --red: #e3342f;
   --orange: #f6993f;
   --yellow: #ffed4a;
@@ -585,7 +584,6 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-  background-color: #FFFFFF;
 }
 
 @media (min-width: 576px) {
@@ -1622,6 +1620,7 @@ pre code {
   width: 100%;
   margin-bottom: 1rem;
   color: #212529;
+  background-color: #FFFFFF;
 }
 
 .table th,
@@ -10689,4 +10688,3 @@ a.text-dark:focus {
 	float:left;
 	padding:1%;
 }
-
