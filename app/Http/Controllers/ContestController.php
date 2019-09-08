@@ -302,7 +302,7 @@ class ContestController extends Controller
 			$submission = $this->check($submission, $request, 'user_name');
 			$submission = $this->check($submission, $request, 'min_score', 'score', '>=');
 			$submission = $this->check($submission, $request, 'max_score', 'score', '<=');
-			return view('contest.submission', ['submissionset' => $submission -> paginate('10')]);
+			return view('submission.list', ['submissionset' => $submission -> paginate('10')]);
 		} else {
 			return redirect('404');
 		}

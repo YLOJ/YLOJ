@@ -79,7 +79,7 @@ Echo.channel('Submission')
     <div class="row">
       <div class="col-md-10">
         <div class="hidden-xs">
-          <form class="form-inline" action="/submission" method="get">
+          <form class="form-inline" action="" method="get">
             <div class="form-group">
               <label class="control-label"> &nbsp Problem ID: &nbsp </label>
               <input class="form-control" type="text" name="problem_id" style="height:2em;width:4em" value={{$problem_id}}>
@@ -103,7 +103,7 @@ Echo.channel('Submission')
       <div class="col-md-2" style="text-align:right">
         @auth
           @include('buttons.jump' , [ 
-            'href' => url('/submission?user_name='.Auth::User() -> name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score) , 
+            'href' => url(url()->current().'?user_name='.Auth::User() -> name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score) , 
             'text' => 'My Submissions'
             ])
           @endauth
