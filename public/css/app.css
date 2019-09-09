@@ -3231,7 +3231,7 @@ input[type=button].btn-block {
 .collapse:not(.show) {
   display: none;
 }
-.col{
+.table{
   background-color: #FFFFFF;
 }
 .collapsing {
