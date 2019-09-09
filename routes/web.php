@@ -80,3 +80,7 @@ Route::name('contest.')->prefix('contest')->group(function() {
     Route::get('/{cid}/submit/{pid}', 'ContestController@submitpage')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
     Route::post('/{cid}/submit/{pid}', 'ContestController@submitcode')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
 });
+Route::name('webadmin.')->prefix('webadmin')->group(function(){
+	Route::get('/','WebAdminController@permission')->name('permission');
+	Route::post('/update_permission','WebAdminController@update_permission')->name('update_permission');
+});

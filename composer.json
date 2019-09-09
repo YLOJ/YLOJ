@@ -15,7 +15,8 @@
         "laravel/tinker": "^1.0",
         "michelf/php-markdown": "^1.8",
         "michelf/php-smartypants": "^1.8",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "spatie/pdf-to-image": "^1.8"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
