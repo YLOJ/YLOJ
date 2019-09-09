@@ -29,7 +29,9 @@
         </div>
 
         <br>
+		<div class="content">
         <?php echo $content_html ?>
+		</div>
 
       </div>
     </div>
