@@ -20,16 +20,9 @@ class SubmissionController extends Controller
         }
         return $sub;
     }
-	public function EndedContests(){
-		$permission=Auth::check()?Auth::User()->permission : 0;
-		$contests=array_column(DB::table('contest')->where('visibility','<=',$permission)->where('end_time','<=',now())->get()->toArray(),'id');	
-		return $contests;
-	}
     public function index(Request $request)
     {
 		$submission = DB::table('submission')->orderby('id', 'desc');
-		if (!Auth::check() || Auth::User() -> permission <= 1) 
-			$submission=$submission->whereIn('contest_id',$this->EndedContests())->orWhere('contest_id','=',null);
         $submission = $this->check($submission, $request, 'problem_id');
         $submission = $this->check($submission, $request, 'user_name');
         $submission = $this->check($submission, $request, 'min_score', 'score', '>=');
