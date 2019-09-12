@@ -13,10 +13,12 @@
 
           <div class="btn-group-md">
             @include('buttons.jump-icon' , ['href' => url('/contest/'.$cid.'/submit/'.$pid) , 'icon' => 'paper-plane' , 'text' => 'Submit'])
-            @include('buttons.jump-icon' , ['href' => url('/submission?problem_id='.$pid) , 'icon' => 'text-left' , 'text' => 'Submissions'])
+            @include('buttons.jump-icon' , ['href' => url('/contest/submission/'.$cid.'?problem_id='.$pid) , 'icon' => 'text-left' , 'text' => 'Submissions'])
             @include('buttons.jump-icon' , ['href' => url('/problem/statistics/'.$pid) , 'icon' => 'statistics' , 'text' => 'Statistics'])
             @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
-
+			@if ($ended)
+	            @include('buttons.jump-icon' , ['href' => url('/problem/solution/'.$pid) , 'icon' => 'test-file' , 'text' => 'Solution'])
+			@endif
             @auth
               @if ( Auth::user()->permission > 1)
                 <button class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();">

@@ -15,6 +15,7 @@
             @include('buttons.jump-icon' , ['href' => url('/submission?problem_id='.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
             @include('buttons.jump-icon' , ['href' => url('/problem/statistics/'.$id) , 'icon' => 'statistics' , 'text' => 'Statistics'])
             @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
+            @include('buttons.jump-icon' , ['href' => url('/problem/solution/'.$id) , 'icon' => 'test-file' , 'text' => 'Solution'])
 
             @auth
               @if ($is_admin)

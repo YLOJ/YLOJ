@@ -230,6 +230,7 @@ class ContestController extends Controller
 			'output_file' => $output_file,
 			'content_html' => $markdowner->toHTML($problem->content_md),
 			'cid' => $cid,
+			'ended' => now()>=$contest->end_time
 		]);
 	}
 

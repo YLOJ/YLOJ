@@ -44,6 +44,8 @@
     @include('buttons.jump', ['href' => url('/problem/data/'.$id) , 'text' => 'Manage Data'])
 
     @include('buttons.jump', ['href' => url('/problem/edit/manager/'.$id) , 'text' => 'Manage Managers'])
+
+    @include('buttons.jump', ['href' => url('/problem/solution/edit/'.$id) , 'text' => 'Manage Solution'])
     <br>
     <br>
 

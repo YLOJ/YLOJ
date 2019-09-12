@@ -285,4 +285,86 @@ class ProblemsetController extends Controller {
 			return redirect('404');
 		}
 	}
+
+    public function show_solution($id)
+    {
+        $markdowner = new Markdowner();
+        $problem = DB::table('problemset')->where('id', $id)->first();
+		$contests=array_column(DB::table('contest_problems')->where('problem',$id)->get()->toArray(),'id');
+		if((in_array($id,$this->problemShowList()) || $this->contestShowListSQL()->where('end_time','<=',now())->whereIn('id',$contests)->count()))
+            return view('solution.show', [
+                'id' => $id,
+                'title' => $problem->title,
+                'content_html' => $markdowner->toHTML($problem->solution),
+				'is_admin' => in_array($id,$this->problemManageList())
+            ]);
+         else 
+            return redirect('404');
+    }
+	public function view_solution_file($id,$file){
+		$contests=array_column(DB::table('contest_problems')->where('problem',$id)->get()->toArray(),'id');
+		if(
+			(in_array($id,$this->problemShowList()) || $this->contestShowListSQL()->where('end_time','<=',now())->whereIn('id',$contests)->count())&& 
+			Storage::disk('uploads')->exists('solution/'.$id.'/'.$file))
+			return response()->file(storage_path('app/uploads').'/solution/'.$id.'/'.$file);
+		else return redirect('404');
+	}
+	public function solution_edit($id)
+	{
+		if (in_array($id,$this->problemManageList())){
+			$problem = DB::table('problemset')->where('id', $id)->first();
+			return view('solution.edit', [
+				'id' => $id,
+				'title' => $problem->title,
+				'content_md' => $problem->solution,
+			]);
+		} else {
+			return redirect('404');
+		}
+	}
+
+	public function solution_edit_submit(Request $request, $id)
+	{
+		if (in_array($id,$this->problemManageList())){
+			DB::update(
+				"update `problemset` set 
+				`solution` = ?
+				where `id` = ?",
+				[
+					$request->input('content_md'),
+					$id,
+				]
+			);
+			return redirect('/problem/solution/edit/'.$id);
+		}else return redirect('404');
+	}
+	public function solution_upload($id){
+		if(!in_array($id,$this->problemManageList()))return redirect('404');
+		$list=Storage::disk('uploads')->files('solution/'.$id.'/');
+		$s=strlen('solution/'.$id.'/');
+		foreach($list as $loop=>$one){
+			$list[$loop]=substr($one,$s);
+		}
+		return view('solution.uploadfile',[
+			'id'=>$id,
+			'filelist'=>$list
+		]);
+	}
+	public function solution_upload_file(Request $request,$id){
+		if(!in_array($id,$this->problemManageList()))return redirect('404');
+		$file=$request->file('source');
+		if($file->isValid()){
+			Storage::disk('uploads')->put('solution/'.$id.'/'.$file->getClientOriginalName(),file_get_contents( $request -> file('source') ));
+		}
+		return redirect('/problem/solution/upload/'.$id);
+	}
+	public function solution_delete_file($id,$file){
+		if(!in_array($id,$this->problemManageList()))return redirect('404');
+		if(Storage::disk('uploads')->exists('solution/'.$id.'/'.$file)){
+			Storage::disk('uploads')->delete('solution/'.$id.'/'.$file);
+		}		
+		return redirect('/problem/solution/upload/'.$id);
+	}
+
+
 }
