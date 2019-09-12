@@ -8,6 +8,7 @@
  */
 
 :root {
+  tab-size: 4;
   --blue: #3490dc;
   --indigo: #6574cd;
   --purple: #9561e2; --pink: #f66D9b;
