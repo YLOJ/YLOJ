@@ -26,6 +26,7 @@
         <select id="rule" name="rule" class="form-control">
           <option value="0" selected> OI </option>
           <option value="1" selected> IOI </option>
+          <option value="2" selected> ACM </option>
         </select>
       </div>
       <div class="form-group">

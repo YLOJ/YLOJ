@@ -40,6 +40,8 @@
 	            	<td class="text-success"> <b> OI </b> </td>
 				@elseif($contest->rule==1)
 	            	<td class="text-success"> <b> IOI </b> </td>
+				@elseif($contest->rule==2)
+	            	<td class="text-success"> <b> ACM </b> </td>
 				@endif
 					</tr>
 				@endforeach

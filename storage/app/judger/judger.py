@@ -10,7 +10,7 @@ with open("data/config.yml") as f:
     config=yaml.load(f,Loader=yaml.SafeLoader)
 with open("user/lang") as f: 
     lang=int(f.read())
-
+first_error=""
 def compileCode():
     init()
     if lang==0:
@@ -117,6 +117,7 @@ try:
     compileCode()
     subScore=[0]*(subtaskNum+1)
     info=[]
+    acm_result=""
     for subId in range(1,subtaskNum+1):
         sub=config.get("subtask{}".format(subId),{})
         Full=sub.get("score",0)
@@ -129,7 +130,7 @@ try:
         dataNum=sub.get("data_num",0)
         subInfo=[[SKIP,0]]+[[SKIP,0,0,0,"",0]]*dataNum
         for dataId in range(1,dataNum+1):
-            reportCur(result="Running on Test {}.{}".format(subId,dataId),
+            reportCur(result="Running on Test {}.{}".format(subId,dataId),acm_result=acm_result,
             score=totalScore+(subScore[subId]*Full//100 if Type=="min" else subScore[subId]*Full//100//dataNum),
             time=totalTime,
             memory=maxMemory)
@@ -137,6 +138,7 @@ try:
                 break
 #            judgingMessage("Judging Test {} of Subtask {}".format(dataId,subId))
             dataStatus=runProgram("data/{}/data{}.in".format(subId,dataId),"data/{}/data{}.ans".format(subId,dataId),"{}.{}".format(subId,dataId))
+            acm_result=acm_result if judgeStatus[dataStatus.status]=="Accepted" else judgeStatus[dataStatus.status]
             subScore[subId]=min(subScore[subId],dataStatus.score) if Type=="min" else subScore[subId]+ dataStatus.score
             subInfo[dataId]=toList(dataStatus)
             totalTime+=dataStatus.time
@@ -155,6 +157,7 @@ try:
             subInfo[i][0]=status[i]
         info.append(subInfo)
     report(result="Accepted" if totalScore==100 else "Unaccepted",
+            acm_result=acm_result,
         score=totalScore,
         time=totalTime,
         memory=maxMemory,

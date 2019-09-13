@@ -78,21 +78,26 @@ def judgingMessage(message):
     # TODO
     # print("judging:",message)
 
-def reportCur(result='',score=0,time=-1,memory=-1,judge_info=''):
+def reportCur(result='',score=0,time=-1,memory=-1,judge_info='',acm_result=''):
     db=pymysql.connect(host,user,password,database)
     cursor=db.cursor()
-    sql="update submission set result='{}',score={},time_used={},memory_used={},judge_info='{}' where id={}".format(result,score,time,memory,pymysql.escape_string(judge_info),sys.argv[1])
+    if acm_result=='':
+        acm_result=result
+        if result[0:7]=="Running":
+            acm_result="Running"
+    sql="update submission set result='{}',acm_result='{}',score={},time_used={},memory_used={},judge_info='{}' where id={}".format(result,acm_result,score,time,memory,pymysql.escape_string(judge_info),sys.argv[1])
     cursor.execute(sql)
     db.commit()
     requests.post(link,{
     'token':token,
     'id': sys.argv[1],
     'result':result,
+    'acm_result':acm_result,
     'score':score,
     'time':time,
     'memory':memory
         });
 
-def report(result='',score=0,time=-1,memory=-1,judge_info=''):
-    reportCur(result,score,time,memory,judge_info)
+def report(result='',acm_result='',score=0,time=-1,memory=-1,judge_info=''):
+    reportCur(result,score,time,memory,judge_info,acm_result)
     sys.exit()

@@ -28,6 +28,7 @@
         <select id="rule" name="rule" class="form-control">
           <option value="0"> OI </option>
           <option value="1"> IOI </option>
+          <option value="2"> ACM </option>
         </select>
 	    <script type="text/javascript">
 			onload = function() {
