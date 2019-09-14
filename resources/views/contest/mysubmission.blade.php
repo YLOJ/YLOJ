@@ -16,6 +16,7 @@ else if($mode==2){
 	}
 }
 ?>
+
 @if($mode==1)
 <script src=/js/app.js></script>
 <script>
@@ -83,7 +84,7 @@ Echo.channel('Submission')
 .listen('.submission.update', (e) => {
 	xsub=e.message;
 	if('acm_result' in xsub){
-		$('#sub'+xsub['id']+" #result").html([
+		$('#sub'+xsub['id']+" #acm_result").html([
 			"<a "+
 			(xsub['acm_result'] in style?
 				style[xsub['acm_result']]:
@@ -91,7 +92,7 @@ Echo.channel('Submission')
 				'style="color:#0033CC"':'class="text-danger"'
 			)	+" href="+sub['url']+">"
 		,
-		"<b>"+xsub['acm_result']+"</b>",
+		"<b>"+xsub['xresult']+"</b>",
 		"</a>"
 	].join('\n'));
 	}
@@ -106,6 +107,7 @@ Echo.channel('Submission')
 		)
 	}
 });
+</script>
 @endif
 @section('content')
   <div class="container">
