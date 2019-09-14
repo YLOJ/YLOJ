@@ -90,7 +90,7 @@ Echo.channel('Submission')
 				style[xsub['acm_result']]:
 				xsub['acm_result'].substring(0,7)=="Running"?
 				'style="color:#0033CC"':'class="text-danger"'
-			)	+" href="+sub['url']+">"
+			)	+" href=/submission/"+xsub['id']+">"
 		,
 		"<b>"+xsub['acm_result']+"</b>",
 		"</a>"
