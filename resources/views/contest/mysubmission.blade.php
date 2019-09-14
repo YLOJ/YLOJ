@@ -36,7 +36,7 @@ Echo.channel('Submission')
 				style[xsub['result']]:
 				xsub['result'].substring(0,7)=="Running"?
 				'style="color:#0033CC"':'class="text-danger"'
-			)	+" href="+sub['url']+">"
+			)	+" href=/submission/"+xsub['id']+">"
 		,
 		"<b>"+xsub['result']+"</b>",
 		"</a>"
@@ -52,7 +52,7 @@ Echo.channel('Submission')
 				xsub['score']>'0'?
 				'style="color:orange"':
 				'class="text-danger"'
-			)	+" href="+sub['url']+">"
+			)	+" href=/submission/"+xsub['id']+">"
 		,
 		"<b>"+(xsub['score']=='-1'?"/":xsub['score'])+"</b>",
 		"</a>"
