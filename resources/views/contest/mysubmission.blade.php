@@ -84,7 +84,7 @@ Echo.channel('Submission')
 .listen('.submission.update', (e) => {
 	xsub=e.message;
 	if('acm_result' in xsub){
-		$('#sub'+xsub['id']+" #acm_result").html([
+		$('#sub'+xsub['id']+" #result").html([
 			"<a "+
 			(xsub['acm_result'] in style?
 				style[xsub['acm_result']]:
@@ -92,7 +92,7 @@ Echo.channel('Submission')
 				'style="color:#0033CC"':'class="text-danger"'
 			)	+" href="+sub['url']+">"
 		,
-		"<b>"+xsub['xresult']+"</b>",
+		"<b>"+xsub['acm_result']+"</b>",
 		"</a>"
 	].join('\n'));
 	}
