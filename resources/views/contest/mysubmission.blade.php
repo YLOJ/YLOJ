@@ -122,9 +122,9 @@ Echo.channel('Submission')
           <tbody>
             @foreach ($submissionset as $sub)
               @if ($count++ % 2 == 0)
-                <tr style="background-color:#F3F3F3">
+                <tr style="background-color:#F3F3F3" id="sub{{$sub->id}}">
               @else
-                <tr>
+                <tr id="sub{{$sub->id}}">
               @endif
               @include('includes.verdict', ['sub' => $sub])
                 </tr>
