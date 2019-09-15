@@ -4,29 +4,28 @@ __author__ = 'QAQ AutoMaton'
 # lang=["C++"]
 import yaml,sys,json
 from oj import *
+acm_mode=len(sys.argv)>2 and sys.argv[2]=="acm"
+default_score=-1 if acm_mode else 0
 RunCommand=["./{}"]
 init()
 with open("data/config.yml") as f: 
     config=yaml.load(f,Loader=yaml.SafeLoader)
 with open("user/lang") as f: 
     lang=int(f.read())
-first_error=""
 def compileCode():
     init()
     if lang==0:
         code=moveIntoSandbox("user/code.cpp")
         s=runCommand('g++ {} -E | grep "pragma GCC optimize"'.format(code,code[:-4]),stdout=subprocess.PIPE)
         if s.status==OK:
-            report(score=0,result="Judgement Failed",judge_info="拒绝评测")
+            report(result="Judgement Failed",judge_info="拒绝评测")
         status=runCommand("g++ {} -o {} -O2".format(code,code[:-4]))
     if(status.status==OK):
         moveOutFromSandbox(code[:-4],"code")
     elif(status.status==TLE):
-        report(score=0,result="Compiler Time Limit Exceeded")
-        sys.exit()
+        report(result="Compiler Time Limit Exceeded")
     else:
-        report(score=0,result="Compile Error",judge_info=status.message)
-        sys.exit()
+        report(result="Compile Error",judge_info=status.message)
 
 def compileSpj():
     global checkerType
@@ -130,19 +129,26 @@ try:
         dataNum=sub.get("data_num",0)
         subInfo=[[SKIP,0]]+[[SKIP,0,0,0,"",0]]*dataNum
         for dataId in range(1,dataNum+1):
-            reportCur(result="Running on Test {}.{}".format(subId,dataId),acm_result=acm_result,
+            if acm_mode:
+                reportCur(result="Running",
+                score=-1,
+            time=totalTime,
+            memory=maxMemory)
+            else:
+                reportCur(result="Running on Test {}.{}".format(subId,dataId),
             score=totalScore+(subScore[subId]*Full//100 if Type=="min" else subScore[subId]*Full//100//dataNum),
             time=totalTime,
             memory=maxMemory)
             if Type=="min" and subScore[subId]==0:
                 break
-#            judgingMessage("Judging Test {} of Subtask {}".format(dataId,subId))
             dataStatus=runProgram("data/{}/data{}.in".format(subId,dataId),"data/{}/data{}.ans".format(subId,dataId),"{}.{}".format(subId,dataId))
-            acm_result=acm_result if judgeStatus[dataStatus.status]=="Accepted" else judgeStatus[dataStatus.status]
-            subScore[subId]=min(subScore[subId],dataStatus.score) if Type=="min" else subScore[subId]+ dataStatus.score
-            subInfo[dataId]=toList(dataStatus)
             totalTime+=dataStatus.time
             maxMemory=max(maxMemory,dataStatus.memory)
+            if dataStatus.status!=AC and acm_mode:
+                report(score=-1,result=judgeStatus[dataStatus.status],time=totalTime,memory=maxMemory)
+
+            subScore[subId]=min(subScore[subId],dataStatus.score) if Type=="min" else subScore[subId]+ dataStatus.score
+            subInfo[dataId]=toList(dataStatus)
         subtaskScore=Full*subScore[subId]//100
         if Type=="sum":
             subtaskScore//=dataNum
@@ -156,8 +162,10 @@ try:
         for i in range(1,dataNum+1):
             subInfo[i][0]=status[i]
         info.append(subInfo)
-    report(result="Accepted" if totalScore==100 else "Unaccepted",
-            acm_result=acm_result,
+    if acm_mode:
+        report(result="Accepted",score=-1,time=totalTime,memory=maxMemory)
+    else:
+        report(result="Accepted" if totalScore==100 else "Unaccepted",
         score=totalScore,
         time=totalTime,
         memory=maxMemory,

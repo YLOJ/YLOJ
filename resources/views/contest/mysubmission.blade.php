@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 @extends('layouts.app')
 <?php
-if($mode==0){
+if($BAN){
 	foreach ($submissionset as $id => $sub){
 		$submissionset[$id]->result='Unshown';
 		$submissionset[$id]->score="-1";
@@ -9,15 +9,8 @@ if($mode==0){
 		$submissionset[$id]->memory_used='-1';
 	}
 }
-else if($mode==2){
-	foreach ($submissionset as $id => $sub){
-		$submissionset[$id]->score="-1";
-		$submissionset[$id]->result=$submissionset[$id]->acm_result;
-	}
-}
 ?>
-
-@if($mode==1)
+@if (!$BAN)
 <script src=/js/app.js></script>
 <script>
 var style={};
@@ -70,44 +63,6 @@ Echo.channel('Submission')
 		)
 	}
 });
-</script>
-@elseif ($mode==2)
-<script src=/js/app.js></script>
-<script>
-var style={};
-style["Waiting"]='class="text-primary"';
-style["Accepted"]='class="text-success"';
-style["Data Error"]='style="color:#2F4F4F"';
-style["Judgement Failed"]='style="color:#2F4F4F"';
-style["Compile Error"]='style="color:#696969"';
-Echo.channel('Submission')
-.listen('.submission.update', (e) => {
-	xsub=e.message;
-	if('acm_result' in xsub){
-		$('#sub'+xsub['id']+" #result").html([
-			"<a "+
-			(xsub['acm_result'] in style?
-				style[xsub['acm_result']]:
-				xsub['acm_result'].substring(0,7)=="Running"?
-				'style="color:#0033CC"':'class="text-danger"'
-			)	+" href=/submission/"+xsub['id']+">"
-		,
-		"<b>"+xsub['acm_result']+"</b>",
-		"</a>"
-	].join('\n'));
-	}
-	if('time' in xsub){
-		$('#sub'+xsub['id']+" #time").html(
-			xsub['time']>=0?xsub['time']+'ms':'/'
-		)
-	}
-	if('memory' in xsub){
-		$('#sub'+xsub['id']+" #memory").html(
-			xsub['memory']>=0?xsub['memory']+'kb':'/'
-		)
-	}
-});
-</script>
 @endif
 @section('content')
   <div class="container">
