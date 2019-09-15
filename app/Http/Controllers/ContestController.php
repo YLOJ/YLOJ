@@ -269,19 +269,17 @@ class ContestController extends Controller
 			user_id,
 			user_name,
 			result,
-			acm_result,
 			score,
 			time_used,
 			memory_used,
 			source_code,
 			created_at,
 			contest_id
-		) value(?,?,?,?,?,?,?,?,?,?,?,?)',[
+		) value(?,?,?,?,?,?,?,?,?,?,?)',[
 			$pid,
 			DB::select('select * from problemset where id = ?',[$pid])[0] -> title,
 			Auth::User()->id,
 			Auth::User()->name,
-			"Waiting",
 			"Waiting",
 			-1,
 			-1,
@@ -318,13 +316,9 @@ class ContestController extends Controller
 		if(!in_array($id,$this->contestShowList()))return redirect('404');
 		$submission = DB::table('submission')->orderby('id', 'desc')->where('contest_id','=',$id)->where('user_name','=',Auth::User()->name);
 		$contest = DB::table('contest')->where('id', $id)->first();
-		if($contest->rule==2){
-			return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'mode'=>2]);
-		}
-		if ($contest->rule==0 && ($contest->begin_time<=NOW() && NOW()<=$contest->end_time)) {
-			return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'mode'=>0]);
-		}
-		else return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'mode'=>1]);
+		if ($contest->rule==0 && ($contest->begin_time<=NOW() && NOW()<=$contest->end_time))
+			return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'BAN'=>1]);
+		else return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'BAN'=>0]);
 	}
 
 	public function standings($cid)
@@ -336,8 +330,7 @@ class ContestController extends Controller
 		) 
 		{
 			$data = DB::table('submission') -> where('contest_id', $cid) 
-								   -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)
-							   -> where('score','>=',0);
+								   -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
 
 			$standings = $data -> select('user_id') -> groupby('user_id') -> get() -> toarray();
 
@@ -352,12 +345,12 @@ class ContestController extends Controller
 
 			foreach ($contest -> problemset as $pid) {
 				$data = DB::table('submission') -> where('contest_id', $cid) 
-									-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('score','>=',0)-> where('problem_id', $pid)->where("acm_result",'Accepted')->orderby('created_at','asc');
+									-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('problem_id', $pid)->where("acm_result",'Accepted')->orderby('created_at','asc');
 				$fb=$data->first()->user_id;
 
 				foreach ($standings as &$user) {
 					$data = DB::table('submission') -> where('contest_id', $cid) 
-								  -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('score','>=',0)-> where('problem_id', $pid);
+								  -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('problem_id', $pid);
 					if ($contest -> rule == 1) // IOI rule
 						$data = $data -> orderby('score', 'desc') -> orderby('created_at', 'desc');
 					else if($contest->rule==0) // OI rule
@@ -383,7 +376,8 @@ class ContestController extends Controller
 								$user->score+=1;
 								break;
 							}
-							else if($sub->result=="Unaccepted")++$result->try;
+							else if($sub->result=="Waiting"  && $sub->result=="Running")break;
+							++$result->try;
 						}
 						$user->result[$pid]=$result;
 				}

@@ -9,7 +9,8 @@ cmd_select = "SELECT * FROM submission WHERE `id` = {}"
 r=redis.Redis(host=redishost,port=redisport,password=redispassword)
 while True:
     try:
-        Type,sid=r.blpop('submission')[1].split()
+        ls=r.blpop('submission')[1].split()
+        Type,sid=ls[0],ls[1]
         conn = pymysql.connect(
             host = host,
             user = user,
@@ -42,7 +43,15 @@ WHERE `id` = {}
             with open("user/lang","w") as f:
                 f.write("0\n")
             print('start judging submission',sid)
-            os.system("python3 judger.py {}".format(sid))
+            acm_mode=0
+            if not(sub['contest_id'] is None):
+                cursor.execute("select * from contest where id={}".format(sub['contest_id']))
+                con= cursor.fetchone()
+                acm_mode=con['rule']==2
+            if acm_mode:
+                os.system("python3 judger.py {} acm".format(sid))
+            else:
+                os.system("python3 judger.py {}".format(sid))
             print("done")
     except Exception as e:
         print (e)

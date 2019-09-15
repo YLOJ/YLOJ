@@ -8,7 +8,7 @@ import random,os,subprocess,psutil,time,requests
 def init():
     os.system("rm -rf {}/tmp/*".format(pathOfSandbox))
 def randomString():
-    s=""
+    s="" 
     for i in range(20):
         s+=chr(ord('a')+random.randint(0,25))
     return s
@@ -78,26 +78,23 @@ def judgingMessage(message):
     # TODO
     # print("judging:",message)
 
-def reportCur(result='',score=0,time=-1,memory=-1,judge_info='',acm_result=''):
+def reportCur(result='',score=None,time=-1,memory=-1,judge_info=''):
+    if score==None:
+        score = -1 if len(sys.argv)>2 and sys.argv[2]=="acm" else 0
     db=pymysql.connect(host,user,password,database)
     cursor=db.cursor()
-    if acm_result=='':
-        acm_result=result
-        if result[0:7]=="Running":
-            acm_result="Running"
-    sql="update submission set result='{}',acm_result='{}',score={},time_used={},memory_used={},judge_info='{}' where id={}".format(result,acm_result,score,time,memory,pymysql.escape_string(judge_info),sys.argv[1])
+    sql="update submission set result='{}',score={},time_used={},memory_used={},judge_info='{}' where id={}".format(result,score,time,memory,pymysql.escape_string(judge_info),sys.argv[1])
     cursor.execute(sql)
     db.commit()
     requests.post(link,{
     'token':token,
     'id': sys.argv[1],
     'result':result,
-    'acm_result':acm_result,
     'score':score,
     'time':time,
     'memory':memory
         });
 
-def report(result='',acm_result='',score=0,time=-1,memory=-1,judge_info=''):
-    reportCur(result,score,time,memory,judge_info,acm_result)
+def report(result='',score=None,time=-1,memory=-1,judge_info=''):
+    reportCur(result,score,time,memory,judge_info)
     sys.exit()
