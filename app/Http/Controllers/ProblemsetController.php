@@ -71,13 +71,15 @@ class ProblemsetController extends Controller {
     {
 
 		if (Auth::check() && $this->is_admin()) {
+			$content=$request->input('content_md');
+			if($content==null)$content="";
 			DB::insert('insert into `problemset` (
 				`title`, 
 				`content_md`,
 				`visibility`
 			) values (?, ?, ?)', [
 				$request->input('title'),
-				$request->input('content_md'),
+				$content,
 				2
 			]);
 
@@ -135,6 +137,8 @@ class ProblemsetController extends Controller {
 	public function edit_submit(ProblemFormRequest $request, $id)
 	{
 		if (in_array($id,$this->problemManageList())){
+			$content=$request->input('content_md');
+			if($content==null)$content="";
 			DB::update(
 				"update `problemset` set 
 				`title` = ?, 
@@ -143,7 +147,7 @@ class ProblemsetController extends Controller {
 				where `id` = ?",
 				[
 					$request->input('title'),
-					$request->input('content_md'),
+					$content,
 					$request->input('visibility'),
 					$id,
 				]

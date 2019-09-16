@@ -26,7 +26,6 @@ class ProblemFormRequest extends FormRequest
     {
         return [
             'title' => 'bail|required|string|max:255',
-            'content_md' => 'required|string|max:65000',
         ];
     }
 

@@ -67,6 +67,9 @@ class ContestController extends Controller
 	public function add_submit(ContestFormRequest $request) 
 	{
 		if(!$this->is_admin())return redirect('404');
+
+		$s=$request->input('contest_info');
+		if ($s==null)$s="";
 		DB::insert('insert into `contest` (
 			`title`,
 			`contest_info`,
@@ -76,7 +79,7 @@ class ContestController extends Controller
 			`visibility`
 		) values (?, ?, ?, ?, ?, ?)', [
 			$request -> input('title'),
-			$request -> input('contest_info'),
+			$s,
 			$request -> input('begin_time'),
 			$request -> input('end_time'),
 			$request -> input('rule'),
@@ -96,6 +99,8 @@ class ContestController extends Controller
 	public function edit_submit(ContestFormRequest $request, $cid) 
 	{
 		if(!in_array($cid,$this->contestManageList()))return redirct('404');
+		$s=$request->input('contest_info');
+		if($s==null)$s="";
 		DB::update("update `contest` set
 			`title` = ?,
 			`contest_info` = ?,
@@ -106,7 +111,7 @@ class ContestController extends Controller
 			where `id` = ?", 
 			[
 				$request -> input('title'),
-				$request -> input('contest_info'),
+				s,
 				$request -> input('begin_time'),
 				$request -> input('end_time'),
 				$request -> input('rule'),
