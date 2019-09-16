@@ -42,7 +42,9 @@ class Controller extends BaseController
 			if($this->is_admin())return DB::table('contest'); 
 			else{
 				$managerlist=array_column(DB::select('select contest_id from contest_manager where username=?',[Auth::user()->name]),'contest_id');
-				return DB::table('contest')->whereIn('id',$managerlist)->orWhere('visibility','<=',Auth::user()->permission);
+				return DB::table('contest')->
+					whereRaw("(id in (?) or visibility<= ?)",[$managerlist,Auth::user()->permission])
+					;
 			}
 			return DB::table('contest')->where('visibility','<=',Auth::user()->permission);
 		}
