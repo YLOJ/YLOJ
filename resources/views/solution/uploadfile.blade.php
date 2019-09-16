@@ -5,7 +5,7 @@
     <h2> 
       Problem #{{ $id }} 
     </h2>
-    @include('buttons.jump', ['href' => url('/solution/edit/'.$id) , 'text' => '回到编辑题解页面'])
+    @include('buttons.jump', ['href' => url('/problem/solution/edit/'.$id) , 'text' => '回到编辑题解页面'])
 	<div>
 	<div id="uploadFile" style="float: left">
     <form action="/problem/solution/upload_file/{{$id}}" method="post" enctype="multipart/form-data">
