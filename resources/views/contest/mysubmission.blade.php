@@ -63,6 +63,7 @@ Echo.channel('Submission')
 		)
 	}
 });
+</script>
 @endif
 @section('content')
   <div class="container">

@@ -27,6 +27,7 @@ class SubmissionController extends Controller
         $submission = $this->check($submission, $request, 'user_name');
         $submission = $this->check($submission, $request, 'min_score', 'score', '>=');
         $submission = $this->check($submission, $request, 'max_score', 'score', '<=');
+		$submission = $submission->where("contest_id",NULL);
 		$submission = $submission->whereIn('problem_id',$this->problemShowList());
         return view('submission.list', ['submissionset' => $submission -> paginate('10')]);
     }
