@@ -38,7 +38,14 @@ class Controller extends BaseController
 		else return array();		
 	} 
 	public function contestShowListSQL(){
-		if(Auth::check())return DB::table('contest')->where('visibility','<=',Auth::user()->permission);
+		if(Auth::check()){
+			if($this->is_admin())return DB::table('contest'); 
+			else{
+				$managerlist=array_column(DB::select('select contest_id from contest_manager where username=?',[Auth::user()->name]),'contest_id');
+				return DB::table('contest')->whereIn('id',$managerlist)->orWhere('visibility','<=',Auth::user()->permission);
+			}
+			return DB::table('contest')->where('visibility','<=',Auth::user()->permission);
+		}
 		return DB::table('contest')->where('visibility','=',0);
 	}
 	public function contestShowList(){
