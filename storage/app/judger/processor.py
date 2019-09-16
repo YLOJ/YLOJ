@@ -3,6 +3,7 @@ import yaml
 import pymysql
 import time
 import redis
+import requests
 from oj.env import *
 
 cmd_select = "SELECT * FROM submission WHERE `id` = {}"
@@ -25,9 +26,6 @@ while True:
         if Type=='test':
             cursor.execute(cmd_select.format(sid))
             sub = cursor.fetchone()
-            os.system("rm -rf data user temp 2>/dev/null")
-            os.system("cp -r ../data/{} data".format(sub['problem_id']))
-            os.system("mkdir temp user")
             if('pragma' in sub['source_code']):
                 cursor.execute("""
 UPDATE submission SET
@@ -38,6 +36,12 @@ WHERE `id` = {}
 """.format(sid))
                 conn.commit()
                 continue
+            os.system("rm -rf data user temp 2>/dev/null")
+            os.system("mkdir data")
+            with open("data/data.zip","wb") as f:
+                f.write(requests.post(link,data={"token":data_download_token,"id":sub['problem_id']}).content) 
+            os.system("unzip data/data.zip -d data")
+            os.system("mkdir temp user")
             with open("user/code.cpp","w") as f:
                 f.write(sub['source_code'])
             with open("user/lang","w") as f:

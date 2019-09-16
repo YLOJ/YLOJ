@@ -275,6 +275,19 @@ class ProblemsetController extends Controller {
 		}
 	}
 
+	public function data_download_api(Request $request)
+	{
+
+		if($request->token == env('DATA_DOWNLOAD_TOKEN')){
+			$id=$request->id;
+			$files = glob(storage_path('app/data/'.$id.'/'));
+			$zipper=new Zipper();
+			$zipper->make(storage_path('app/data/'.$id.'.zip'))->add($files)->close();
+			return Storage::disk('data')->download("$id.zip", "data_$id.zip");
+		} else {
+			return redirect('404');
+		}
+	}
 	public function delete_problem($id)
 	{
 		if (Auth::check() && $this->is_admin()) {

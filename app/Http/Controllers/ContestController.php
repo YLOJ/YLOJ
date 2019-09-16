@@ -376,7 +376,7 @@ class ContestController extends Controller
 								$user->score+=1;
 								break;
 							}
-							else if($sub->result=="Waiting"  && $sub->result=="Running")break;
+							else if($sub->result=="Waiting"  || $sub->result=="Running" || $sub->result=="Compiling")break;
 							++$result->try;
 						}
 						$user->result[$pid]=$result;

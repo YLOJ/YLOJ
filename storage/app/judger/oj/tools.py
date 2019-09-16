@@ -36,19 +36,21 @@ def kill(pid):
     os.system("kill {}".format(pid))
 
 def runCommand(command,timeLimit=10000,memoryLimit=1024000,stdin=None,stdout=None):
+    if not os.path.isdir("/sys/fs/cgroup/memory/{}".format(cgroup_name)):
+        os.mkdir("/sys/fs/cgroup/memory/{}".format(cgroup_name))
     max_memory = 0
     time_used = 0
     with open(pathOfSandbox+"/a.sh","w") as f:
         f.write('cd tmp\nsudo -u oj '+command)
     begin_time=time.time()
     child = subprocess.Popen("chroot {} sh a.sh".format(pathOfSandbox,command).split(),stdin=stdin,stdout=stdout,stderr=subprocess.PIPE)
-    with open("/sys/fs/cgroup/memory/oj/memory.usage_in_bytes","r") as f:
+    with open("/sys/fs/cgroup/memory/{}/memory.usage_in_bytes".format(cgroup_name),"r") as f:
         before=int(f.read())
-    with open("/sys/fs/cgroup/memory/oj/cgroup.procs","w") as f:
+    with open("/sys/fs/cgroup/memory/{}/cgroup.procs".format(cgroup_name),"w") as f:
         f.write(str(child.pid)+'\n')
     while child.poll() is None:
         try:
-            with open("/sys/fs/cgroup/memory/oj/memory.usage_in_bytes","r") as f:
+            with open("/sys/fs/cgroup/memory/{}/memory.usage_in_bytes".format(cgroup_name),"r") as f:
                 memory=(int(f.read())-before)/1024
             curTime=time.time()
             time_used = int((curTime - begin_time)*1000)
@@ -87,7 +89,7 @@ def reportCur(result='',score=None,time=-1,memory=-1,judge_info=''):
     cursor.execute(sql)
     db.commit()
     requests.post(link,{
-    'token':token,
+    'token':submission_update_token,
     'id': sys.argv[1],
     'result':result,
     'score':score,
