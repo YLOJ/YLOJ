@@ -27,10 +27,14 @@ class ContestController extends Controller
 	public function index()
 	{
 		return view('contest.list', [
-			'running_contests' => $this->contestShowListSQL()-> where('begin_time', '<=', now()) -> where('end_time', '>', now()) -> paginate(1000),
-			'upcoming_contests' =>$this->contestShowListSQL()-> where('begin_time', '>', now()) -> orderby('begin_time', 'asc') -> paginate(1000),
-			'past_contests' => $this->contestShowListSQL()-> where('end_time', '<=', now()) -> orderby('end_time', 'desc') -> paginate(20)
+			'running_contests' => $this-> contestShowListSQL()-> where('begin_time', '<=', now()) -> where('end_time', '>', now()) -> paginate(1000),
+			'upcoming_contests' => $this-> contestShowListSQL()-> where('begin_time', '>', now()) -> orderby('begin_time', 'asc') -> paginate(1000),
+			'past_contests' => $this-> contestShowListSQL()-> where('end_time', '<=', now()) -> orderby('end_time', 'desc') -> paginate(20)
 		]);
+/*			'running_contests' => $sql-> where('begin_time', '<=', now()) -> where('end_time', '>', now()) -> paginate(1000),
+			'upcoming_contests' => $sql-> where('begin_time', '>', now()) -> orderby('begin_time', 'asc') -> paginate(1000),
+			'past_contests' => $sql-> where('end_time', '<=', now()) -> orderby('end_time', 'desc') -> paginate(20)
+		]);*/
 	}
 	public function getProblemList($id){
 		$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
@@ -111,7 +115,7 @@ class ContestController extends Controller
 			where `id` = ?", 
 			[
 				$request -> input('title'),
-				s,
+				$s,
 				$request -> input('begin_time'),
 				$request -> input('end_time'),
 				$request -> input('rule'),

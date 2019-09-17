@@ -16,6 +16,10 @@ class WebAdminController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index(){
+		if($this->is_admin()){
+			return view('webadmin.index');
+		}
+		return view("404");
     }
 
     public function permission(){
@@ -32,8 +36,61 @@ class WebAdminController extends Controller
 					DB::update("update users set permission=? where name=?",[$request->type==1?0:1,$one]);
 				}
 			}
-			return redirect('/webadmin');
+			return redirect('/webadmin/permission');
 		}
 		return view("404");
     }
+	public function contest(){
+		if($this->is_admin()){
+			return view('webadmin.contest');
+		}
+		return view("404");
+    }
+    public function create_contest(Request $request){
+		if($this->is_admin()){
+			$list=explode("\n",$request->userlist);
+			$task_num=$request->task_num;
+			$rule=$request->rule;
+			foreach($list as $one){
+				if(DB::select("select * from users where name=?",[$one])){
+					DB::insert('insert into `contest` (
+						`title`,
+						`contest_info`,
+						`begin_time`,
+						`end_time`,
+						`rule`,
+						`visibility`
+					) values (?, ?, ?, ?, ?, ?)', [
+						$one."'s contest",
+						"",
+						"2038-01-19 0:0:0",
+						"2038-01-19 3:14:07",
+						$rule,
+						2
+					]);
+					$cid=DB::getPdo()->lastInsertId();
+					DB::insert('insert into `contest_manager`(`contest_id`,`username`)values(?,?)',[
+						$cid,$one
+					]);
+					for($i=1;$i<=$task_num;++$i){
+						DB::insert('insert into `problemset` (
+							`title`,
+							`content_md`,
+							`visibility`
+						)values(?,?,?)',[$one."T".$i,"",2]);
+						$pid=DB::getPdo()->lastInsertId();
+						DB::insert('insert into `problem_manager`(`problem_id`,`username`)values(?,?)',[
+							$pid,$one
+						]);
+						DB::insert('insert into `contest_problems`(`problem`,`id`)values(?,?)',[
+							$pid,$cid
+						]);
+					}	
+				}
+			}
+			return redirect('/webadmin/contest');
+		}
+		return view("404");
+    }
+
 }
