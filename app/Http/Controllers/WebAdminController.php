@@ -53,32 +53,23 @@ class WebAdminController extends Controller
 			$rule=$request->rule;
 			foreach($list as $one){
 				if(DB::select("select * from users where name=?",[$one])){
-					DB::insert('insert into `contest` (
-						`title`,
-						`contest_info`,
-						`begin_time`,
-						`end_time`,
-						`rule`,
-						`visibility`
-					) values (?, ?, ?, ?, ?, ?)', [
-						$one."'s contest",
-						"",
-						"2038-01-19 0:0:0",
-						"2038-01-19 3:14:07",
-						$rule,
-						2
+					$cid=DB::table('contest')->insertGetId([
+						'title'=>$one."'s contest",
+						'contest_info'=>"",
+						'begin_time'=>"2038-01-19 0:0:0",
+						'end_time'=>"2038-01-19 3:14:07",
+						'rule'=>$rule,
+						'visibility'=>2
 					]);
-					$cid=DB::getPdo()->lastInsertId();
 					DB::insert('insert into `contest_manager`(`contest_id`,`username`)values(?,?)',[
 						$cid,$one
 					]);
 					for($i=1;$i<=$task_num;++$i){
-						DB::insert('insert into `problemset` (
-							`title`,
-							`content_md`,
-							`visibility`
-						)values(?,?,?)',[$one."T".$i,"",2]);
-						$pid=DB::getPdo()->lastInsertId();
+						$pid=DB::table('problemset')->insertGetId([
+							`title`=>$one."T".$i,
+							`content_md`=>"",
+							`visibility`=>2
+						]);
 						DB::insert('insert into `problem_manager`(`problem_id`,`username`)values(?,?)',[
 							$pid,$one
 						]);

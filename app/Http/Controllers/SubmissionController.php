@@ -111,33 +111,18 @@ class SubmissionController extends Controller
         }
 		if (!in_array($id,$this->problemShowList()))
             return redirect('404');
-        DB::insert('insert into submission (
-            problem_id,
-            problem_name,
-            user_id,
-            user_name,
-            result,
-            acm_result,
-            score,
-            time_used,
-            memory_used,
-            source_code,
-            created_at
-        ) value(?,?,?,?,?,?,?,?,?,?,?) ',[
-            $id,
-            DB::select('select * from problemset where id=?',[$id])[0]->title,
-            Auth::User()->id,
-            Auth::User()->name,
-            "Waiting",
-            "Waiting",
-            -1,
-            -1,
-            -1,
-            $request->input('source_code'),
-            NOW(),
-    	    ]
-	    );
-		$xid=DB::getPdo()->lastInsertId();
+		$xid=DB::table('submission')->insertGetId(
+			['problem_id'=>$id,
+            'problem_name'=>DB::select('select * from problemset where id=?',[$id])[0]->title,
+            'user_id'=>Auth::User()->id,
+            'user_name'=>Auth::User()->name,
+            'result'=>"Waiting",
+            'score'=>-1,
+            'time_used'=>-1,
+            'memory_used'=>-1,
+            'source_code'=>$request->input('source_code'),
+            'created_at'=>NOW()]
+		);
 		Redis::rpush('submission','test '.$xid);
         return redirect('submission');
     }
