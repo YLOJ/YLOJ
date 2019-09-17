@@ -353,9 +353,11 @@ class ContestController extends Controller
 			$contest->problemset=$this->getProblemList($cid);
 
 			foreach ($contest -> problemset as $pid) {
-				$data = DB::table('submission') -> where('contest_id', $cid) 
-									-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('problem_id', $pid)->where("acm_result",'Accepted')->orderby('created_at','asc');
-				$fb=$data->first()->user_id;
+				if($contest->rule==2){
+					$data = DB::table('submission') -> where('contest_id', $cid) 
+									-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('problem_id', $pid)->where("result",'Accepted')->orderby('created_at','asc');
+					$fb=$data->first()->user_id;
+				}
 
 				foreach ($standings as &$user) {
 					$data = DB::table('submission') -> where('contest_id', $cid) 
@@ -367,9 +369,11 @@ class ContestController extends Controller
 					else 
 						$data = $data -> orderby('created_at', 'asc');
 
-					if($contest->rule!=2)
+					if($contest->rule!=2){
 						$user -> result[$pid] = $data -> where('user_id', $user -> user_id) -> first();
-					else
+						if($user->result[$pid])	$user -> score+=$user -> result[$pid] -> score;
+					}
+					else{
 						$xdata=$data->where("user_id",$user->user_id)->get();
 						$result= (object)null;
 						$result->score=0;
@@ -389,6 +393,7 @@ class ContestController extends Controller
 							++$result->try;
 						}
 						$user->result[$pid]=$result;
+					}
 				}
 			}
 

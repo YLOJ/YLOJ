@@ -62,7 +62,10 @@
           @endforeach
 		  <td class='text-primary'> <b> 
 			<?php
-				echo $user->score.'('.sprintf("%d:%02d:%02d", floor($user->time/ 3600), floor($user->time% 3600 / 60), $user->time%60).')'
+				if($contest->rule==2)
+					echo $user->score.'('.sprintf("%d:%02d:%02d", floor($user->time/ 3600), floor($user->time% 3600 / 60), $user->time%60).')';
+				else 
+					echo $user->score;
 			?>
 </b> </td>
           </tr>
