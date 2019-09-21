@@ -281,8 +281,6 @@ class ContestController extends Controller
 			'created_at'=>NOW(),
 			'contest_id' => $cid]
 		);
-
-		$xid=DB::getPdo()->lastInsertId();
 		Redis::rpush('submission','test '.$xid);
 		return redirect('/contest/mysubmission/'.$cid);
 	}
