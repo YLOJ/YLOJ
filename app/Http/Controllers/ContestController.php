@@ -31,10 +31,6 @@ class ContestController extends Controller
 			'upcoming_contests' => $this-> contestShowListSQL()-> where('begin_time', '>', now()) -> orderby('begin_time', 'asc') -> paginate(1000),
 			'past_contests' => $this-> contestShowListSQL()-> where('end_time', '<=', now()) -> orderby('end_time', 'desc') -> paginate(20)
 		]);
-/*			'running_contests' => $sql-> where('begin_time', '<=', now()) -> where('end_time', '>', now()) -> paginate(1000),
-			'upcoming_contests' => $sql-> where('begin_time', '>', now()) -> orderby('begin_time', 'asc') -> paginate(1000),
-			'past_contests' => $sql-> where('end_time', '<=', now()) -> orderby('end_time', 'desc') -> paginate(20)
-		]);*/
 	}
 	public function getProblemList($id){
 		$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
@@ -272,31 +268,20 @@ class ContestController extends Controller
 		$contest = DB::table('contest')->where('id', $cid)->first();
 		if(!in_array($cid,$this->contestManageList()) && now()<$contest->begin_time)
 			return redirect('404');
-		DB::insert('insert into submission (
-			problem_id,
-			problem_name,
-			user_id,
-			user_name,
-			result,
-			score,
-			time_used,
-			memory_used,
-			source_code,
-			created_at,
-			contest_id
-		) value(?,?,?,?,?,?,?,?,?,?,?)',[
-			$pid,
-			DB::select('select * from problemset where id = ?',[$pid])[0] -> title,
-			Auth::User()->id,
-			Auth::User()->name,
-			"Waiting",
-			-1,
-			-1,
-			-1,
-			$request->input('source_code'),
-			NOW(),
-			$cid,
-		]);
+		$xid=DB::table('submission')->insertGetId(
+			['problem_id'=>$pid,
+            'problem_name'=>DB::select('select * from problemset where id=?',[$pid])[0]->title,
+            'user_id'=>Auth::User()->id,
+            'user_name'=>Auth::User()->name,
+            'result'=>"Waiting",
+            'score'=>-1,
+            'time_used'=>-1,
+            'memory_used'=>-1,
+            'source_code'=>$request->input('source_code'),
+			'created_at'=>NOW(),
+			'contest_id' => $cid]
+		);
+
 		$xid=DB::getPdo()->lastInsertId();
 		Redis::rpush('submission','test '.$xid);
 		return redirect('/contest/mysubmission/'.$cid);
