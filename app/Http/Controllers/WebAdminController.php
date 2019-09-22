@@ -66,9 +66,9 @@ class WebAdminController extends Controller
 					]);
 					for($i=1;$i<=$task_num;++$i){
 						$pid=DB::table('problemset')->insertGetId([
-							`title`=>$one."T".$i,
-							`content_md`=>"",
-							`visibility`=>2
+							'title'=>$one."T".$i,
+							'content_md'=>"",
+							'visibility'=>2
 						]);
 						DB::insert('insert into `problem_manager`(`problem_id`,`username`)values(?,?)',[
 							$pid,$one
