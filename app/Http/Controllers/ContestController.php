@@ -271,7 +271,7 @@ class ContestController extends Controller
 		$xid=DB::table('submission')->insertGetId(
 			['problem_id'=>$pid,
             'problem_name'=>DB::select('select * from problemset where id=?',[$pid])[0]->title,
-            'user_id'=>Auth::User()->id,
+            'user_name'=>Auth::User()->id,
             'user_name'=>Auth::User()->name,
             'result'=>"Waiting",
             'score'=>-1,
@@ -324,11 +324,10 @@ class ContestController extends Controller
 			$data = DB::table('submission') -> where('contest_id', $cid) 
 								   -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
 
-			$standings = $data -> select('user_id') -> groupby('user_id') -> get() -> toarray();
+			$standings = $data -> select('user_name') -> groupby('user_name') -> get() -> toarray();
 
 			foreach ($standings as &$user) {
 				$user -> result = array();
-				$user -> user_name = DB::table('users') -> where('id', $user -> user_id) -> first() -> name;
 				$user -> score = 0;
 				$user -> time = 0;
 			}
@@ -339,7 +338,7 @@ class ContestController extends Controller
 				if($contest->rule==2){
 					$data = DB::table('submission') -> where('contest_id', $cid) 
 									-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('problem_id', $pid)->where("result",'Accepted')->orderby('created_at','asc');
-					$fb=$data->first()->user_id;
+					$fb=$data->first()->user_name;
 				}
 
 				foreach ($standings as &$user) {
@@ -353,11 +352,11 @@ class ContestController extends Controller
 						$data = $data -> orderby('created_at', 'asc');
 
 					if($contest->rule!=2){
-						$user -> result[$pid] = $data -> where('user_id', $user -> user_id) -> first();
+						$user -> result[$pid] = $data -> where('user_name', $user -> user_name) -> first();
 						if($user->result[$pid])	$user -> score+=$user -> result[$pid] -> score;
 					}
 					else{
-						$xdata=$data->where("user_id",$user->user_id)->get();
+						$xdata=$data->where("user_name",$user->user_name)->get();
 						$result= (object)null;
 						$result->score=0;
 						$result->try=0;
@@ -365,7 +364,7 @@ class ContestController extends Controller
 						foreach($xdata as $sub){
 							$result->id=$sub->id;
 							if($sub->result=="Accepted"){
-								$result->score=($user->user_id==$fb?2:1);
+								$result->score=($user->user_name==$fb?2:1);
 								$result->time=
 									strtotime($sub->created_at)-strtotime($contest->begin_time)+1200*$result->try;
 								$user->time+=$result->time;
