@@ -84,6 +84,7 @@
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/user/profile">编辑个人信息</a>
 					@if (Auth::user()->permission > 1)
                     <a class="dropdown-item" href="/webadmin">WebAdmin</a>
 					@endif

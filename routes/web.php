@@ -95,3 +95,7 @@ Route::name('webadmin.')->prefix('webadmin')->group(function(){
 	Route::get('/contest','WebAdminController@contest')->name('contest');
 	Route::post('/create_contest','WebAdminController@create_contest')->name('create_contest');
 });
+Route::name("user.")->prefix("user")->group(function(){
+	Route::get('/profile','UserController@profile')->name("profile");
+	Route::post('/update_profile','UserController@update_profile')->name("update_profile");
+});
