@@ -8,7 +8,8 @@
     <table id="standings" class="table table-bordered tablesort">
       <thead>
         <tr>
-          <th style="width:20%">User Name</th>
+          <th style="width:15%">User Name</th>
+          <th style="width:15%">Nickname</th>
           @foreach ($contest -> problemset as $problem)
             <th> {{ $problem -> title }} </th>
           @endforeach
@@ -21,6 +22,7 @@
           @else <tr>
           @endif
           <td> {{ $user -> user_name }} </td>
+          <td> {{ $user -> nickname }} </td>
           @foreach($user -> result as $sub)
 			@if($mode!=2)
 	            @if($sub != null)

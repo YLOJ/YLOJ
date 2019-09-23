@@ -330,6 +330,12 @@ class ContestController extends Controller
 				$user -> result = array();
 				$user -> score = 0;
 				$user -> time = 0;
+				$db=DB::table("users")->where("name",$user->user_name)->select("nickname");
+				if($db->count()){
+					$user->nickname=$db->first()->nickname;
+					if (!$user->nickname)$user->nickname="";
+				}
+				else $user->nickname="";
 			}
 
 			$contest->problemset=$this->getProblemList($cid);
