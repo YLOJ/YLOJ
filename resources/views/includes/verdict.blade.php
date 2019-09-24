@@ -8,7 +8,12 @@
   {{ $sub -> id }} 
 </td>
 <td>
+ @if ($sub->contest_id)
+
+  <a href="/contest/{{$sub->contest_id}}/problem/{{ $sub -> problem_id }}"> #{{ $sub -> problem_id }} : {{ $sub -> problem_name }} </a>
+ @else
   <a href="/problem/{{ $sub -> problem_id }}"> #{{ $sub -> problem_id }} : {{ $sub -> problem_name }} </a>
+ @endif
 </td>
 <td> 
   {{ $sub -> user_name }} 

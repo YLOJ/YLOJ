@@ -396,6 +396,13 @@ class ContestController extends Controller
 				return $a -> score < $b -> score||$a->score==$b->score && $a->time > $b->time;
 			};
 			usort($standings, $cmp);
+			$last=null;
+			$rk=0;
+			foreach($standings as &$user){
+				if(!$last||$cmp($user,$last))++$rk;
+				$user->rank=$rk;
+				$last=$user;
+			}
 			return view('contest.standings', ['standings' => $standings, 'contest' => $contest,'mode'=>$contest->rule]);
 
 		} else {
