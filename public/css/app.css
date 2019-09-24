@@ -10693,3 +10693,6 @@ a.text-dark:focus {
 .content{
 	background-color: #ffffff;
 }
+.after{
+	display:none;
+}

@@ -5,7 +5,10 @@
     <br>
     <h2 style='text-align:center;'> Standings </h2>
     <br>
-    <table id="standings" class="table table-bordered tablesort">
+@if($contest->rule!=2)
+	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
+@endif
+    <table id="standings" class="table table-bordered tablesort" style=" table-layout: fixed; ">
       <thead>
         <tr>
           <th style="width:5%">Rank</th>
@@ -32,7 +35,7 @@
 				if($contest->rule==2)
 					echo $user->score.'('.sprintf("%d:%02d:%02d", floor($user->time/ 3600), floor($user->time% 3600 / 60), $user->time%60).')';
 				else 
-					echo $user->score.'('.$user->score_after.')';
+					echo $user->score.'<span class="after">('.$user->score_after.')</span>';
 			?>
 </b> </td>
 
@@ -50,6 +53,7 @@
 	            @else
 	              <b class="text-danger"> 0</b>
 				@endif
+				<span class="after">
 	            @if($sub->after->found!= null)
 	                @if($sub ->after-> score == 100) <a class="text-success" href="{{ url('submission/'.$sub -> after->id) }}"> 
 	                @elseif($sub->after -> score > 0) <a style="color:orange" href="{{ url('submission/'.$sub->after -> id) }}"> 
@@ -60,6 +64,7 @@
 	            @else
 	              <b class="text-danger">(0)</b>
 				@endif
+				</span>
 	              </td>
 			@else
 	            @if($sub != null)
@@ -90,5 +95,10 @@
         @endforeach
       </tbody>
     </table>
+	<script>
+		$("#showafter").change(function() {
+			$(".after").toggle();
+		});
+	</script>
   </div>
 @endsection
