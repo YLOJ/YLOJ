@@ -12,8 +12,9 @@
       <thead>
         <tr>
           <th style="width:5%">Rank</th>
-          <th style="width:15%">User Name</th>
-          <th style="width:20%">Total Score</th>
+          <th style="width:15%">Username</th>
+          <th style="width:15%">Nickname</th>
+          <th style="width:10%">Total Score</th>
           @foreach ($contest -> problemset as $problem)
             <th><a href=/contest/{{$contest->id}}/problem/{{$problem->id}}> {{ $problem -> title }} </a></th>
           @endforeach
@@ -30,6 +31,7 @@
 *
 @endif
 </td>
+          <td> {{ $user -> nickname}} </td>
 		  <td class='text-primary'> <b> 
 			<?php
 				if($contest->rule==2)
