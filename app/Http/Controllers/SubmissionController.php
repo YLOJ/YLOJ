@@ -35,7 +35,7 @@ class SubmissionController extends Controller
     public function statistics($id, Request $request)
 	{
 		if(!in_array($id,$this->problemShowList()))return redirect('404');
-        $raw_data = DB::table('submission') -> where('score', '=', 100) -> where('problem_id', '=', $id);
+        $raw_data = DB::table('submission') -> where('result', "Accepted") -> where('problem_id', '=', $id);
         $raw_data = $raw_data -> orderby('time_used', 'asc') -> get() -> toArray();
         $map = array();
         $data = array();

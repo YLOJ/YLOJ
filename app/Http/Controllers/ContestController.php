@@ -271,7 +271,7 @@ class ContestController extends Controller
 		$xid=DB::table('submission')->insertGetId(
 			['problem_id'=>$pid,
             'problem_name'=>DB::select('select * from problemset where id=?',[$pid])[0]->title,
-            'user_name'=>Auth::User()->id,
+            'user_id'=>Auth::User()->id,
             'user_name'=>Auth::User()->name,
             'result'=>"Waiting",
             'score'=>-1,
@@ -322,14 +322,16 @@ class ContestController extends Controller
 		) 
 		{
 			$data = DB::table('submission') -> where('contest_id', $cid) 
-								   -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time);
-
+								   -> where('created_at', '>=', $contest -> begin_time);
+			if($contest->rule==2)$data=$data->where('created_at',"<=",$contest->end_time);
 			$standings = $data -> select('user_name') -> groupby('user_name') -> get() -> toarray();
 
 			foreach ($standings as &$user) {
 				$user -> result = array();
 				$user -> score = 0;
+				$user -> score_after= 0;
 				$user -> time = 0;
+				$user -> in_contest = 0;
 				$db=DB::table("users")->where("name",$user->user_name)->select("nickname");
 				if($db->count()){
 					$user->nickname=$db->first()->nickname;
@@ -348,10 +350,15 @@ class ContestController extends Controller
 				}
 
 				foreach ($standings as &$user) {
+					$data_all = DB::table('submission') -> where('contest_id', $cid) 
+								  -> where('created_at', '>=', $contest -> begin_time)-> where('problem_id', $pid);
 					$data = DB::table('submission') -> where('contest_id', $cid) 
-								  -> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('problem_id', $pid);
-					if ($contest -> rule == 1) // IOI rule
+									 -> where('created_at', '>=', $contest -> begin_time)-> 
+								 where('problem_id', $pid)-> where('created_at',"<=",$contest->end_time);
+					$data_all = $data_all -> orderby('score', 'desc') -> orderby('created_at', 'desc');
+					if ($contest -> rule == 1){ // IOI rule
 						$data = $data -> orderby('score', 'desc') -> orderby('created_at', 'desc');
+					}
 					else if($contest->rule==0) // OI rule
 						$data = $data -> orderby('created_at', 'desc');
 					else 
@@ -359,7 +366,25 @@ class ContestController extends Controller
 
 					if($contest->rule!=2){
 						$user -> result[$pid] = $data -> where('user_name', $user -> user_name) -> first();
-						if($user->result[$pid])	$user -> score+=$user -> result[$pid] -> score;
+						if($user->result[$pid]){
+							$user -> score+=$user -> result[$pid] -> score;
+							$user->in_contest=1;
+							$user->result[$pid] -> found=1;
+						}
+						else {
+							$user->result[$pid]=(object)null;
+							$user->result[$pid]->found=0;
+						}
+
+						$user -> result[$pid]->after = $data_all -> where('user_name', $user -> user_name) -> first();
+						if($user->result[$pid]->after){
+							$user -> score_after+=$user -> result[$pid]->after -> score;
+							$user->result[$pid]->after->found=1;
+						}
+						else{
+							$user->result[$pid]->after=(object)null;
+							$user->result[$pid]->after->found=0;
+						}
 					}
 					else{
 						$xdata=$data->where("user_name",$user->user_name)->get();
