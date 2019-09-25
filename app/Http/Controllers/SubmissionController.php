@@ -133,7 +133,7 @@ class SubmissionController extends Controller
 		if (!in_array($pid,$this->problemManageList())) {
             return redirect('404');
         }
-        DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting','acm_result' => 'Waiting','score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+        DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting','score' => -1, 'time_used' => -1, 'memory_used' => -1]);
 		Redis::rpush('submission','test '.$id);
         return redirect('submission/'.$id);
     }
@@ -144,7 +144,7 @@ class SubmissionController extends Controller
             return redirect('404');
 
 		$sublist=DB::select('select * from submission where problem_id=?',[$id]);
-        DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting','acm_result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+        DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
 		foreach($sublist as $sub){
 			Redis::rpush('submission','test '.$sub->id);
 		}
@@ -156,7 +156,7 @@ class SubmissionController extends Controller
             return redirect('404');
 
 		$sublist=DB::select('select * from submission where problem_id=? and result="Accepted"',[$id]);
-        DB::table('submission') -> where('problem_id', '=', $id) ->where('result','=','Accepted') ->  update(['result' => 'Waiting','acm_result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+        DB::table('submission') -> where('problem_id', '=', $id) ->where('result','=','Accepted') ->  update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
 		foreach($sublist as $sub){
 			Redis::rpush('submission','test '.$sub->id);
 		}
