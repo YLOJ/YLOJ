@@ -6,10 +6,9 @@
       <div class="col">
         <div class="text-center">
           <h1> #{{$id}}. {{ $title }} </h1>
-          Time Limit : {{ $time_limit }} <br>
-          Memory Limit : {{ $memory_limit }} <br> 
-		  Input File: {{$input_file}} <br>
-		  Output File: {{$output_file}} <br> 
+			<?php
+				echo $head;
+			?>
           <div class="btn-group-md">
             @include('buttons.jump-icon' , ['href' => url('/problem/submit/'.$id) , 'icon' => 'paper-plane' , 'text' => 'Submit'])
             @include('buttons.jump-icon' , ['href' => url('/submission?problem_id='.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])

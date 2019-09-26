@@ -4,11 +4,6 @@ __author__ = 'QAQ AutoMaton'
 
 import os,random,sys,re
 from functools import cmp_to_key
-config="""time_limit: 1000
-memory_limit: 256000
-# input_file: 
-# output_file: 
-"""
 def str_cmp(a,b):
     if len(a)<len(b):
         return -1
@@ -32,17 +27,55 @@ def randomString():
     return s
 with open("dataconfig","r") as f:
     s=f.readlines()
+
+if os.path.exists("./type"):
+    with open("type","r") as f:
+        type=f.readlines()
+    for i in range(len(type)):
+        if(type[i][-1]=='\n'):
+            type[i]=type[i][:-1]
+else:
+    type=["0"]
+    
 for i in range(len(s)):
     if(s[i][-1]=='\n'):
         s[i]=s[i][:-1]
+
 ls=list(os.popen("find ./{}".format(s[0])))
 os.system('rm -rf {}-new 2>/dev/null'.format(s[0]))
 os.mkdir(s[0]+'-new')
 sys.stdout=open("{}-new/log".format(s[0]),"w")
-
 for i in range(len(ls)):
     if(ls[i][-1]=='\n'):
         ls[i]=ls[i][:-1]
+if type[0]=='0':
+    config="""time_limit: 1000
+memory_limit: 256000
+type: 0
+# input_file: 
+# output_file: 
+"""
+elif type[0]=='1':
+    header=type[1]
+    if "./{}/{}".format(s[0],header) in ls:
+        config="""time_limit: 1000
+memory_limit: 256000
+header: {}
+type: 1
+# token: 
+""".format(header)
+        print("Header File Found")
+        if "./{}/grader.cpp".format(s[0]) in ls:
+            print("Grader Found")
+            os.system("cp ./{0}/grader.cpp ./{0}-new/".format(s[0]))
+            os.system("cp ./{0}/{1} ./{0}-new/".format(s[0],header))
+        else:
+            print("Grader Not Found")
+            sys.exit()
+    else:
+        print("Header File Not Found")
+        sys.exit()
+
 if './{}/chk.cpp'.format(s[0]) in ls:
     os.system("cp {0}/chk.cpp {0}-new/chk.cpp".format(s[0]))
     print("checker found") 
@@ -135,6 +168,8 @@ else:
     dfs(1,t,datas,g,int(s[-1]))
     config+="""subtask{}:
  data_num: {}  
+# dependency:
+#  - 
 """.format(subid,dataid)+""" type: {type}
  score: 1
 """

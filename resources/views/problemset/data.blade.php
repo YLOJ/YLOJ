@@ -36,7 +36,28 @@
 	</form>
 	</div>
 	<div id="formatData" style='float: left'>
-    <form action="/problem/data_format/{{$id}}" method="post" enctype="multipart/form-data">
+	<form action="/problem/data_format/{{$id}}" method="post" enctype="multipart/form-data">
+	   <label><b> 选择题目类型 </b></label>
+
+	    <select name="type" id="type">
+
+	      <option value="0" selected>传统题</option>
+	
+	      <option value="1">交互题(OI style)</option>
+	
+	    </select>
+		<script>
+			$("#type").change(function(){
+			if($("#type").val()==1)
+				$("#type1").css("display","list-item");
+			else
+				$("#type1").css("display","none");
+			});
+		</script>
+		<div name="type1" id="type1" style="display:none">
+		头文件：<input name="header" >	
+		</div>
+		<br>
       <label> <b> 生成数据列表规则：（自动匹配留空） </b> </label> <br>
 
 		<textarea name='matchrule' rows=10></textarea>

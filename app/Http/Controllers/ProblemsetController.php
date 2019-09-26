@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Storage;
 
 use Chumper\Zipper\Zipper;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 class ProblemsetController extends Controller {
 
     public function index()
-    {
-        $problemset = $this->problemShowListSQL()->paginate(20);
+    { $problemset = $this->problemShowListSQL()->paginate(20);
         return view('problemset.list', ['problemset' => $problemset]);
     }
 
@@ -27,29 +27,50 @@ class ProblemsetController extends Controller {
         $problem = DB::table('problemset')->where('id', $id)->first();
 		if (in_array($id,$this->problemShowList())) {
 			if (Storage::disk('data')->exists($id.'/config.yml') && Storage::disk('data')->get($id.'/config.yml')){
-				$config=Yaml::parse(Storage::disk('data')->get($id.'/config.yml'));
-				if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
-				else $time_limit=1000;
-				$time_limit.=' ms';
+				try {
+					$config=Yaml::parse(Storage::disk('data')->get($id.'/config.yml'));
+					if(array_key_exists('type',$config))$type=$config['type'];
+					else $type=0;
+					if($type==0){
+						if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
+						else $time_limit=1000;
+						$time_limit.=' ms';
+		
+						if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
+						else $memory_limit=256000;
+						$memory_limit.=' KB';
+		
+						if(array_key_exists('input_file',$config))$input_file=$config['input_file'];
+						else $input_file='Standard Input';
+		
+						if(array_key_exists('output_file',$config))$output_file=$config['output_file'];
+						else $output_file='Standard Output';
 
-				if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
-				else $memory_limit=256000;
-				$memory_limit.=' KB';
+						$head="Time Limit: ".$time_limit."<br>Memory Limit: ".
+						$memory_limit."<br>Input File: ".$input_file."<br>Output File: ".$output_file."<br>";
+					}
+					else if($type==1){
+						if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
+						else $time_limit=1000;
+						$time_limit.=' ms';
+		
+						if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
+						else $memory_limit=256000;
+						$memory_limit.=' KB';
+		
+						$head="Time Limit: ".$time_limit."<br>Memory Limit: ".
+							$memory_limit."<br>Type: Interactive(OI)<br>";
+					}
+				} catch (ParseException $exception) {
+   					 $head='Unable to parse the YAML string: '.$exception->getMessage().'<br>';
+				}
 
-				if(array_key_exists('input_file',$config))$input_file=$config['input_file'];
-				else $input_file='Standard Input';
-
-				if(array_key_exists('output_file',$config))$output_file=$config['output_file'];
-				else $output_file='Standard Output';
 			}else
-				$time_limit=$memory_limit=$input_file=$output_file="data not found!";
+				$head="data not found!<br>";
             return view('problemset.show', [
                 'id' => $id,
                 'title' => $problem->title,
-                'time_limit' => $time_limit,
-                'memory_limit' => $memory_limit,
-				'input_file' => $input_file,
-				'output_file' => $output_file,
+				'head' => $head,
                 'content_html' => $markdowner->toHTML($problem->content_md),
 				'is_admin' => in_array($id,$this->problemManageList())
             ]);
@@ -220,6 +241,9 @@ class ProblemsetController extends Controller {
 	public function data_format(Request $request, $id){
 		if (in_array($id,$this->problemManageList())){
 			Storage::disk('data')->put('dataconfig',$id."\n".$request->matchrule);
+			$type=$request->type."\n";
+			if($request->type==1)$type.=$request->header."\n";
+			Storage::disk('data')->put('type',$type);
 			exec('cd '.base_path().'/storage/app/data && python3 makedata.py');
 			return redirect(route('problem.data', $id));
 		} else {
