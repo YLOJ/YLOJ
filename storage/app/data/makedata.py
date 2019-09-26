@@ -120,8 +120,8 @@ subtask1:
             os.mkdir('{}-new/{}'.format(s,t))
             print("Subtask",t)
             print(i+'.in,'+out)
-            os.system("cp {1}.in {0}-new/{2}/data{2}.in".format(s,i,t))
-            os.system("cp {1} {0}-new/{2}/data{2}.ans".format(s,out,t))
+            os.system("cp {1}.in {0}-new/{2}/data1.in".format(s,i,t))
+            os.system("cp {1} {0}-new/{2}/data1.ans".format(s,out,t))
             config+="""subtask{}: 
   data_num: 1
   type: sum 
