@@ -81,7 +81,8 @@ if './{}/chk.cpp'.format(s[0]) in ls:
     print("checker found") 
 else:
     config+='checker: fcmp\n'
-if len(s)==1:
+if len(s)==1 or len(s)==2:
+    allin1= len(s)==1
     s=s[0]
     data=[]
     for i in ls:
@@ -90,22 +91,43 @@ if len(s)==1:
                 data.append(i[:-3])
     data.sort(key=cmp_to_key(str_cmp))
     t=0 
-    os.mkdir('{}-new/1'.format(s))
-    for i in data:
-        if i+'.ans' in ls:
-            out=i+'.ans'
-        else:
-            out=i+'.out'
-        print(i+'.in,'+out)
-        t+=1
-        os.system("cp {1}.in {0}-new/1/data{2}.in".format(s,i,t))
-        os.system("cp {1} {0}-new/1/data{2}.ans".format(s,out,t))
-    config+="""subtask_num: 1
+    if allin1:
+        os.mkdir('{}-new/1'.format(s))
+        for i in data:
+            if i+'.ans' in ls:
+                out=i+'.ans'
+            else:
+                out=i+'.out'
+            print(i+'.in,'+out)
+            t+=1
+            os.system("cp {1}.in {0}-new/1/data{2}.in".format(s,i,t))
+            os.system("cp {1} {0}-new/1/data{2}.ans".format(s,out,t))
+            config+="""subtask_num: 1
 subtask1:
  data_num: {}
  type: sum
  score: 100
 """.format(t)
+    else:
+        config+="subtask_num: {}\n".format(len(data))
+        for i in data:
+            if i+'.ans' in ls:
+                out=i+'.ans'
+            else:
+                out=i+'.out'
+            t+=1
+
+            os.mkdir('{}-new/{}'.format(s,t))
+            print("Subtask",t)
+            print(i+'.in,'+out)
+            os.system("cp {1}.in {0}-new/{2}/data{2}.in".format(s,i,t))
+            os.system("cp {1} {0}-new/{2}/data{2}.ans".format(s,out,t))
+            config+="""subtask{}: 
+  data_num: 1
+  type: sum 
+  score: 1
+""".format(t);
+
     with open(s+'-new/config.yml',"w") as f:
         f.write(config)
 else:
