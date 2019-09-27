@@ -102,7 +102,7 @@ if len(s)==1 or len(s)==2:
             t+=1
             os.system("cp {1}.in {0}-new/1/data{2}.in".format(s,i,t))
             os.system("cp {1} {0}-new/1/data{2}.ans".format(s,out,t))
-            config+="""subtask_num: 1
+        config+="""subtask_num: 1
 subtask1:
  data_num: {}
  type: sum
