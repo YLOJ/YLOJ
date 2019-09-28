@@ -167,7 +167,6 @@ class SubmissionController extends Controller
 		$pid=DB::table('submission')->where('id',$id)->first()->problem_id;
 		if (!in_array($pid,$this->problemManageList()))
             return redirect('404');
-        }
         DB::table('submission') -> where('id', '=', $id) -> delete();
         return redirect('submission');
     }
