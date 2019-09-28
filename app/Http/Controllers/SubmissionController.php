@@ -165,7 +165,7 @@ class SubmissionController extends Controller
     public function delete_submission($id)
     {
 		$pid=DB::table('submission')->where('id',$id)->first()->problem_id;
-        if (!Auth::check() || Auth::User() -> permission <= 1) {
+		if (!in_array($pid,$this->problemManageList()))
             return redirect('404');
         }
         DB::table('submission') -> where('id', '=', $id) -> delete();
