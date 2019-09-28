@@ -2,8 +2,10 @@
 @extends('layouts.app')
 
 @section('content')
-	<div>
-		<h2>这个页面不存在或你没有权限访问。</h2>
-
+	<div class="container">
+		<center>
+			<h2>这个页面不存在或你没有权限访问。</h2>
+			<img src="/404.jpg"></img>
+		</center>
 	</div>
 @endsection
