@@ -32,16 +32,17 @@ class UserController extends Controller
 
     public function update_profile(Request $request){
 		if(!Auth::check())return redirect("login");
-		$oldpass=$request->old_password;
-		$request->old_password=Hash::check( Auth::user()->password , $request->old_password);
-		if(!$request->nickname)$request->nickname=Auth::user()->nickname;
-		if(!$request->password){
-			$request->password=$request->password_comfirmed=$oldpass;
+		$req=$request->all();
+		$oldpass=$req['old-password'];
+		$req['old-password']=Hash::check( Auth::user()->password , $req['old-password']);
+		if(!$req['nickname'])$req['nickname']=Auth::user()->nickname;
+		if(!$req['password']){
+			$req['password']=$req['password_confirmation']=$oldpass;
 		}
-        $this->validator($request->all())->validate();
+        $this->validator($req)->validate();
 		DB::table("users")->where("name",Auth::user()->name)->update([
-			'nickname'=>$request->nickname,
-			'password'=>Hash::make($request->password)
+			'nickname'=>$req['nickname'],
+			'password'=>Hash::make($req['password'])
 		]);
 		return redirect("user/profile");
     }
