@@ -102,6 +102,7 @@ class SubmissionController extends Controller
 	public function update(Request $request){
 		$req=$request->all();
 		if($req ['token'] != env('UPDATE_SUBMISSION_TOKEN'))return redirect('404');
+		unset($req['token']);
 		broadcast(new Submission($req));
 	}
     public function submitcode(Request $request, $id) 
@@ -189,13 +190,14 @@ class SubmissionController extends Controller
 		$xid=DB::table('custom_tests')->insertGetId(
 			['code'=>$request->code,
 			'input'=>$request->input,
-			'output'=>""]);
+			'output'=>"Waiting..."]);
 		Redis::rpush('submission','customtest '.$xid);
-        return view('submission.customtests',['id'=>$xid, 'input'=>$request->input,'code'=>$request->code,'output'=>'Waiting...']);
+		return view('submission.customtests',['id'=>$xid, 'input'=>$request->input,'code'=>$request->code,'output'=>DB::table("custom_tests")->where('id',$xid)->get()->toArray()[0]->output]);
     }
 	public function custom_test_update(Request $request){
 		$req=$request->all();
 		if($req ['token'] != env('UPDATE_SUBMISSION_TOKEN'))return redirect('404');
+		unset($req['token']);
 		broadcast(new custom_test($req));
 	}
 }

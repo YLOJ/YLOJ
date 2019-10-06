@@ -25,8 +25,9 @@
 Echo.channel('Submission')
 .listen('.submission.custom_test', (e) => {
 	xsub=e.message;
+	console.log(xsub);
 	if(xsub['id']=="{{$id}}"){
-		$('#output').html(
+		$('#output').val(
 			xsub['output']
 		);
 	}
