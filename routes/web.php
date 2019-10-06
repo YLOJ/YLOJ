@@ -43,6 +43,7 @@ Route::name('problem.')->prefix('problem')->group(function() {
     Route::post('/submit/{id}', 'SubmissionController@submitcode')->name('submitcode')->where('id', '[0-9]+');
 
     Route::get('/customtests', 'SubmissionController@customtests')->name('customtests');
+    Route::post('/customtests', 'SubmissionController@customtests_judge')->name('customtests_judge');
     Route::get('/statistics/{id}', 'SubmissionController@statistics')->name('statistics')->where('id', '[0-9]+');
 
     Route::get('/solution/{id}', 'ProblemsetController@show_solution')->name('show_solution')->where('id', '[0-9]+');

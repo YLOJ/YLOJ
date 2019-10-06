@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Events\Submission;
+use App\Events\custom_test;
 class SubmissionController extends Controller
 {
     public function check($sub, $request, $para, $_para = "", $operator = '=') 
@@ -181,6 +182,20 @@ class SubmissionController extends Controller
     }
     public function customtests() 
     {
-        return view('submission.customtests');
+        return view('submission.customtests',['id'=>-1, 'input'=>'','code'=>'','output'=>'']);
     }
+    public function customtests_judge(Request $request) 
+    {
+		$xid=DB::table('custom_tests')->insertGetId(
+			['code'=>$request->code,
+			'input'=>$request->input,
+			'output'=>""]);
+		Redis::rpush('submission','customtest '.$xid);
+        return view('submission.customtests',['id'=>$xid, 'input'=>$request->input,'code'=>$request->code,'output'=>'Waiting...']);
+    }
+	public function custom_test_update(Request $request){
+		$req=$request->all();
+		if($req ['token'] != env('UPDATE_SUBMISSION_TOKEN'))return redirect('404');
+		broadcast(new custom_test($req));
+	}
 }

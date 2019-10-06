@@ -2,17 +2,35 @@
 
 @section('content')
   <div class="container">
-    <form action="#" method="post">
+    <form action="" method="post">
       <div class="form-group">
         <label>Source Code</label> <br>
-        <textarea rows="15" name="source_code" , class="form-control"></textarea>
+        <textarea rows="15" name="code" , class="form-control">{{$code}}</textarea>
       </div>
-      <div class="form-group">
+	  <div>
+      <div class="form-group" style="width:50%;overflow:hidden;float:left">
         <label>Input Text File</label> <br>
-        <textarea rows="5" name="source_code" , class="form-control"></textarea>
+        <textarea rows="5" name="input" , class="form-control">{{$input}}</textarea>
       </div>
+      <div class="form-group" style="width:50%;overflow:hidden;float:left">
+        <label>Output Text File</label> <br>
+        <textarea rows="5" name="output" id="output" class="form-control">{{$output}}</textarea>
+      </div>
+	  </div>
       @include('buttons.submit' , ['text' => 'Submit'])
       @csrf
     </form>
+<script src=/js/app.js></script>
+<script>
+Echo.channel('Submission')
+.listen('.submission.custom_test', (e) => {
+	xsub=e.message;
+	if(xsub['id']=="{{$id}}"){
+		$('#output').html(
+			xsub['output']
+		);
+	}
+});
+</script>
   </div>
 @endsection

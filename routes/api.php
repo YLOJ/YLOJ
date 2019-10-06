@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('submission_update','SubmissionController@update');
-Route::any('data_download', 'ProblemsetController@data_download_api')->name('data_download_api');
+Route::post('custom_test_update','SubmissionController@custom_test_update');
