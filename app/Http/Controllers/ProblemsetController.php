@@ -71,7 +71,7 @@ class ProblemsetController extends Controller {
                 'id' => $id,
                 'title' => $problem->title,
 				'head' => $head,
-                'content_html' => $markdowner->toHTML($problem->content_md),
+				'content_md' => $problem->content_md,
 				'is_admin' => in_array($id,$this->problemManageList())
             ]);
         } else {
@@ -329,14 +329,13 @@ class ProblemsetController extends Controller {
 
     public function show_solution($id)
     {
-        $markdowner = new Markdowner();
         $problem = DB::table('problemset')->where('id', $id)->first();
 		$contests=array_column(DB::table('contest_problems')->where('problem',$id)->get()->toArray(),'id');
 		if((in_array($id,$this->problemShowList()) || $this->contestShowListSQL()->where('end_time','<=',now())->whereIn('id',$contests)->count()))
             return view('solution.show', [
                 'id' => $id,
                 'title' => $problem->title,
-                'content_html' => $markdowner->toHTML($problem->solution),
+				'content_md' => $problem->solution,
 				'is_admin' => in_array($id,$this->problemManageList())
             ]);
          else 

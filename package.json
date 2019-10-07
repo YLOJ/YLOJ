@@ -26,6 +26,7 @@
     "dependencies": {
         "flatpickr": "^4.5.7",
         "laravel-echo": "^1.5.4",
+        "marked": "^0.7.0",
         "socket.io-client": "^2.2.0"
     }
 }

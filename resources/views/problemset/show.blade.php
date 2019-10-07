@@ -29,10 +29,14 @@
         </div>
 
         <br>
-		<div class="content">
-        <?php echo $content_html ?>
-		</div>
+		<div class="content"></div>
 
+		<script src=/js/app.js></script>
+		<script>
+			md=@json($content_md);
+
+			$('.content').html(marked(md));
+		</script>
       </div>
     </div>
   </div>

@@ -8,10 +8,10 @@
  */
 
 :root {
-  tab-size: 4;
   --blue: #3490dc;
   --indigo: #6574cd;
-  --purple: #9561e2; --pink: #f66D9b;
+  --purple: #9561e2;
+  --pink: #f66D9b;
   --red: #e3342f;
   --orange: #f6993f;
   --yellow: #ffed4a;
@@ -1722,7 +1722,6 @@ pre code {
 .table-success > th,
 .table-success > td {
   background-color: #c7eed8;
-
 }
 
 .table-success th,
@@ -1731,15 +1730,7 @@ pre code {
 .table-success tbody + tbody {
   border-color: #98dfb6;
 }
-.table-success div{
-  background-color: #c7eed8 !important;
-}
-.table-warning div{
-  background-color: #fffacc !important;
-}
-.table-danger div{
-  background-color: #f7c6c5 !important;
-}
+
 .table-hover .table-success:hover {
   background-color: #b3e8ca;
 }
@@ -2009,11 +2000,6 @@ pre code {
 }
 
 .form-control::-webkit-input-placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
-.form-control::-moz-placeholder {
   color: #6c757d;
   opacity: 1;
 }
@@ -3232,9 +3218,7 @@ input[type=button].btn-block {
 .collapse:not(.show) {
   display: none;
 }
-.table{
-  background-color: #FFFFFF;
-}
+
 .collapsing {
   position: relative;
   height: 0;
@@ -4956,10 +4940,8 @@ input[type=button].btn-block {
 @media (min-width: 576px) {
   .card-columns {
     -webkit-column-count: 3;
-       -moz-column-count: 3;
             column-count: 3;
     -webkit-column-gap: 1.25rem;
-       -moz-column-gap: 1.25rem;
             column-gap: 1.25rem;
     orphans: 1;
     widows: 1;
@@ -10677,22 +10659,4 @@ a.text-dark:focus {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
-.text-summary{
- font-size: 15px;
-}
-.case-table{
-	position:relative;
-	height:auto;
-	overflow:hidden;
-	border-radius:10px;
-}
-.case-td{
-	float:left;
-	padding:1%;
-}
-.content{
-	background-color: #ffffff;
-}
-.after{
-	display:none;
-}
+
