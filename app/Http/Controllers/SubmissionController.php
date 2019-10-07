@@ -182,15 +182,18 @@ class SubmissionController extends Controller
         return redirect('problem/edit/'.$id);
     }
     public function customtests() 
-    {
-        return view('submission.customtests',['id'=>-1, 'input'=>'','code'=>'','output'=>'']);
+	{
+		if(!Auth::check())return redirect("404");
+		return view('submission.customtests',['id'=>-1, 'input'=>'','code'=>'','output'=>'']);
     }
     public function customtests_judge(Request $request) 
     {
+		if(!Auth::check())return redirect('404');
 		$xid=DB::table('custom_tests')->insertGetId(
 			['code'=>$request->code,
 			'input'=>$request->input,
-			'output'=>"Waiting..."]);
+			'output'=>"Waiting...",
+			'username'=>Auth::user()->name]);
 		Redis::rpush('submission','customtest '.$xid);
 		return view('submission.customtests',['id'=>$xid, 'input'=>$request->input,'code'=>$request->code,'output'=>DB::table("custom_tests")->where('id',$xid)->get()->toArray()[0]->output]);
     }
