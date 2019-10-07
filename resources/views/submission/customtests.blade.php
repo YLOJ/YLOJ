@@ -13,11 +13,17 @@
         <textarea rows="5" name="input" , class="form-control">{{$input}}</textarea>
       </div>
       <div class="form-group" style="width:50%;overflow:hidden;float:left">
-        <label>Output Text File</label> <br>
+		<label>Output Text File</label> 
+		<?php
+		if(isset($error))
+			 echo "<span style=color:red>*".$error."</span>";
+		?>
+<br>
         <textarea rows="5" name="output" id="output" class="form-control">{{$output}}</textarea>
       </div>
 	  </div>
       @include('buttons.submit' , ['text' => 'Submit'])
+
       @csrf
     </form>
 <script src=/js/app.js></script>

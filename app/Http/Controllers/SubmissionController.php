@@ -184,11 +184,22 @@ class SubmissionController extends Controller
     public function customtests() 
 	{
 		if(!Auth::check())return redirect("404");
+		$test=DB::table('custom_tests')->where('username',Auth::user()->name)->orderby('id','desc')->get();
+		if($test){
+			$test=$test->toArray()[0];
+			return view('submission.customtests',['id'=>$test->id, 'input'=>$test->input,'code'=>$test->code,'output'=>$test->output]);
+		}
+		else
 		return view('submission.customtests',['id'=>-1, 'input'=>'','code'=>'','output'=>'']);
     }
     public function customtests_judge(Request $request) 
     {
 		if(!Auth::check())return redirect('404');
+		$test=DB::table('custom_tests')->where('username',Auth::user()->name)->orderby('id','desc')->get();
+		if($test && $test->toArray()[0]->output=="Waiting..."){
+			$test=$test->toArray()[0];
+			return view('submission.customtests',['id'=>$test->id, 'input'=>$request->input,'code'=>$request->code,'output'=>$test->output,'error'=>"last test hasn't done"]);
+		}
 		$xid=DB::table('custom_tests')->insertGetId(
 			['code'=>$request->code,
 			'input'=>$request->input,
