@@ -10692,7 +10692,12 @@ a.text-dark:focus {
 }
 .content{
 	background-color: #ffffff;
+	padding: 10px 10px 10px 10px;
 }
 .after{
 	display:none;
+}
+.content pre{
+	border: 1px solid rgba(0,0,0,.12);
+	border-redius: 2px;
 }
