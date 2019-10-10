@@ -10699,5 +10699,16 @@ a.text-dark:focus {
 }
 .content pre{
 	border: 1px solid rgba(0,0,0,.12);
-	border-redius: 2px;
+	border-radius: 2px;
+}
+
+.content table{
+	width: 100%;
+	text-align: center;
+}
+.content th{
+	border: 1px solid #dee2e6;
+}
+.content td{
+	border: 1px solid #dee2e6;
 }
