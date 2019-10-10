@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
 class ProblemsetController extends Controller {
 
     public function index()
-    { $problemset = $this->problemShowListSQL()->paginate(20);
+    { $problemset = $this->problemShowListSQL()->paginate(50);
         return view('problemset.list', ['problemset' => $problemset]);
     }
 
