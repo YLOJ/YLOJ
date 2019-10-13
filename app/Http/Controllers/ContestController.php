@@ -388,24 +388,32 @@ class ContestController extends Controller
 					}
 					else{
 						$xdata=$data->where("user_name",$user->user_name)->get();
-						$result= (object)null;
-						$result->score=0;
-						$result->try=0;
-						$result->time=0;
-						foreach($xdata as $sub){
-							$result->id=$sub->id;
-							if($sub->result=="Accepted"){
-								$result->score=($user->user_name==$fb?2:1);
-								$result->time=
-									strtotime($sub->created_at)-strtotime($contest->begin_time)+1200*$result->try;
-								$user->time+=$result->time;
-								$user->score+=1;
-								break;
+						if($xdata->toArray()!=array()){
+							$result= (object)null;
+							$result->score=0;
+							$result->try=0;
+							$result->time=0;
+							foreach($xdata as $sub){
+								$result->id=$sub->id;
+								if($sub->result=="Accepted"){
+									$result->score=($user->user_name==$fb?2:1);
+									$result->time=
+										strtotime($sub->created_at)-strtotime($contest->begin_time)+1200*$result->try;
+									$user->time+=$result->time;
+									$user->score+=1;
+									break;
+								}
+								else if($sub->result=="Waiting"  || $sub->result=="Running" || $sub->result=="Compiling")break;
+								++$result->try;
 							}
-							else if($sub->result=="Waiting"  || $sub->result=="Running" || $sub->result=="Compiling")break;
-							++$result->try;
+							$user->in_contest=1;
+							$result -> found=1;
+							$user->result[$pid]=$result;
 						}
-						$user->result[$pid]=$result;
+						else{
+							$user->result[$pid]=(object)null;
+							$user->result[$pid]->found=0;
+						}
 					}
 				}
 			}

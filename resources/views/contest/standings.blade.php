@@ -6,7 +6,7 @@
     <h2 style='text-align:center;'> Standings </h2>
     <br>
 @if($contest->rule!=2)
-	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
+	<input type="checkbox" name="showafter" id="showafter" checked=false><label for="showafter">显示改题分数</label>
 @endif
     <table id="standings" class="table table-bordered tablesort" style=" table-layout: fixed; ">
       <thead>
@@ -69,7 +69,7 @@
 				</span>
 	              </td>
 			@else
-	            @if($sub != null)
+	            @if($sub->found ==1)
 	              <td> 
 
 	                @if($sub -> score==1) <a class="text-success" href="{{ url('submission/'.$sub -> id) }}"> 
