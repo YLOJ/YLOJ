@@ -6,7 +6,7 @@
     <h2 style='text-align:center;'> Standings </h2>
     <br>
 @if($contest->rule!=2)
-	<input type="checkbox" name="showafter" id="showafter" checked=false><label for="showafter">显示改题分数</label>
+	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
 @endif
     <table id="standings" class="table table-bordered tablesort" style=" table-layout: fixed; ">
       <thead>
@@ -98,6 +98,8 @@
       </tbody>
     </table>
 	<script>
+		if($("#showafter").prop("checked"))$(".after").show();
+		else $(".after").hide();
 		$("#showafter").change(function() {
 			$(".after").toggle();
 		});
