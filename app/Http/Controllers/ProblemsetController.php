@@ -32,6 +32,14 @@ class ProblemsetController extends Controller {
 					if(array_key_exists('type',$config))$type=$config['type'];
 					else $type=0;
 					if($type==0){
+						if(array_key_exists('time_limit_same',$config))
+							$sameTL=filter_var($config["time_limit_same"], FILTER_VALIDATE_BOOLEAN);
+						else $sameTL=1;
+
+						if(array_key_exists('memory_limit_same',$config))
+							$sameML=filter_var($config["memory_limit_same"], FILTER_VALIDATE_BOOLEAN);
+						else $sameML=1;
+
 						if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
 						else $time_limit=1000;
 						$time_limit.=' ms';
@@ -46,8 +54,8 @@ class ProblemsetController extends Controller {
 						if(array_key_exists('output_file',$config))$output_file=$config['output_file'];
 						else $output_file='Standard Output';
 
-						$head="Time Limit: ".$time_limit."<br>Memory Limit: ".
-						$memory_limit."<br>Input File: ".$input_file."<br>Output File: ".$output_file."<br>";
+						$head=($sameTL?("Time Limit: ".$time_limit."<br>"):"").
+							($sameML?("Memory Limit: ".$memory_limit."<br>"):"")."Input File: ".$input_file."<br>Output File: ".$output_file."<br>";
 					}
 					else if($type==1){
 						if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
