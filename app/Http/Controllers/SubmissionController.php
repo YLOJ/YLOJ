@@ -28,8 +28,14 @@ class SubmissionController extends Controller
         $submission = $this->check($submission, $request, 'user_name');
         $submission = $this->check($submission, $request, 'min_score', 'score', '>=');
         $submission = $this->check($submission, $request, 'max_score', 'score', '<=');
-		$submission = $submission->where("contest_id",NULL);
-		$submission = $submission->whereIn('problem_id',$this->problemShowList());
+
+			//$standings = $data -> select('user_name') -> groupby('user_name') -> get() -> toarray();
+		$contest=$this->contestEndedList();
+		$submission = $submission->
+			where(function ($query) use ($contest){
+			    $query->where("contest_id",NULL)->whereIn('problem_id',$this->problemShowList())
+			   ->orWhereIn('contest_id',$contest);
+			});
         return view('submission.list', ['submissionset' => $submission -> paginate('10')]);
     }
 

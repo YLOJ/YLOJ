@@ -312,7 +312,6 @@ class ContestController extends Controller
 			return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'BAN'=>1]);
 		else return view('contest.mysubmission', ['submissionset' => $submission -> paginate('10'),'BAN'=>0]);
 	}
-
 	public function standings($cid)
 	{
 		$contest = DB::table('contest')->where('id', $cid)->first();

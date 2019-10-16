@@ -51,8 +51,13 @@ class Controller extends BaseController
 		}
 		return DB::table('contest')->where('visibility','=',0);
 	}
+
 	public function contestShowList(){
 		return array_column($this->contestShowListSQL()->get()->toArray(),'id');
+	}
+
+	public function contestEndedList(){
+		return array_column($this->contestShowListSQL()->where("end_time","<=",now())->get()->toArray(),'id');
 	}
 	public function contestManageList(){
 		if(Auth::check()){
