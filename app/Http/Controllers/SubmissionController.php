@@ -76,13 +76,13 @@ class SubmissionController extends Controller
     public function show($id) 
     {
         $sub = DB::table('submission') -> where('id', $id) -> first();
+		$rule= -1;
 		if (!in_array($sub->problem_id,$this->problemManageList())) {
 			if($sub -> contest_id!=NULL){
 				$contest=DB::table('contest')->where('id',$sub->contest_id)->first();
 				if($contest->begin_time<=NOW() && NOW()<=$contest->end_time){
+					$rule=$contest->rule;
 					if($sub->user_id != Auth::user()->id)return redirect('404');
-					$sub->judge_info='';
-					if($contest -> rule==0){$sub->result='Unshown';$sub->score=$sub->time_used=$sub->memory_used=-1;}
 				}
 			}
 			else if (!in_array($sub->problem_id,$this->problemShowList()))
@@ -93,7 +93,9 @@ class SubmissionController extends Controller
 			$permission=1;
 		if($sub->result=="Accepted" or $sub->result=="Unaccepted")
 			$sub->judge_info=json_decode($sub->judge_info);
-        return view('submission.show', ['sub' => $sub,'permission'=>$permission]);
+		if($permission==1)
+			$rule=-1;
+        return view('submission.show', ['sub' => $sub,'permission'=>$permission,'rule'=>$rule]);
     }
     public function submitpage($id) 
     {
