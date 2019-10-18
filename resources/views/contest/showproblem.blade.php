@@ -6,11 +6,9 @@
       <div class="col">
         <div class="text-center">
           <h1> {{ $title }} </h1>
-          Time Limit : {{ $time_limit }} <br>
-          Memory Limit : {{ $memory_limit }} <br>
-		  Input File: {{ $input_file }} <br>
-		  Output File: {{ $output_file }} <br><br>
-
+			<?php
+				echo $head;
+			?>
           <div class="btn-group-md">
             @include('buttons.jump-icon' , ['href' => url('/contest/'.$cid.'/submit/'.$pid) , 'icon' => 'paper-plane' , 'text' => 'Submit'])
             @include('buttons.jump-icon' , ['href' => url('/contest/submission/'.$cid.'?problem_id='.$pid) , 'icon' => 'text-left' , 'text' => 'Submissions'])
@@ -32,9 +30,14 @@
           </div>
         </div>
         <br>
-		<div class="content">
-        <?php echo $content_html ?>
-		</div>
+		<div class="content"></div>
+
+		<script src=/js/app.js></script>
+		<script>
+			md=@json($content_md);
+
+			$('.content').html(marked(md));
+		</script>
       </div>
     </div>
   </div>

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 class ContestController extends Controller
 {
 	public function check($sub, $request, $para, $_para = "", $operator = '=') 
@@ -206,35 +207,65 @@ class ContestController extends Controller
 		if (!Auth::check()) {
 			return redirect('login');
 		}
-		if (NOW() < $contest->begin_time && !$this->is_admin()) {
+		if (NOW() < $contest->begin_time && !in_array($cid,$this->contestManageList())) {
 			return redirect('404');
 		}
-		if (Storage::disk('data')->exists($pid.'/config.yml')){
-			$config=Yaml::parse(Storage::disk('data')->get($pid.'/config.yml'));
-			if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
-			else $time_limit=1000;
-			$time_limit.=' ms';
+		if (Storage::disk('data')->exists($pid.'/config.yml') && Storage::disk('data')->get($pid.'/config.yml')){
+			try {
+				$config=Yaml::parse(Storage::disk('data')->get($pid.'/config.yml'));
+				if(array_key_exists('type',$config))$type=$config['type'];
+				else $type=0;
+				if($type==0){
+					if(array_key_exists('time_limit_same',$config))
+						$sameTL=filter_var($config["time_limit_same"], FILTER_VALIDATE_BOOLEAN);
+					else $sameTL=1;
 
-			if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
-			else $memory_limit=256000;
-			$memory_limit.=' KB';
+					if(array_key_exists('memory_limit_same',$config))
+						$sameML=filter_var($config["memory_limit_same"], FILTER_VALIDATE_BOOLEAN);
+					else $sameML=1;
 
-			if(array_key_exists('input_file',$config))$input_file=$config['input_file'];
-			else $input_file='Standard Input';
+					if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
+					else $time_limit=1000;
+					$time_limit.=' ms';
+	
+					if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
+					else $memory_limit=256000;
+					$memory_limit.=' KB';
+	
+					if(array_key_exists('input_file',$config))$input_file=$config['input_file'];
+					else $input_file='Standard Input';
+	
+					if(array_key_exists('output_file',$config))$output_file=$config['output_file'];
+					else $output_file='Standard Output';
 
-			if(array_key_exists('output_file',$config))$output_file=$config['output_file'];
-			else $output_file='Standard Output';
+					$head=($sameTL?("Time Limit: ".$time_limit."<br>"):"").
+						($sameML?("Memory Limit: ".$memory_limit."<br>"):"")."Input File: ".$input_file."<br>Output File: ".$output_file."<br>";
+				}
+				else if($type==1){
+					if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
+					else $time_limit=1000;
+					$time_limit.=' ms';
+	
+					if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
+					else $memory_limit=256000;
+					$memory_limit.=' KB';
+	
+					$head="Time Limit: ".$time_limit."<br>Memory Limit: ".
+						$memory_limit."<br>Type: Interactive(OI)<br>";
+				}
+			} catch (ParseException $exception) {
+   				 $head='Unable to parse the YAML string: '.$exception->getMessage().'<br>';
+			}
+
 		}else
-			$time_limit=$memory_limit=$input_file=$output_file="data not found!";
+			$head="data not found!<br>";
+
 		return view('contest.showproblem', [
 			'pid' => $pid,
 			'title' => '['.$contest->title.'] '.$problem->title,
-			'time_limit' => $time_limit,
-			'memory_limit' => $memory_limit,
-			'input_file' => $input_file,
-			'output_file' => $output_file,
-			'content_html' => $markdowner->toHTML($problem->content_md),
 			'cid' => $cid,
+			'head' => $head,
+			'content_md' => $problem->content_md,
 			'ended' => now()>=$contest->end_time
 		]);
 	}

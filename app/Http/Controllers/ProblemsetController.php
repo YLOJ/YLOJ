@@ -23,7 +23,6 @@ class ProblemsetController extends Controller {
 
     public function show($id)
     {
-        $markdowner = new Markdowner();
         $problem = DB::table('problemset')->where('id', $id)->first();
 		if (in_array($id,$this->problemShowList())) {
 			if (Storage::disk('data')->exists($id.'/config.yml') && Storage::disk('data')->get($id.'/config.yml')){
