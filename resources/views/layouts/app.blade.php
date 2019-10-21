@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	    <!-- CSRF Token -->
+	    <meta name="csrf-token" content="{{ csrf_token() }}">
+    	<title>{{ config('app.name', 'YLOJ') }}</title>
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'YLOJ') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/tablesorter.min.js') }}" defer></script>
-    <script src="{{ asset('js/tablesorter.widgets.min.js') }}" defer></script>
-    <script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    	<script src="{{ asset('js/app.js') }}" defer></script>
+    	<script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
     <script type="text/javascript" async
             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -22,99 +18,75 @@
       MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
     </script>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-
-    <!-- Datetime Picker -->
+    	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    	<link href="{{ asset('css/style.css') }}" rel="stylesheet">
+	    <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
+	    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+		<link rel="stylesheet" href="/mdui/css/mdui.min.css"/>
+		<script src="/mdui/js/mdui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
   <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/xcode.min.css" rel="stylesheet">
   <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
   <script> hljs.initHighlightingOnLoad(); </script>
-  </head>
-  <body>
-    <div id="app">
-      <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="{{ url('/') }}">
-              {{ config('app.name', 'YLOJ') }}
-            </a>
-          </div>
 
-          <div class="collapse navbar-collapse" id="navbar-menu">
-            <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('contest.index') }}"> Contests </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('problem.index') }}">{{ __('Problemset') }}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('submission') }}">{{ __('Submission') }}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('help') }}">{{ __('Help') }}</a>
-            </ul>
+	</head>
+	<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue mdui-loaded">
+		<div class="mdui-appbar mdui-appbar-fixed">
+			<div class="mdui-toolbar mdui-color-theme">
+				<span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}"><i class="mdui-icon material-icons">menu</i></span>
+				<a class="mdui-btn mdui-ripple" href="/"><span class="mdui-typo-title">{{ config('app.name', 'YLOJ') }}</span></a>
+				<div class="mdui-toolbar-spacer"></div>
+			@guest
+				<a class="mdui-btn mdui-ripple" href="{{ route('login') }}">Login</a>
+				<a class="mdui-btn mdui-ripple" href="{{ route('register') }}">Register</a>
+			@else
 
-            <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
-              <!-- Authentication Links -->
-              @guest
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                </li>
-                @if (Route::has('register'))
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                  </li>
-                @endif
-              @else
-                <li class="nav-item dropdown">
-                  <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    {{ Auth::user()->name }} <span class="caret"></span>
-                  </a>
+				<button class="mdui-btn mdui-ripple" mdui-menu="{target: '#example-1',covered: false}">{{ Auth::user()->name }}</button>
+<!--   -->
+			  <ul class="mdui-menu " id="example-1">
+			    <li class="mdui-menu-item">
+			      <a href="/profile" class="mdui-ripple">Profile</a>
+			    </li>
 
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/user/profile">编辑个人信息</a>
-					@if (Auth::user()->permission > 1)
-                    <a class="dropdown-item" href="/webadmin">WebAdmin</a>
-					@endif
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                             onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                      {{ __('Logout') }}
-                    </a>
+				@if (Auth::user()->permission > 1)
+			    <li class="mdui-menu-item">
+			      <a href="/webadmin" class="mdui-ripple">WebAdmin</a>
+			    </li>
+				@endif
+			  </ul>
+
+
+				<a class="mdui-btn mdui-ripple" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                {{ __('Logout') }}</a>
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                       @csrf
                     </form>
-                  </div>
-                </li>
-              @endguest
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-
-    <main class="py-4">
-      @yield('content')
-    </main>
-
+			@endguest
+			</div>
+		</div>
+		<div class="mdui-drawer mdui-color-white" id="main-drawer">
+			<ul class="mdui-list">
+			  <a href="{{ route('contest.index') }}"><li class="mdui-list-item mdui-ripple">比赛</li></a>
+			  <a href="{{ route('problem.index') }}"><li class="mdui-list-item mdui-ripple">题库</li></a>
+			  <a href="{{ route('submission') }}"><li class="mdui-list-item mdui-ripple">提交记录</li></a>
+              <a href="{{ route('help') }}"><li class="mdui-list-item mdui-ripple">帮助</li></a>
+			</ul>
+		</div>
+		<div class="mdui-container mdui-typo"> 
+      		@yield('content')
+		</div>
     <script type="text/javascript">
       document.getElementsByClassName("flatpickr").flatpickr({
         enableTime: true,
         dateFormat: "Y-m-d H:i",
       });
     </script>
-  </body>
+
+	</body>
 </html>

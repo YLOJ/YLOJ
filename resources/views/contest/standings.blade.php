@@ -11,7 +11,7 @@
     <table id="standings" class="table table-bordered tablesort" style=" table-layout: fixed; ">
       <thead>
         <tr>
-          <th style="width:5%">Rank</th>
+          <th style="width:10%">Rank</th>
           <th style="width:15%">Username</th>
           <th style="width:15%">Nickname</th>
           <th style="width:10%">Total Score</th>
