@@ -48,7 +48,7 @@
 <!--   -->
 			  <ul class="mdui-menu " id="example-1">
 			    <li class="mdui-menu-item">
-			      <a href="/profile" class="mdui-ripple">Profile</a>
+			      <a href="/user/profile" class="mdui-ripple">Profile</a>
 			    </li>
 
 				@if (Auth::user()->permission > 1)
