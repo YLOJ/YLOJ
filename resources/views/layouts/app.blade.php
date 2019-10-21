@@ -40,11 +40,11 @@
 				<a class="mdui-btn mdui-ripple" href="/"><span class="mdui-typo-title">{{ config('app.name', 'YLOJ') }}</span></a>
 				<div class="mdui-toolbar-spacer"></div>
 			@guest
-				<a class="mdui-btn mdui-ripple" href="{{ route('login') }}">Login</a>
-				<a class="mdui-btn mdui-ripple" href="{{ route('register') }}">Register</a>
+				<a class="mdui-typo-title top-btn mdui-ripple" href="{{ route('login') }}">Login</a>
+				<a class="mdui-typo-title top-btn mdui-ripple" href="{{ route('register') }}">Register</a>
 			@else
 
-				<button class="mdui-btn mdui-ripple" mdui-menu="{target: '#example-1',covered: false}">{{ Auth::user()->name }}</button>
+				<a class="mdui-typo-title top-btn mdui-ripple" mdui-menu="{target: '#example-1',covered: false}">{{ Auth::user()->name }}</a>
 <!--   -->
 			  <ul class="mdui-menu " id="example-1">
 			    <li class="mdui-menu-item">
@@ -59,7 +59,7 @@
 			  </ul>
 
 
-				<a class="mdui-btn mdui-ripple" href="{{ route('logout') }}"
+				<a class="mdui-typo-title top-btn mdui-ripple" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
                 {{ __('Logout') }}</a>
