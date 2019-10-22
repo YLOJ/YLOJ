@@ -90,5 +90,7 @@ Echo.channel('Submission')
       </div>
     </div>
 
+    <div class="row justify-content-center">
+      {{ $submissionset -> links() }}
   </div>
 @endsection
