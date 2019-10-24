@@ -65,10 +65,7 @@ Echo.channel('Submission')
 });
 </script>
 @endif
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <table class="table table-bordered"> 
+        <table class="mdui-table"> 
           @include('includes.verdict_table')
           <tbody>
             <tr id="sub{{$sub->id}}">
@@ -147,7 +144,4 @@ Echo.channel('Submission')
 			@include('buttons.jump-danger', ['href' => url('submission/delete/'.$sub -> id), 'text' => 'Delete'])
 		  @endif
 		@endauth
-	  </div>
-	</div>
-  </div>
 @endsection
