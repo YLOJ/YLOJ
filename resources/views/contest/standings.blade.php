@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
     <br>
     <h2 style='text-align:center;'> Standings </h2>
     <br>
 @if($contest->rule!=2)
 	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
 @endif
-    <table id="standings" class="table table-bordered tablesort" style=" table-layout: fixed; ">
+    <table id="standings" class="mdui-table" style=" table-layout: fixed; ">
       <thead>
         <tr>
           <th style="width:10%">Rank</th>
@@ -22,9 +21,7 @@
       </thead>
       <tbody>
         @foreach ($standings as $user)
-          @if ($loop -> index % 2 == 0) <tr style="background-color:#F3F3F3">
-          @else <tr>
-          @endif
+          <tr>
           <td> {{ $user -> rank}} </td>
 		  <td> {{ $user -> user_name }} 
 @if(!$user->in_contest)
@@ -104,5 +101,4 @@
 			$(".after").toggle();
 		});
 	</script>
-  </div>
 @endsection

@@ -17,4 +17,6 @@
 	text-transform: none !important;
 }
 
-
+.mdui-table th,.mdui-table td{
+    padding: 12px !important;
+}

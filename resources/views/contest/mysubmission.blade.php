@@ -66,31 +66,21 @@ Echo.channel('Submission')
 </script>
 @endif
 @section('content')
-  <div class="container">
-    <p class="text-sm"> </p>
-    <p class="text-sm"> </p>
+	<p></p>
+	<p></p>
 
-    <div class="row">
-      <div class="col">
-        <table class="table table-bordered">
+        <table class="mdui-table">
           @include('includes.verdict_table') 
-          <?php $count = 0; ?>
           <tbody>
             @foreach ($submissionset as $sub)
-              @if ($count++ % 2 == 0)
-                <tr style="background-color:#F3F3F3" id="sub{{$sub->id}}">
-              @else
-                <tr id="sub{{$sub->id}}">
-              @endif
+              <tr id="sub{{$sub->id}}">
               @include('includes.verdict', ['sub' => $sub])
-                </tr>
+              </tr>
               @endforeach
           </tbody>
         </table>
-      </div>
-    </div>
 
-    <div class="row justify-content-center">
+    <div style="text-align:center">
       {{ $submissionset -> links() }}
-  </div>
+	</div>
 @endsection

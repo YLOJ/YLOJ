@@ -1,4 +1,5 @@
-<table class="table table-bordered">
+
+<table class="mdui-table">
   <thead>
     <tr>
       <th style="width:13%">Problem ID</th>
@@ -8,9 +9,7 @@
   </thead>
   <tbody>
     @foreach ($problemset as $problem)
-      @if ($loop -> index % 2 == 0) <tr style="background-color:#F3F3F3">
-      @else <tr>
-      @endif
+      <tr>
       <td> {{ $problem -> id }} </td>
       <td> <a href="/contest/{{ $cid }}/problem/{{ $problem->id }}"> {{$problem->title}} </a> </td>
       <?php $x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>

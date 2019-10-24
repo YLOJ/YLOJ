@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
     <br>
     <h1 style="text-align:center"> {{ $contest -> title }} </h1>
     <br>
@@ -24,7 +23,7 @@
     </div>
     <br>
 
-    <table class="table table-bordered">
+    <table class="mdui-table">
       <thead>
         <tr>
           <th style="width:22%"> Begin Time </th>
@@ -112,5 +111,4 @@
         @endcomponent
       </div>
     </div>
-  </div>
 @endsection

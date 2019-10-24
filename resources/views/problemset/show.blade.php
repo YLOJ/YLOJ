@@ -1,9 +1,6 @@
 @extends("layouts.app")
 
 @section("content")
-  <div class="container">
-    <div class="row">
-      <div class="col">
         <div class="text-center">
           <h1> #{{$id}}. {{ $title }} </h1>
 			<?php
@@ -37,7 +34,4 @@
 
 			$('.content').html(marked(md));
 		</script>
-      </div>
-    </div>
-  </div>
 @endsection 

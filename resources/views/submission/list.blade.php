@@ -74,8 +74,7 @@ Echo.channel('Submission')
 });
 </script>
 
-  <div class="container">
-    <p class="text-sm"> </p>
+    <p> </p>
     <div class="row">
       <div class="col-md-10">
         <div class="hidden-xs">
@@ -110,33 +109,22 @@ Echo.channel('Submission')
       </div>
     </div>
     <p class="text-sm"> </p>
+    <table class="mdui-table mdui-typo" style="padding: 0!important">
+       @include('includes.verdict_table') 
+       <tbody>
+         @foreach ($submissionset as $sub)
+             <tr id="sub{{$sub->id}}">
+               @include('includes.verdict', ['sub' => $sub])
+             </tr>
+         @endforeach
+       </tbody>
+    </table>
 
-    <div class="row">
-      <div class="col">
-        <table class="table table-bordered">
-          @include('includes.verdict_table') 
-          <?php $count = 0; ?>
-          <tbody>
-            @foreach ($submissionset as $sub)
-              @if ($count++ % 2 == 0)
-                <tr style="background-color:#F3F3F3" id="sub{{$sub->id}}">
-              @else
-                <tr id="sub{{$sub->id}}">
-              @endif
-              @include('includes.verdict', ['sub' => $sub])
-                </tr>
-              @endforeach
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="row justify-content-center">
+	<div style="text-align: center">
       <?php 
         $str = $submissionset -> links();
         $arr = explode('?', $str);
         echo implode('?user_name='.$user_name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score.'&', $arr);
       ?>
     </div>
-  </div>
 @endsection

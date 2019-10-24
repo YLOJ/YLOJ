@@ -1,14 +1,12 @@
-<table class="table table-bordered">
+<table class="mdui-table">
   <thead>
     <tr>
-      <th style="">当前管理员</th>
+      <th>当前管理员</th>
     </tr>
   </thead>
   <tbody>
     @foreach ($manager as $one)
-      @if ($loop -> index % 2 == 0) <tr style="background-color:#F3F3F3">
-      @else <tr>
-      @endif
+      <tr>
       <td> {{ $one }} </td>
       </tr>
     @endforeach

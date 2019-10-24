@@ -2,8 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
-    <div class="row justify-content-center">
+    <div style="text-align:center"> 
       {{ $problemset -> links() }}
     </div>
 
@@ -23,15 +22,10 @@
       $links = $problemset -> links();
     ?>
 
-    <div class="row">
-      <div class="col">
-        @component('includes.problem_table', ['problemset' => $problemset])
-        @endcomponent 
-      </div>
-    </div>
+    @component('includes.problem_table', ['problemset' => $problemset])
+    @endcomponent 
 
-    <div class="row justify-content-center">
+    <div style="text-align:center"> 
       {{ $links }}
     </div>
-  </div>
 @endsection

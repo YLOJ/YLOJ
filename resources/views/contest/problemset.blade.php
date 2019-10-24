@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
     @if ($errors->any())
       <div class="alert alert-danger">
         <ul>
@@ -34,7 +33,7 @@
 	</div>
 	<div id='contest_problemset_table' style='vertical-align:top;display:inline-block;width:49%'>
 		<h3>当前题目列表</h3>
-		<table class="table table-bordered">
+		<table class="mdui-table">
 		  <thead>
 		    <tr>
 		      <th style="width:20%">id</th>
@@ -43,9 +42,7 @@
 		  </thead>
 		  <tbody>
 		    @foreach ($problemset as $one)
-		      @if ($loop -> index % 2 == 0) <tr style="background-color:#F3F3F3">
-		      @else <tr>
-		      @endif
+		      <tr>
 		      <td> {{ $one->id }} </td>
 		      <td> {{ $one->title }} </td>
 		      </tr>
@@ -53,5 +50,4 @@
 		  </tbody>
 		</table>
 	</div>
-  </div>
 @endsection

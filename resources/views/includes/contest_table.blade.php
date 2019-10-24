@@ -1,6 +1,6 @@
 @if($contests -> count() > 0)
 	<h3> {{ $title }} </h3>
-	<table class="table table-bordered">
+	<table class="mdui-table">
 		<thead>
 			<tr>
 				<th style="width:8%"> ID </th>
@@ -12,13 +12,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php $cnt = 1; ?>
 			@foreach ($contests as $contest)
-				@if (($cnt = $cnt + 1) % 2 == 1) 
-					<tr style = "background-color:#F3F3F3">
-				@else 
-					<tr>
-				@endif
+				<tr>
 
 				<td> {{ $contest -> id }} </td>
 				<td> 
