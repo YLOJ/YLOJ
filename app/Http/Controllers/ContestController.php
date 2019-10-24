@@ -309,6 +309,7 @@ class ContestController extends Controller
             'time_used'=>-1,
             'memory_used'=>-1,
             'source_code'=>$request->input('source_code'),
+            'code_length'=>strlen($request->input('source_code')),
 			'created_at'=>NOW(),
 			'contest_id' => $cid]
 		);
