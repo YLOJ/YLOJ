@@ -42,13 +42,20 @@ class SubmissionController extends Controller
     public function statistics($id, Request $request)
 	{
 		if(!in_array($id,$this->problemShowList()))return redirect('404');
+
+        $page = $request -> page ?: 1;
+        $perPage = 10;
+        $begin = ($page - 1) * $perPage;
+
         $raw_data = DB::table('submission') -> where('result', "Accepted") -> where('problem_id', '=', $id);
-        $raw_data = $raw_data -> orderby('time_used', 'asc') -> get() -> toArray();
+        $fastest_data= $raw_data -> orderby('time_used', 'asc') -> get() -> toArray();
+        $raw_data = DB::table('submission') -> where('result', "Accepted") -> where('problem_id', '=', $id);
+        $shortest_data= $raw_data -> orderby('code_length', 'asc') -> get() -> toArray();
         $map = array();
         $data = array();
         $count = 0;
 
-        foreach ($raw_data as $sub) {
+        foreach ($fastest_data as $sub) {
             if (!isset($map[$sub -> user_id])) {
                 $map[$sub -> user_id] = 1;
                 $sub -> url = url('submission/'.$sub -> id);
@@ -57,9 +64,6 @@ class SubmissionController extends Controller
             }
         }
 
-        $page = $request -> page ?: 1;
-        $perPage = 10;
-        $begin = ($page - 1) * $perPage;
 
         $data = new LengthAwarePaginator(
             array_slice($data, $begin, $perPage, true), 
@@ -67,10 +71,34 @@ class SubmissionController extends Controller
             $perPage,
             $page, 
             ['path' => $request -> url(), 'query' => $request -> query()]
-        );
+		);
+		$fastest=$data;
+        $map = array();
+        $data = array();
+        $count = 0;
+
+        foreach ($shortest_data as $sub) {
+            if (!isset($map[$sub -> user_id])) {
+                $map[$sub -> user_id] = 1;
+                $sub -> url = url('submission/'.$sub -> id);
+                $sub -> id = ++$count;
+                array_push($data, $sub);
+            }
+        }
+
+
+        $data = new LengthAwarePaginator(
+            array_slice($data, $begin, $perPage, true), 
+            count($data), 
+            $perPage,
+            $page, 
+            ['path' => $request -> url(), 'query' => $request -> query()]
+		);
+		$shortest=$data;
+
 
         $title = DB::table('problemset') -> where('id','=',$id) -> first() -> title;
-        return view('problemset.statistics', ['submissionset' => $data, 'id' => $id, 'title' => $title]);
+        return view('problemset.statistics', ['fastest' => $fastest,'shortest'=>$shortest,'id' => $id, 'title' => $title]);
     }
 
     public function show($id) 
