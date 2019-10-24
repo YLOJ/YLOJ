@@ -109,7 +109,7 @@ Echo.channel('Submission')
       </div>
     </div>
     <p class="text-sm"> </p>
-    <table class="mdui-table mdui-typo" style="padding: 0!important">
+    <table class="mdui-table mdui-table-hoverable mdui-typo" style="padding: 0!important">
        @include('includes.verdict_table') 
        <tbody>
          @foreach ($submissionset as $sub)

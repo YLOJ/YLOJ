@@ -1,6 +1,6 @@
 @if($contests -> count() > 0)
 	<h3> {{ $title }} </h3>
-	<table class="mdui-table">
+	<table class="mdui-table mdui-table-hoverable">
 		<thead>
 			<tr>
 				<th style="width:8%"> ID </th>

@@ -33,7 +33,7 @@
 	</div>
 	<div id='contest_problemset_table' style='vertical-align:top;display:inline-block;width:49%'>
 		<h3>当前题目列表</h3>
-		<table class="mdui-table">
+		<table class="mdui-table mdui-table-hoverable">
 		  <thead>
 		    <tr>
 		      <th style="width:20%">id</th>

@@ -65,7 +65,7 @@ Echo.channel('Submission')
 });
 </script>
 @endif
-        <table class="mdui-table"> 
+        <table class="mdui-table mdui-table-hoverable"> 
           @include('includes.verdict_table')
           <tbody>
             <tr id="sub{{$sub->id}}">

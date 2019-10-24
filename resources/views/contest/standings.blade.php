@@ -7,7 +7,7 @@
 @if($contest->rule!=2)
 	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
 @endif
-    <table id="standings" class="mdui-table" style=" table-layout: fixed; ">
+    <table id="standings" class="mdui-table mdui-table-hoverable" style=" table-layout: fixed; ">
       <thead>
         <tr>
           <th style="width:10%">Rank</th>
