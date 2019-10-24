@@ -3,13 +3,14 @@
 ?>
 <thead> 
   <tr>
-    <th style="width:7%"> {{ $first_column }} </th>
-    <th style="width:24%">Problem Name</th>
-    <th style="width:10%">User</th>
-    <th style="width:18%">Result</th>
-    <th style="width:8%">Score</th>
-    <th style="width:8%">Time</th>
-    <th style="width:8%">Memory</th>
-    <th style="width:17%">Submission Time</th>
+    <th> {{ $first_column }} </th>
+    <th>Problem Name</th>
+    <th>User</th>
+    <th>Result</th>
+    <th>Score</th>
+    <th>Time</th>
+    <th>Memory</th>
+    <th>Code Length</th>
+    <th>Submission Time</th>
   </tr>
 </thead>

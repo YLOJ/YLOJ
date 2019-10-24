@@ -63,5 +63,14 @@
   /
 @endif
 </td>
+<td id="length">
+  <?php
+  	if($sub->code_length<1000)
+		echo $sub->code_length." b";
+	else
+		echo sprintf("%.2lf",$sub->code_length/1000)." kb";
+	
+ ?> 
+</td>
 
 <td> {{ $sub -> created_at }} </td>
