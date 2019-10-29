@@ -14,10 +14,10 @@
             @csrf
           </form>
         </div> 
-        <br>
       @endif
     @endauth
 
+    <br>
     <?php
       $links = $problemset -> links();
     ?>
