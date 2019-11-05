@@ -76,7 +76,6 @@ class ProblemsetController extends Controller {
 				$head="data not found!<br>";
 			$Parsedown = new Parsedown();
 
-			echo "<textarea>".$problem->content_md."</textarea>";
    	        return view('problemset.show', [
                 'id' => $id,
                 'title' => $problem->title,
