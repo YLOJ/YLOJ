@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Markdowner;
+use App\Services\Parsedown;
 use App\Http\Requests\ProblemFormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,11 +74,14 @@ class ProblemsetController extends Controller {
 
 			}else
 				$head="data not found!<br>";
-            return view('problemset.show', [
+			$Parsedown = new Parsedown();
+
+			echo "<textarea>".$problem->content_md."</textarea>";
+   	        return view('problemset.show', [
                 'id' => $id,
                 'title' => $problem->title,
 				'head' => $head,
-				'content_md' => $problem->content_md,
+				'content' => $Parsedown->text($problem->content_md),
 				'is_admin' => in_array($id,$this->problemManageList())
             ]);
         } else {
@@ -338,13 +341,15 @@ class ProblemsetController extends Controller {
     {
         $problem = DB::table('problemset')->where('id', $id)->first();
 		$contests=array_column(DB::table('contest_problems')->where('problem',$id)->get()->toArray(),'id');
-		if((in_array($id,$this->problemShowList()) || $this->contestShowListSQL()->where('end_time','<=',now())->whereIn('id',$contests)->count()))
+		if((in_array($id,$this->problemShowList()) || $this->contestShowListSQL()->where('end_time','<=',now())->whereIn('id',$contests)->count())){
+			$Parsedown=new Parsedown();
             return view('solution.show', [
                 'id' => $id,
                 'title' => $problem->title,
-				'content_md' => $problem->solution,
+				'content' => $Parsedown->text($problem->solution),
 				'is_admin' => in_array($id,$this->problemManageList())
-            ]);
+			]);
+		}
          else 
             return redirect('404');
     }

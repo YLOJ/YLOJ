@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-use App\Services\Markdowner;
+use App\Services\Parsedown;
 class HomeController extends Controller
 {
     /**
@@ -21,9 +21,9 @@ class HomeController extends Controller
     }
 
     public function help(){
-        $markdowner = new Markdowner();
+        $Parsedown = new Parsedown();
 		return view('help',[
-			'content' => $markdowner->toHTML(
+			'content' => $Parsedown->text(
 				Storage::disk('local')->get('help.md')
 			),]);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Markdowner;
+use App\Services\Parsedown;
 use App\Http\Requests\ContestFormRequest;
 use Illuminate\Http\Request;
 
@@ -200,7 +200,6 @@ class ContestController extends Controller
 	{
 		if(!(in_array($cid,$this->contestShowList()) && in_array($pid,$this->getProblemList($cid))))
 			return redirect('404');
-		$markdowner = new Markdowner();
 		$contest = DB::table('contest')->where('id', $cid)->first();
 		$problem = DB::table('problemset')->where('id', $pid)->first();
 
@@ -259,13 +258,14 @@ class ContestController extends Controller
 
 		}else
 			$head="data not found!<br>";
-
+		
+		$Parsedown = new Parsedown();
 		return view('contest.showproblem', [
 			'pid' => $pid,
 			'title' => '['.$contest->title.'] '.$problem->title,
 			'cid' => $cid,
 			'head' => $head,
-			'content_md' => $problem->content_md,
+			'content' => $Parsedown->text($problem->content_md),
 			'ended' => now()>=$contest->end_time
 		]);
 	}

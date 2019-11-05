@@ -30,14 +30,8 @@
           </div>
         </div>
         <br>
-		<div class="content"></div>
+		<div class="content"><?php echo $content;?></div>
 
-		<script src=/js/app.js></script>
-		<script>
-			md=@json($content_md);
-
-			$('.content').html(marked(md));
-		</script>
       </div>
     </div>
   </div>
