@@ -7,15 +7,21 @@
 @if($contest->rule!=2)
 	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
 @endif
-    <table id="standings" class="mdui-table mdui-table-hoverable" style=" table-layout: fixed; ">
+	<div class="mdui-table-fluid">
+    <table id="standings" class="mdui-table mdui-table-hoverable" style="">
       <thead>
         <tr>
-          <th style="width:10%">Rank</th>
-          <th style="width:15%">Username</th>
-          <th style="width:20%">Nickname</th>
-          <th style="width:15%">Total Score</th>
+          <th>Rank</th>
+          <th>Username</th>
+          <th>Nickname</th>
+          <th>Total Score</th>
           @foreach ($contest -> problemset as $problem)
-            <th><a href=/contest/{{$contest->id}}/problem/{{$problem->id}}> {{ $problem -> title }} </a></th>
+			<th>
+				<?php
+					echo "<a href='/contest/".$contest->id."/problem/".$problem->id."'>".chr($loop -> index +65)."</a>";
+				?>
+<!-- {{ $problem -> title }} -->
+			</th>
           @endforeach
         </tr>
       </thead>
@@ -32,7 +38,7 @@
 		  <td class='text-primary'> <b> 
 			<?php
 				if($contest->rule==2)
-					echo $user->score.'('.sprintf("%d:%02d:%02d", floor($user->time/ 3600), floor($user->time% 3600 / 60), $user->time%60).')';
+					echo $user->score.($user->score?'('.sprintf("%d:%02d:%02d", floor($user->time/ 3600), floor($user->time% 3600 / 60), $user->time%60).')':'');
 				else 
 					echo $user->score.'<span class="after">('.$user->score_after.')</span>';
 			?>
@@ -78,7 +84,7 @@
 						if($sub->score>0)echo '+';
 						else echo '-';
 						if($sub->try>0)echo $sub->try;	
-		              	echo '('.sprintf("%d:%02d:%02d", floor($sub->time/ 3600), floor($sub->time% 3600 / 60), $sub->time%60).')';
+		              	if($sub->score>0)echo '('.sprintf("%d:%02d:%02d", floor($sub->time/ 3600), floor($sub->time% 3600 / 60), $sub->time%60).')';
 		            ?>
 					</b> 
 	                </a> 
@@ -94,6 +100,7 @@
         @endforeach
       </tbody>
     </table>
+	</div>
 	<script>
 		if($("#showafter").prop("checked"))$(".after").show();
 		else $(".after").hide();
