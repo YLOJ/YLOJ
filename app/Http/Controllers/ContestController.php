@@ -377,7 +377,8 @@ class ContestController extends Controller
 				if($contest->rule==2){
 					$data = DB::table('submission') -> where('contest_id', $cid) 
 									-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('problem_id', $pid)->where("result",'Accepted')->orderby('created_at','asc');
-					$fb=$data->first()->user_name;
+					if($data->count())$fb=$data->first()->user_name;
+					else $fb=NULL;
 				}
 
 				foreach ($standings as &$user) {
