@@ -32,12 +32,12 @@
         @foreach ($standings as $user)
           <tr>
           <td> {{ $user -> rank}} </td>
-		  <td style="word-wrap:break-word;"> {{ $user -> user_name }} 
+		  <td> {{ $user -> user_name }} 
 @if(!$user->in_contest)
 *
 @endif
 </td>
-          <td style=";"> {{ $user -> nickname}} </td>
+          <td> {{ $user -> nickname}} </td>
 		  <td class='text-primary'> <b> 
 			<?php
 				if($contest->rule==2)
