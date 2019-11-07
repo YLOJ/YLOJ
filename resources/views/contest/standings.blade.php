@@ -8,12 +8,12 @@
 	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
 @endif
 	<div class="mdui-table-fluid">
-    <table id="standings" class="mdui-table mdui-table-hoverable" style="word-wrap:break-word;layout:fixed">
+    <table id="standings" class="mdui-table mdui-table-hoverable" style="layout:fixed;">
       <thead>
         <tr>
           <th style="width: 5%">Rank</th>
-          <th style="width: 15%">Username</th>
-          <th style="width: 15%">Nickname</th>
+          <th style="width: 15%;word-break:break-all">Username</th>
+          <th style="width: 15%;word-break:break-all">Nickname</th>
 		<?php
 			$width=(int)(55/count($contest->problemset)).'%';
 		?>
@@ -32,12 +32,12 @@
         @foreach ($standings as $user)
           <tr>
           <td> {{ $user -> rank}} </td>
-		  <td> {{ $user -> user_name }} 
+		  <td style="word-break:break-all"> {{ $user -> user_name }} 
 @if(!$user->in_contest)
 *
 @endif
 </td>
-          <td> {{ $user -> nickname}} </td>
+          <td style="word-break:break-all"> {{ $user -> nickname}} </td>
 		  <td class='text-primary'> <b> 
 			<?php
 				if($contest->rule==2)
