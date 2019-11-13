@@ -139,6 +139,11 @@ class SubmissionController extends Controller
 		$req=$request->all();
 		if($req ['token'] != env('UPDATE_SUBMISSION_TOKEN'))return redirect('404');
 		unset($req['token']);
+        $sub = DB::table('submission') -> where('id', $req['id']) -> first();
+		if($sub->contest_id!=NULL){
+        	$contest = DB::table('contest') -> where('id', $sub->contest_id) -> first();
+			if($contest->rule==0 && now()<$contest->end_time)return;
+		}
 		broadcast(new Submission($req));
 	}
     public function submitcode(Request $request, $id) 

@@ -1,29 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+	<?php
+		$full_score=count($contest->problemset)*($contest->rule==2?1:100);
+	?>
     <br>
     <h2 style='text-align:center;'> Standings </h2>
     <br>
-@if($contest->rule!=2)
 	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
-@endif
 	<div class="mdui-table-fluid">
-    <table id="standings" class="mdui-table mdui-table-hoverable" style="layout:fixed;">
+    <table id="standings" class="mdui-table mdui-table-hoverable" style="layout:fixed">
       <thead>
         <tr>
           <th style="width: 5%">Rank</th>
           <th style="width: 15%;word-break:break-all">Username</th>
           <th style="width: 15%;word-break:break-all">Nickname</th>
 		<?php
-			$width=(int)(55/count($contest->problemset)).'%';
+			$width=(int)(65/(count($contest->problemset)+1)).'%';
 		?>
           <th  style="width:{{$width}}">Total Score</th>
           @foreach ($contest -> problemset as $problem)
 			<th style="width:{{$width}}">
 				<?php
-					echo "<a href='/contest/".$contest->id."/problem/".$problem->id."'>".chr($loop -> index +65)."</a>";
+					echo "<a href='/contest/".$contest->id."/problem/".$problem."'>".chr($loop -> index +65)."</a>";
 				?>
-<!-- {{ $problem -> title }} -->
 			</th>
           @endforeach
         </tr>
@@ -38,66 +38,54 @@
 @endif
 </td>
           <td style="word-break:break-all"> {{ $user -> nickname}} </td>
-		  <td class='text-primary'> <b> 
+		  <td>  
+				@if($user->in_contest)
+					<span class="in_contest">@include('includes.score',['score'=>$user->score,'score_full'=>$full_score])</span>
+				@endif
+					<span class="after_contest">@include('includes.score',['score'=>$user->score_after,'score_full'=>$full_score,'text'=>'('.$user->score_after.')'])</span>
 			<?php
-				if($contest->rule==2)
-					echo $user->score.($user->score?'('.sprintf("%d:%02d:%02d", floor($user->time/ 3600), floor($user->time% 3600 / 60), $user->time%60).')':'');
-				else 
-					echo $user->score.'<span class="after">('.$user->score_after.')</span>';
+					echo $user->time?sprintf('<div class="submission_time">'."%d:%02d:%02d</div>", floor($user->time/ 3600), floor($user->time% 3600 / 60), $user->time%60):"";
 			?>
-</b> </td>
+		</td>
 
-          @foreach($user -> result as $sub)
-			@if($mode!=2)
-
-	            <td> 
-	            @if($sub->found!= null)
-	                @if($sub -> score == 100) <a class="text-success" href="{{ url('submission/'.$sub -> id) }}"> 
-	                @elseif($sub -> score > 0) <a style="color:orange" href="{{ url('submission/'.$sub -> id) }}"> 
-	                @else <a class="text-danger" href="{{ url('submission/'.$sub -> id) }}"> 
-	                @endif
-	                <b> {{ $sub -> score }}</b> 
-	                </a> 
-	            @else
-	              <b class="text-danger"> 0</b>
-				@endif
-				<span class="after">
-	            @if($sub->after->found!= null)
-	                @if($sub ->after-> score == 100) <a class="text-success" href="{{ url('submission/'.$sub -> after->id) }}"> 
-	                @elseif($sub->after -> score > 0) <a style="color:orange" href="{{ url('submission/'.$sub->after -> id) }}"> 
-	                @else <a class="text-danger" href="{{ url('submission/'.$sub -> after->id) }}"> 
-	                @endif
-	                <b>({{ $sub -> after->score }})</b> 
-	                </a> 
-	            @else
-	              <b class="text-danger">(0)</b>
-				@endif
-				</span>
-	              </td>
+		  @foreach($user -> result as $sub)
+			@if($sub->fb)
+				<td style="background: rgb(244, 255, 245); ">
 			@else
-	            @if($sub->found ==1)
-	              <td> 
-
-	                @if($sub -> score==1) <a class="text-success" href="{{ url('submission/'.$sub -> id) }}"> 
-	                @elseif($sub -> score==2) <a style="color:#0033CC" href="{{ url('submission/'.$sub -> id) }}"> 
-	                @else <a class="text-danger" href="{{ url('submission/'.$sub -> id) }}"> 
-	                @endif
-					<b> 
-		            <?php
-						if($sub->score>0)echo '+';
-						else echo '-';
-						if($sub->try>0)echo $sub->try;	
-		              	if($sub->score>0)echo '('.sprintf("%d:%02d:%02d", floor($sub->time/ 3600), floor($sub->time% 3600 / 60), $sub->time%60).')';
-		            ?>
-					</b> 
-	                </a> 
-	              </td>
-	            @else
-	              <td class='text-danger'> </td>
-				@endif
-
+				<td>
 			@endif
+			@if($contest->rule!=2)
+					@if($sub->id)				
+						<a class="in_contest" href="/submission/{$sub->id}">
+						@include('includes.score',['score'=>$sub->score])
+						</a>
+					@endif
+					@if($sub->id_after)				
+						<a class="after_contest" href="/submission/{$sub->id_after}">
+						@include('includes.score',['score'=>$sub->score_after,'text'=>'('.$sub->score_after.')'])
+						</a>
+					@endif
+					<?php
+					echo '<div class="submission_time">'.($sub->time?sprintf("%d:%02d:%02d", floor($sub->time/ 3600), floor($sub->time% 3600 / 60), $sub->time%60):"").'</div>';
+					?>
+			@else
+					@if($sub->score||$sub->try)
+	
+						@if($sub->score)
+							<a class="in_contest" href="/submission/{{$sub->id}}">@include("includes.score",['score'=>100,'text'=>"+".($sub->try?$sub->try:"")])</a>
+						@else
+							<a class="in_contest" href="/submission/{{$sub->id}}">@include("includes.score",['score'=>0,'text'=>"-".$sub->try])</a>
+						@endif
+					@endif
 
+					@if(!$sub->score && $sub->score_after)				
+						<a class="after_contest" href="/submission/{{$sub->id}}">@include("includes.score",['score'=>100,'text'=>"+".$sub->try])</a>
+					@endif
+						<div class="submission_time"><?php
+					echo ($sub->time?sprintf("%d:%02d:%02d", floor($sub->time/ 3600), floor($sub->time% 3600 / 60), $sub->time%60):"");
+?></div>
+			@endif
+			</td>
           @endforeach
           </tr>
         @endforeach
@@ -105,10 +93,10 @@
     </table>
 	</div>
 	<script>
-		if($("#showafter").prop("checked"))$(".after").show();
-		else $(".after").hide();
+		if($("#showafter").prop("checked"))$(".after_contest").show();
+		else $(".after_contest").hide();
 		$("#showafter").change(function() {
-			$(".after").toggle();
+			$(".after_contest").toggle();
 		});
 	</script>
 @endsection

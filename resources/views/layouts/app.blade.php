@@ -9,6 +9,8 @@
     	<title>{{ config('app.name', 'YLOJ') }}</title>
 
     	<script src="{{ asset('js/app.js') }}" defer></script>
+    	<script src="{{ asset('js/color-converter.min.js') }}" defer></script>
+    	<script src="{{ asset('js/yloj.js') }}" defer></script>
     	<script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
     <script type="text/javascript" async
@@ -19,8 +21,8 @@
     </script>
 
 
-    	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
     	<link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	    <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
 	    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 		<link rel="stylesheet" href="/mdui/css/mdui.min.css"/>

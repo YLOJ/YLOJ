@@ -37,17 +37,7 @@
   <b> {{ $sub -> result }} </b> </a>
 </td>
 <td id="score">
-  @if ($sub -> result == "Waiting" || $sub -> score == -1)
-    <a class="text-primary" href={{$sub -> url}}> <b>/</b> </a>
-  @else
-    @if ($sub -> score == 100) 
-      <a class="text-success" href={{$sub -> url}}>
-    @elseif ($sub -> score > 0) 
-      <a style="color:orange;" href={{$sub -> url}}>
-    @else <a class="text-danger" href={{ $sub -> url }}>
-    @endif
-    <b> {{ $sub -> score }} </b> </a>
-  @endif
+	@include('includes.score',['score'=>$sub->score])
 </td>
 <td id="time">
 @if ($sub -> time_used >= 0)

@@ -18,5 +18,21 @@
 }
 
 .mdui-table th,.mdui-table td{
-    padding: 12px !important;
+    padding: 12px;
 }
+#standings td{
+	text-align: center;
+	padding: 5px;
+}
+
+#standings th{
+	text-align: center;
+}
+.submit_time{
+	font-size: 0.8em;
+}
+.score{
+	font-weight: 700;
+}
+
+

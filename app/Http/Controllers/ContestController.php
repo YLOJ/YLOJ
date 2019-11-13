@@ -21,7 +21,7 @@ class ContestController extends Controller
 			$_para = $para;
 		}
 		if ($request->has($para) && $request->input($para) != null) {
-			return $sub->where($_para, $operator, $request->input($para));
+			return $submission->where($_para, $operator, $request->input($para));
 		}
 		return $sub;
 	}
@@ -349,124 +349,144 @@ class ContestController extends Controller
 		$contest = DB::table('contest')->where('id', $cid)->first();
 		if (
 			($contest->rule!=2 &&(in_array($cid,$this->contestManageList())||(NOW()>$contest->end_time && in_array($cid,$this->contestShowList()))))||
-			($contest->rule==2 &&(in_array($cid,$this->contestShowList())))
+			(($contest->rule==2 ||$contest->rule==3) &&(in_array($cid,$this->contestShowList())))
 		) 
 		{
 			$data = DB::table('submission') -> where('contest_id', $cid) 
-								   -> where('created_at', '>=', $contest -> begin_time);
-			if($contest->rule==2)$data=$data->where('created_at',"<=",$contest->end_time);
-			$standings = $data -> select('user_name') -> groupby('user_name') -> get() -> toarray();
-
-			foreach ($standings as &$user) {
-				$user -> result = array();
-				$user -> score = 0;
-				$user -> score_after= 0;
-				$user -> time = 0;
-				$user -> in_contest = 0;
-				$db=DB::table("users")->where("name",$user->user_name)->select("nickname");
-				if($db->count()){
-					$user->nickname=$db->first()->nickname;
-					if (!$user->nickname)$user->nickname="";
-				}
-				else $user->nickname="";
-			}
-
+								   -> where('created_at', '>=', $contest -> begin_time)->orderby("id","asc")->get()->toarray();
+			$standing=array();
 			$contest->problemset=$this->getProblemList($cid);
-
-			foreach ($contest -> problemset as $pid) {
-				if($contest->rule==2){
-					$data = DB::table('submission') -> where('contest_id', $cid) 
-									-> where('created_at', '>=', $contest -> begin_time) -> where('created_at', '<=', $contest -> end_time)-> where('problem_id', $pid)->where("result",'Accepted')->orderby('created_at','asc');
-					if($data->count())$fb=$data->first()->user_name;
-					else $fb=NULL;
+			$fb=array();
+			foreach($contest->problemset  as $pid)$fb[$pid]=false;
+			foreach($data as $submission){
+				if(!in_array($submission->problem_id,$contest->problemset))continue;
+				$name=$submission->user_name;
+				if(!array_key_exists($name,$standing)){
+					$standing[$name]=(object)null;	
+					$nickname=DB::table("users")->where("name",$name);
+					if($nickname->exists())
+						$standing[$name]->nickname=$nickname->first()->nickname;
+					else $standing[$name]->nickname="";
+					$standing[$name]->result=array();
+					if($submission->created_at<=$contest->end_time)$standing[$name]->in_contest=1;
+					else $standing[$name]->in_contest=0;
+					foreach($contest->problemset as $pid){
+						$result_problem=&$standing[$name]->result[$pid];
+						$result_problem=(object)null;
+						$result_problem->score=0;
+						$result_problem->score_after=0;
+						$result_problem->id_after=-1;
+						$result_problem->time=0;
+						$result_problem->fb=0;
+						$result_problem->id=-1;
+						$result_problem->try=0;
+					}
+					$standing[$name]->score=0;
+					$standing[$name]->score_after=0;
+					$standing[$name]->time=0;
+					$standing[$name]->user_name=$name;
 				}
-
-				foreach ($standings as &$user) {
-					$data_all = DB::table('submission') -> where('contest_id', $cid) 
-								  -> where('created_at', '>=', $contest -> begin_time)-> where('problem_id', $pid);
-					$data = DB::table('submission') -> where('contest_id', $cid) 
-									 -> where('created_at', '>=', $contest -> begin_time)-> 
-								 where('problem_id', $pid)-> where('created_at',"<=",$contest->end_time);
-					$data_all = $data_all -> orderby('score', 'desc') -> orderby('created_at', 'desc');
-					if ($contest -> rule == 1){ // IOI rule
-						$data = $data -> orderby('score', 'desc') -> orderby('created_at', 'desc');
-					}
-					else if($contest->rule==0) // OI rule
-						$data = $data -> orderby('created_at', 'desc');
-					else 
-						$data = $data -> orderby('created_at', 'asc');
-
-					if($contest->rule!=2){
-						$user -> result[$pid] = $data -> where('user_name', $user -> user_name) -> first();
-						if($user->result[$pid]){
-							$user -> score+=$user -> result[$pid] -> score;
-							$user->in_contest=1;
-							$user->result[$pid] -> found=1;
-						}
-						else {
-							$user->result[$pid]=(object)null;
-							$user->result[$pid]->found=0;
-						}
-
-						$user -> result[$pid]->after = $data_all -> where('user_name', $user -> user_name) -> first();
-						if($user->result[$pid]->after){
-							$user -> score_after+=$user -> result[$pid]->after -> score;
-							$user->result[$pid]->after->found=1;
-						}
-						else{
-							$user->result[$pid]->after=(object)null;
-							$user->result[$pid]->after->found=0;
-						}
-					}
-					else{
-						$xdata=$data->where("user_name",$user->user_name)->get();
-						if($xdata->toArray()!=array()){
-							$result= (object)null;
-							$result->score=0;
-							$result->try=0;
-							$result->time=0;
-							foreach($xdata as $sub){
-								$result->id=$sub->id;
-								if($sub->result=="Accepted"){
-									$result->score=($user->user_name==$fb?2:1);
-									$result->time=
-										strtotime($sub->created_at)-strtotime($contest->begin_time)+1200*$result->try;
-									$user->time+=$result->time;
-									$user->score+=1;
-									break;
-								}
-								else if($sub->result=="Waiting"  || $sub->result=="Running" || $sub->result=="Compiling")break;
-								++$result->try;
+				$result_user=&$standing[$name];
+				if($contest->rule==2){//ACM mode
+					if($result_user->result[$submission->problem_id]->score_after==1)continue;
+					$result_problem=&$result_user->result[$submission->problem_id];
+					if($submission->result=="Accepted"){
+						$result_problem->score_after=1;
+						$result_problem->id_after=$submission->id;
+						$standing[$name]->score_after+=1;
+						if($submission->created_at<=$contest->end_time){
+							$standing[$name]->score+=1;
+							$result_problem->score=1;
+							$result_problem->id=$submission->id;
+							$result_problem->time=strtotime($submission->created_at)-strtotime($contest->begin_time);
+							$standing[$name]->time+=$result_problem->time+1200*$result_problem->try;
+							if(!$fb[$submission->problem_id]){
+								$result_problem->fb=1;
+								$fb[$submission->problem_id]=1;
 							}
-							$user->in_contest=1;
-							$result -> found=1;
-							$user->result[$pid]=$result;
 						}
-						else{
-							$user->result[$pid]=(object)null;
-							$user->result[$pid]->found=0;
+					}
+					else
+						if($submission->created_at<=$contest->end_time){
+							++$result_problem->try;
+						}
+				}
+				else{
+					if($contest->rule==0){//OI rule
+						$result_problem=&$result_user->result[$submission->problem_id];
+						if($submission->created_at<=$contest->end_time){
+							$sk[$result_problem->id]=1;
+							$result_user->score+=$submission->score-$result_problem->score;
+							$result_problem->score=$submission->score;
+							$result_problem->id=$submission->id;
+							$result_problem->time=$result_user->time=strtotime($submission->created_at)-strtotime($contest->begin_time);
+						}
+						if($submission->score>$result_problem->score_after){
+							$result_user->score_after+=$submission->score-$result_problem->score_after;
+							$result_problem->score_after=$submission->score;
+							$result_problem->id_after=$submission->id;
+						}	
+					}
+					else{//IOI?
+						$result_problem=&$result_user->result[$submission->problem_id];
+						if($submission->created_at<=$contest->end_time){
+							if($submission->score>$result_problem->score){
+								$result_user->score=$result_user->score_after+=$submission->score-$result_problem->score;
+								$result_problem->score=$result_problem->score_after=$submission->score;
+								$result_problem->id=$result_problem->id_after=$submission->id;
+								$result_problem->time=$result_user->time=strtotime($submission->created_at)-strtotime($contest->begin_time);
+								if($submission->result=="Accepted"){
+									if(!$fb[$submission->problem_id]){
+										$result_problem->fb=1;
+										$fb[$submission->problem_id]=1;
+									}
+								}
+							}	
+						}else{
+							if($submission->score>$result_problem->score_after){
+								$result_user->score_after+=$submission->score-$result_problem->score_after;
+								$result_problem->score_after=$submission->score;
+								$result_problem->id_after=$submission->id;
+							}	
 						}
 					}
 				}
 			}
+			if($contest->rule==0){
+				foreach($data as $submission){
+					if(!in_array($submission->problem_id,$contest->problemset))continue;
+					$name=$submission->user_name;
+					$result_user=&$standing[$name];
 
-			foreach ($contest -> problemset as &$problem) {
-				$pid = $problem;
-				$problem = (object)null;
-				$problem -> id = $pid;
-				$problem -> title = DB::table('problemset')->where('id', $pid)->first()->title;
+					if($submission->created_at<=$contest->end_time && !array_key_exists($submission->id,$sk)){
+						$result_problem=&$result_user->result[$submission->problem_id];
+						if($submission->result=="Accepted"){
+							if(!$fb[$submission->problem_id]){
+								$result_problem->fb=1;
+								$fb[$submission->problem_id]=1;
+							}
+						}
+					}
+				}
 			}
+			$standings=array();
 
+			foreach($standing as $name=>$result){
+				$standings[]=$result;
+
+			}
+	
 			$cmp = function($a, $b) {
 				return $a -> score < $b -> score||$a->score==$b->score && $a->time > $b->time;
 			};
+			
 			usort($standings, $cmp);
 			$last=null;
 			$rank=0;
 			$lastrank=0;
 			foreach($standings as &$user){
 				$rank++;
-				if(!$last||$cmp($user,$last))$lastrank=$rank;
+				if(!$last||($contest->rule==2&& $cmp($user,$last))||($contest->rule!=2 && $user->score<$last->score))$lastrank=$rank;
 				$user->rank=$lastrank;
 				$last=$user;
 			}
