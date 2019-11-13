@@ -42,7 +42,9 @@
 				@if($user->in_contest)
 					<span class="in_contest">@include('includes.score',['score'=>$user->score,'score_full'=>$full_score])</span>
 				@endif
+				@if($user->score!=$user->score_after)
 					<span class="after_contest">@include('includes.score',['score'=>$user->score_after,'score_full'=>$full_score,'text'=>'('.$user->score_after.')'])</span>
+				@endif
 			<?php
 					echo $user->time?sprintf('<div class="submission_time">'."%d:%02d:%02d</div>", floor($user->time/ 3600), floor($user->time% 3600 / 60), $user->time%60):"";
 			?>
@@ -56,12 +58,12 @@
 			@endif
 			@if($contest->rule!=2)
 					@if($sub->id)				
-						<a class="in_contest" href="/submission/{$sub->id}">
+						<a class="in_contest" href="/submission/{{$sub->id}}">
 						@include('includes.score',['score'=>$sub->score])
 						</a>
 					@endif
-					@if($sub->id_after)				
-						<a class="after_contest" href="/submission/{$sub->id_after}">
+					@if($sub->score!=$sub->score_after && $sub->id_after)				
+						<a class="after_contest" href="/submission/{{$sub->id_after}}">
 						@include('includes.score',['score'=>$sub->score_after,'text'=>'('.$sub->score_after.')'])
 						</a>
 					@endif
@@ -74,7 +76,7 @@
 						@if($sub->score)
 							<a class="in_contest" href="/submission/{{$sub->id}}">@include("includes.score",['score'=>100,'text'=>"+".($sub->try?$sub->try:"")])</a>
 						@else
-							<a class="in_contest" href="/submission/{{$sub->id}}">@include("includes.score",['score'=>0,'text'=>"-".$sub->try])</a>
+							<span class="in_contest">@include("includes.score",['score'=>0,'text'=>"-".$sub->try])</span>
 						@endif
 					@endif
 

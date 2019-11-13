@@ -4,7 +4,9 @@ function getColOfScore(score) {
 	} else if (score>=1) {
 		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(120, 100, 80)));
 	} else {
-		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(15 + score * 90, 100, 90)));
+		return "rgb(256,165,0)";
+//		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(33, 100, 90)));
+//		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(15 + score * 90, 100, 90)));
 	}
 }
 $.fn.yloj_highlight = function() {
