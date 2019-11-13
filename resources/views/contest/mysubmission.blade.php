@@ -10,7 +10,6 @@ if($BAN){
 	}
 }
 ?>
-@endif
 @section('content')
 	<p></p>
 	<p></p>
