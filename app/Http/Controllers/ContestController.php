@@ -375,10 +375,10 @@ class ContestController extends Controller
 						$result_problem=(object)null;
 						$result_problem->score=0;
 						$result_problem->score_after=0;
-						$result_problem->id_after=-1;
+						$result_problem->id_after=0;
 						$result_problem->time=0;
 						$result_problem->fb=0;
-						$result_problem->id=-1;
+						$result_problem->id=0;
 						$result_problem->try=0;
 					}
 					$standing[$name]->score=0;
@@ -421,7 +421,7 @@ class ContestController extends Controller
 							$result_problem->id=$submission->id;
 							$result_problem->time=$result_user->time=strtotime($submission->created_at)-strtotime($contest->begin_time);
 						}
-						if($submission->score>$result_problem->score_after){
+						if(!$result_problem->id_after || $submission->score>$result_problem->score_after){
 							$result_user->score_after+=$submission->score-$result_problem->score_after;
 							$result_problem->score_after=$submission->score;
 							$result_problem->id_after=$submission->id;
@@ -430,7 +430,7 @@ class ContestController extends Controller
 					else{//IOI?
 						$result_problem=&$result_user->result[$submission->problem_id];
 						if($submission->created_at<=$contest->end_time){
-							if($submission->score>$result_problem->score){
+							if(!$result_problem->id|| $submission->score>$result_problem->score){
 								$result_user->score=$result_user->score_after+=$submission->score-$result_problem->score;
 								$result_problem->score=$result_problem->score_after=$submission->score;
 								$result_problem->id=$result_problem->id_after=$submission->id;
@@ -443,7 +443,7 @@ class ContestController extends Controller
 								}
 							}	
 						}else{
-							if($submission->score>$result_problem->score_after){
+							if(!$result_problem->id_after||$submission->score>$result_problem->score_after){
 								$result_user->score_after+=$submission->score-$result_problem->score_after;
 								$result_problem->score_after=$submission->score;
 								$result_problem->id_after=$submission->id;

@@ -30,7 +30,12 @@
       </thead>
       <tbody>
         @foreach ($standings as $user)
-          <tr>
+
+@if(!$user->in_contest)
+	<tr class="after_contest">
+@else
+    <tr>
+@endif
           <td> {{ $user -> rank}} </td>
 		  <td style="word-break:break-all"> {{ $user -> user_name }} 
 @if(!$user->in_contest)
@@ -62,7 +67,7 @@
 						@include('includes.score',['score'=>$sub->score])
 						</a>
 					@endif
-					@if($sub->score!=$sub->score_after && $sub->id_after)				
+					@if((!$sub->id || $sub->score!=$sub->score_after)&& $sub->id_after)				
 						<a class="after_contest" href="/submission/{{$sub->id_after}}">
 						@include('includes.score',['score'=>$sub->score_after,'text'=>'('.$sub->score_after.')'])
 						</a>
@@ -81,11 +86,13 @@
 					@endif
 
 					@if(!$sub->score && $sub->score_after)				
-						<a class="after_contest" href="/submission/{{$sub->id}}">@include("includes.score",['score'=>100,'text'=>"+".$sub->try])</a>
+						<a class="after_contest" href="/submission/{{$sub->id}}">@include("includes.score",['score'=>100,'text'=>"(+)"])</a>
 					@endif
+					@if($sub->score)
 						<div class="submission_time"><?php
 					echo ($sub->time?sprintf("%d:%02d:%02d", floor($sub->time/ 3600), floor($sub->time% 3600 / 60), $sub->time%60):"");
 ?></div>
+					@endif
 			@endif
 			</td>
           @endforeach
