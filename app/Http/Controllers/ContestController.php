@@ -21,7 +21,7 @@ class ContestController extends Controller
 			$_para = $para;
 		}
 		if ($request->has($para) && $request->input($para) != null) {
-			return $submission->where($_para, $operator, $request->input($para));
+			return $sub->where($_para, $operator, $request->input($para));
 		}
 		return $sub;
 	}
