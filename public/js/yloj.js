@@ -26,9 +26,9 @@ $.fn.yloj_highlight = function() {
 	});
 }
 
-$(document).ready(function() {
+/*$(document).ready(function() {
 	$('body').yloj_highlight();
-});
+});*/
 var style={};
 style["Waiting"]='class="text-primary"';
 style["Accepted"]='class="text-success"';
@@ -53,8 +53,13 @@ Echo.channel('Submission')
 	].join('\n'));
 	}
 	if('score' in xsub){
-		$('#sub'+xsub['id']+" #score .score").css("color", getColOfScore(xsub['score'] / 100));
-		$('#sub'+xsub['id']+" #score .score").html(xsub['score']);
+		if(xsub['score']==-1){
+			$('#sub'+xsub['id']+" #score .score").css("color","");
+			$('#sub'+xsub['id']+" #score .score").html("/");
+		}else{
+			$('#sub'+xsub['id']+" #score .score").css("color", getColOfScore(xsub['score'] / 100));
+			$('#sub'+xsub['id']+" #score .score").html(xsub['score']);
+		}
 	}
 	if('time' in xsub){
 		$('#sub'+xsub['id']+" #time").html(

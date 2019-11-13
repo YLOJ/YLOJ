@@ -34,10 +34,17 @@
   @else
     <a class="text-danger" href={{ $sub -> url }}>
   @endif
-  <b> {{ $sub -> result }} </b> </a>
+  <b> {{ $sub -> result }} </b>
+ 	</a>
 </td>
 <td id="score">
-	@include('includes.score',['score'=>$sub->score])
+	<a href="/submission/{{$sub->id}}">
+		@if($sub->score==-1 || $sub->result=="Waiting")
+			@include('includes.score',['score'=> $sub->score,'text'=>'/'])
+		@else
+			@include('includes.score',['score'=> $sub->score])
+		@endif
+	</a>
 </td>
 <td id="time">
 @if ($sub -> time_used >= 0)
