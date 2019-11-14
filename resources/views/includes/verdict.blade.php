@@ -38,7 +38,7 @@
  	</a>
 </td>
 <td id="score">
-	<a href="/submission/{{$sub->id}}">
+	<a href="{{$sub->url}}">
 		@if($sub->score==-1 || $sub->result=="Waiting")
 			@include('includes.score',['score'=> $sub->score,'text'=>'/'])
 		@else
