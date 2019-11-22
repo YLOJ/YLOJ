@@ -1,28 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
-    @if ($errors->any())
-      <div class="alert alert-danger">
-        <ul>
-          @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
+@if ($errors->any())
+	<div class="alert alert-danger">
+	<ul>
+		@foreach ($errors->all() as $error)
+		<li>{{ $error }}</li>
+		@endforeach
+	</ul>
+	</div>
+@endif
 
-    <form action="/problem/add_submit" method="post">    
-      <div class="form-group">
-        <label>Title</label>
-        <input type="text" name="title" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Content</label> <br>
-        <textarea rows="20" name="content_md" class="form-control"></textarea>
-      </div>
+   <form action="/problem/add_submit" method="post">    
+	<div class="mdui-textfield mdui-textfield-floating-label">
+	  <label class="mdui-textfield-label">Title</label>
+	  <input class="mdui-textfield-input" type="text" name="title" required/>
+	</div>
+	<div class="mdui-textfield mdui-textfield-floating-label">
+	  <label class="mdui-textfield-label">Content</label>
+	  <textarea class="mdui-textfield-input" type="text" name="content_md" rows=20></textarea>
+	</div>
       @include('buttons.submit' , ['text' => 'Add'])
       @csrf
-    </form>
-  </div>
+   </form>
 @endsection

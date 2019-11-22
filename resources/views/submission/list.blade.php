@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 @extends('layouts.app')
 
@@ -20,43 +21,43 @@
     else $max_score = "";
   ?>
 
+	<style>
+		.mdui-textfield {
+			padding-bottom:0 !important;
+		}
+	</style>
+	<div style="width:100%">
+    	<form action="" method="get">
+			<div class="mdui-textfield mdui-textfield-floating-label inline">
+				<label class="mdui-textfield-label">Problem ID: </label>
+				<input class="mdui-textfield-input" type="text" name="problem_id" value="{{$problem_id}}" style="height:2em;width:10em">
+			</div>
+&nbsp&nbsp 
+			<div class="mdui-textfield mdui-textfield-floating-label inline">
+				<label class="mdui-textfield-label">User Name: </label>
+				<input class="mdui-textfield-input" type="text" name="user_name" value="{{$user_name}}" style="height:2em;width:10em">
+			</div>
+&nbsp&nbsp 
+			<div class="mdui-textfield mdui-textfield-floating-label inline">
+			  <label class="mdui-textfield-label">Score: </label>
+			  <input class="mdui-textfield-input inline" type="text" name="min_score" value="{{$min_score}}" style="height:2em;width:4em;">
+				~
+			  <input class="mdui-textfield-input inline" type="text" name="max_score" value="{{$max_score}}" style="height:2em;width:4em;">
+			</div>
+&nbsp&nbsp 
+			<button class="mdui-btn mdui-color-theme inline" type="submit">
+			  <img src="{{ asset('svg/icons/search.ico') }}" class="icon-sm" />
+			  Search
+			</button>
+			@if(Auth::check())
+			<a class="mdui-btn mdui-color-theme inline" href={{url(url()->current().'?user_name='.Auth::User() -> name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score) }} style="float:right">
+				My Submissions
+			</a>
+			@endif
 
-    <p> </p>
-    <div class="row">
-      <div class="col-md-10">
-        <div class="hidden-xs">
-          <form class="form-inline" action="" method="get">
-            <div class="form-group">
-              <label class="control-label"> &nbsp Problem ID: &nbsp </label>
-              <input class="form-control" type="text" name="problem_id" style="height:2em;width:4em" value={{$problem_id}}>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label"> &nbsp&nbsp User Name: &nbsp </label>
-              <input class="form-control" type="text" name="user_name" style="height:2em;width:10em" value={{$user_name}}>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label"> &nbsp&nbsp Score: &nbsp </label>
-              <input class="form-control" type="text" name="min_score" style="height:2em;width:4em" value={{$min_score}}>
-              &nbsp ~ &nbsp
-              <input class="form-control" type="text" name="max_score" style="height:2em;width:4em" value={{$max_score}}> &nbsp&nbsp&nbsp
-            </div>
-            @include('buttons.submit-icon' , ['icon' => 'search' , 'text' => 'Search'])
-          </form>
-        </div>
-      </div>
-      <div class="col-md-2" style="text-align:right">
-        @auth
-          @include('buttons.jump' , [ 
-            'href' => url(url()->current().'?user_name='.Auth::User() -> name.'&problem_id='.$problem_id.'&min_score='.$min_score.'&max_score='.$max_score) , 
-            'text' => 'My Submissions'
-            ])
-          @endauth
-      </div>
-    </div>
-    <p class="text-sm"> </p>
-    <table class="mdui-table mdui-table-hoverable mdui-typo" style="padding: 0!important">
+       </form>
+     </div>
+    <table class="mdui-table mdui-table-hoverable mdui-hoverable score-table">
        @include('includes.verdict_table') 
        <tbody>
          @foreach ($submissionset as $sub)
@@ -75,3 +76,4 @@
       ?>
     </div>
 @endsection
+

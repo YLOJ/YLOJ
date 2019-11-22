@@ -36,7 +36,6 @@ class ContestController extends Controller
 	public function getProblemList($id){
 		$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
 		return $problems;
-
 	}
 	public function show($id) 
 	{
@@ -50,7 +49,8 @@ class ContestController extends Controller
 			$problem -> title = DB::table('problemset')->where('id', $pid)->first()->title;
 			$contest->problemset[]=$problem;
 		}
-
+		$Parsedown = new Parsedown();
+		$contest->contest_info=$Parsedown->text($contest->contest_info);
 		return view('contest.show', ['contest' => $contest,
 			'is_admin' => in_array($id,$this->contestManageList())
 		]);
@@ -260,13 +260,14 @@ class ContestController extends Controller
 			$head="data not found!<br>";
 		
 		$Parsedown = new Parsedown();
-		return view('contest.showproblem', [
-			'pid' => $pid,
+		return view('problemset.show', [
+			'id' => $pid,
 			'title' => '['.$contest->title.'] '.$problem->title,
-			'cid' => $cid,
+			'contest_id' => $cid,
 			'head' => $head,
 			'content' => $Parsedown->text($problem->content_md),
-			'ended' => now()>=$contest->end_time
+			'contest_ended' => now()>=$contest->end_time,
+			'is_admin' => in_array($pid,$this->problemManageList())
 		]);
 	}
 

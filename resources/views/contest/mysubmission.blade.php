@@ -14,7 +14,7 @@ if($BAN){
 	<p></p>
 	<p></p>
 
-        <table class="mdui-table mdui-table-hoverable">
+        <table class="mdui-table mdui-table-hoverable mdui-hoverable">
           @include('includes.verdict_table') 
           <tbody>
             @foreach ($submissionset as $sub)

@@ -35,12 +35,9 @@ Route::name('problem.')->prefix('problem')->group(function() {
     Route::any('/data/{id}', 'ProblemsetController@data')->name('data')->where('id', '[0-9]+');
     Route::post('/data_submit/{id}', 'ProblemsetController@data_submit')->name('data_submit')->where('id', '[0-9]+');
     Route::post('/save_config/{id}', 'ProblemsetController@save_config')->name('save_config')->where('id', '[0-9]+');
-    Route::post('/data_format/{id}', 'ProblemsetController@data_format')->name('data_format')->where('id', '[0-9]+');
-    Route::post('/format_check/{id}', 'ProblemsetController@format_check')->name('format_check')->where('id', '[0-9]+');
+    Route::post('/data_match/{id}', 'ProblemsetController@data_match')->name('data_match')->where('id', '[0-9]+');
+    Route::post('/match_check/{id}', 'ProblemsetController@match_check')->name('match_check')->where('id', '[0-9]+');
     Route::any('/data_download/{id}', 'ProblemsetController@data_download')->name('data_download')->where('id', '[0-9]+');
-
-    Route::get('/submit/{id}', 'SubmissionController@submitpage')->name('submitpage')->where('id', '[0-9]+');
-    Route::post('/submit/{id}', 'SubmissionController@submitcode')->name('submitcode')->where('id', '[0-9]+');
 
     Route::get('/customtests', 'SubmissionController@customtests')->name('customtests');
     Route::post('/customtests', 'SubmissionController@customtests_judge')->name('customtests_judge');
@@ -49,10 +46,11 @@ Route::name('problem.')->prefix('problem')->group(function() {
     Route::get('/solution/{id}', 'ProblemsetController@show_solution')->name('show_solution')->where('id', '[0-9]+');
     Route::get('/solution/{id}/{file}', 'ProblemsetController@view_solution_file')->name('view_solution_file')->where('id', '[0-9]+')->where('file','\S+');
     Route::any('/solution/edit/{id}', 'ProblemsetController@solution_edit')->name('solution_edit')->where('id', '[0-9]+');
-    Route::post('/solution/edit_submit/{id}', 'ProblemsetController@solution_edit_submit')->name('solution_edit_submit')->where('id', '[0-9]+');
+    Route::post('/solution/edit_submit/{id}', 'ProblemsetController@solution_edit_submit')->name('solution_edit_submit')->where('id', '[-1-9]+');
     Route::any('/solution/upload/{id}', 'ProblemsetController@solution_upload')->name('solution_upload')->where('id', '[0-9]+');
     Route::post('/solution/upload_file/{id}', 'ProblemsetController@solution_upload_file')->name('solution_upload_file')->where('id', '[0-9]+');
    Route::any('/solution/delete_file/{id}/{file}', 'ProblemsetController@solution_delete_file')->name('solution_delete_file')->where('id', '[0-9]+')->where('file','\S+');;
+	Route::post('/submit','ProblemsetController@submitcode')->name('submit_code');
 });
 
 Route::get('/submission', 'SubmissionController@index')->name('submission');
@@ -84,10 +82,6 @@ Route::name('contest.')->prefix('contest')->group(function() {
 	Route::get('/standings/{id}', 'ContestController@standings')->name('standings')->where('id', '[0-9]+');
 	Route::get('/submission/{id}', 'ContestController@submission')->name('submission')->where('id', '[0-9]+');
 	Route::get('/mysubmission/{id}', 'ContestController@mysubmission')->name('submission')->where('id', '[0-9]+');
-
-    Route::get('/{cid}/problem/{pid}', 'ContestController@showproblem')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
-    Route::get('/{cid}/submit/{pid}', 'ContestController@submitpage')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
-    Route::post('/{cid}/submit/{pid}', 'ContestController@submitcode')->where('cid', '[0-9]+')->where('pid', '[0-9]+');
 });
 Route::name('webadmin.')->prefix('webadmin')->group(function(){
 	Route::get('/','WebAdminController@index')->name("index");

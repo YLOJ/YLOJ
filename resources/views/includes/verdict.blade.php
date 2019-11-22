@@ -10,7 +10,7 @@
 <td>
  @if ($sub->contest_id)
 
-  <a href="/contest/{{$sub->contest_id}}/problem/{{ $sub -> problem_id }}"> #{{ $sub -> problem_id }} : {{ $sub -> problem_name }} </a>
+  <a href="/problem/{{ $sub -> problem_id }}?contest_id={{$sub->contest_id}}"> #{{ $sub -> problem_id }} : {{ $sub -> problem_name }} </a>
  @else
   <a href="/problem/{{ $sub -> problem_id }}"> #{{ $sub -> problem_id }} : {{ $sub -> problem_name }} </a>
  @endif
@@ -20,9 +20,9 @@
 </td>
 <td id="result">
   @if ($sub -> result == "Waiting") 
-    <a class="text-primary" href={{ $sub -> url }}>
+    <a href={{ $sub -> url }}>
   @elseif ($sub -> result == "Accepted") 
-    <a class="text-success" href={{ $sub -> url }}>
+    <a style="color:#00cc00" href={{ $sub -> url }}>
   @elseif ($sub -> result == "Data Error") 
     <a style="color:#2F4F4F" href={{ $sub -> url }}>
   @elseif ($sub -> result == "Judgement Failed") 
@@ -32,7 +32,7 @@
   @elseif (substr($sub->result,0,7)=="Running")
     <a style="color:#0033CC" href={{ $sub -> url }}>
   @else
-    <a class="text-danger" href={{ $sub -> url }}>
+    <a style="color:#cc0000" href={{ $sub -> url }}>
   @endif
   <b> {{ $sub -> result }} </b>
  	</a>

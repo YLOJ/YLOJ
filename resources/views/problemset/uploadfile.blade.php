@@ -1,13 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
-    <h2> 
-      Problem #{{ $id }} 
-    </h2>
+   <h2><a href="{{url('/problem/'.$id)}}">Problem #{{$id}}</a> </h2>
     @include('buttons.jump', ['href' => url('/problem/edit/'.$id) , 'text' => '回到编辑题目页面'])
 	<div>
-	<div id="uploadFile" style="float: left">
+	<div id="upload_file" style="float: left">
     <form action="/problem/upload_file/{{$id}}" method="post" enctype="multipart/form-data">
       <label> <b> 上传文件: </b> </label> <br>
       <input type="file" name="source"> <br> <br>
@@ -16,9 +13,9 @@
       @csrf
     </form>
 	</div>
-	<div id="fileList" style="float: left;width: 50%">
+	<div id="file_list" style="float: left">
 		<label> <b> 文件列表：</b> </label><br>	
-		<table class="table table-bordered">
+		<table class="mdui-table mdui-table-hoverable mdui-hoverable">
 		  <thead>
 		    <tr>
 			  <th style="width: 20%">文件名</th>
@@ -28,15 +25,12 @@
 		  </thead>
 		  <tbody>
 		    @foreach ($filelist as $one)
-		      @if ($loop -> index % 2 == 0) <tr style="background-color:#F3F3F3">
-		      @else <tr>
-		      @endif
-			  <td> <a href='/problem/{{$id}}/{{$one}}'>{{ $one }}</a> </td><td><a href='/problem/delete_file/{{$id}}/{{$one}}'><img src="{{ asset('svg/icons/delete.svg') }}"/></a> </td><td><pre>[{{$one}}](/problem/{{$id}}/{{$one}})</pre></td>
+		      <tr>
+			  <td> <a href='/problem/{{$id}}/{{$one}}'>{{ $one }}</a> </td><td><a href='/problem/delete_file/{{$id}}/{{$one}}'><img src="{{ asset('svg/icons/delete.svg') }}" class="icon-md"/></a> </td><td><code>[{{$one}}](/problem/{{$id}}/{{$one}})</code></td>
 		      </tr>
 		    @endforeach
 		  </tbody>
 		</table>
 	</div>
 	</div>
-  </div>
 @endsection

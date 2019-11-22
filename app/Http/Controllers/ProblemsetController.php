@@ -20,11 +20,33 @@ class ProblemsetController extends Controller {
     { $problemset = $this->problemShowListSQL()->paginate(50);
         return view('problemset.list', ['problemset' => $problemset]);
     }
+	public function getProblemList($id){
+		$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
+		return $problems;
+	}
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
+
         $problem = DB::table('problemset')->where('id', $id)->first();
-		if (in_array($id,$this->problemShowList())) {
+		$view_problem=in_array($id,$this->problemShowList());
+		$cid=isset($request->contest_id)?$request->contest_id:NULL;
+		if($cid){
+			if(!(in_array($cid,$this->contestShowList()) && in_array($id,$this->getProblemList($cid))))return redirect('404');
+			$contest = DB::table('contest')->where('id', $cid)->first();
+			if (NOW() < $contest->begin_time && !in_array($cid,$this->contestManageList())) {
+				return redirect('404');
+			}
+			$title='['.$contest->title.']'.$problem->title;
+			$contest_id=$cid;
+			$contest_ended=NOW()>$contest->end_time || in_array($cid,$this->contestManageList());
+		}
+		else{
+			if(!$view_problem)return redirect("404");
+			$title='#'.$id.'. '.$problem->title;
+			$contest_id=0;
+			$contest_ended=1;
+		}
 			if (Storage::disk('data')->exists($id.'/config.yml') && Storage::disk('data')->get($id.'/config.yml')){
 				try {
 					$config=Yaml::parse(Storage::disk('data')->get($id.'/config.yml'));
@@ -75,17 +97,16 @@ class ProblemsetController extends Controller {
 			}else
 				$head="data not found!<br>";
 			$Parsedown = new Parsedown();
-
+		
    	        return view('problemset.show', [
-                'id' => $id,
-                'title' => $problem->title,
+				'id' => $id,
+                'title' => $title,
 				'head' => $head,
 				'content' => $Parsedown->text($problem->content_md),
+				'contest_id' => $contest_id,
+				'contest_ended' => $contest_ended,
 				'is_admin' => in_array($id,$this->problemManageList())
-            ]);
-        } else {
-            return redirect('404');
-        }
+           ]);
     }
 
     public function add()
@@ -230,7 +251,7 @@ class ProblemsetController extends Controller {
 		}		
 		return redirect('/problem/upload/'.$id);
 	}
-	public function data($id)
+	public function data(Request $request,$id)
 	{
 		if (in_array($id,$this->problemManageList())){
 			if (Storage::disk('data')->exists($id.'-new/log'))
@@ -241,31 +262,32 @@ class ProblemsetController extends Controller {
 				$config=Storage::disk('data')->get($id.'/config.yml');
 			else
 				$config='';
-
-			return view('problemset.data', [ 'id' => $id, 'config'=>$config, 'log'=>$log]);
+			$page=$request->page?$request->page:1;
+			return view('problemset.data', [ 'id' => $id, 'config'=>$config, 'log'=>$log,'page'=>$page]);
 		} else {
 			return redirect('404');
 		}
 	}
-	public function data_format(Request $request, $id){
+	public function data_match(Request $request, $id){
 		if (in_array($id,$this->problemManageList())){
 			Storage::disk('data')->put('dataconfig',$id."\n".$request->matchrule);
 			$type=$request->type."\n";
 			if($request->type==1)$type.=$request->header."\n";
 			Storage::disk('data')->put('type',$type);
 			exec('cd '.base_path().'/storage/app/data && python3 makedata.py');
-			return redirect(route('problem.data', $id));
+			return redirect(route('problem.data', $id).'?page=3');
 		} else {
 			return redirect('404');
 		}
 	}
-	public function format_check(Request $request, $id){
+	public function match_check(Request $request, $id){
 		if (in_array($id,$this->problemManageList())){
 			if($request -> input('check')==1){
 				Storage::deleteDirectory('data/'.$id);
 				Storage::move('data/'.$id.'-new','data/'.$id);
+				return redirect(route('problem.data', $id).'?page=2');
 			}
-			return redirect(route('problem.data', $id));
+			return redirect(route('problem.data', $id).'?page=3');
 		} else {
 			return redirect('404');
 		}
@@ -284,7 +306,7 @@ class ProblemsetController extends Controller {
 			if (!Storage::disk('data')->exists($id.'/config.yml')){
 				Storage::disk('data')->put($id.'/config.yml','');
 			}
-			return redirect(route('problem.data', $id));
+			return redirect(route('problem.data', $id).'?page=3');
 		} else {
 			return redirect('404');
 		}
@@ -295,7 +317,7 @@ class ProblemsetController extends Controller {
 				$id . '/config.yml',
 				$request -> input('config')
 			);
-			return redirect(route('problem.data', $id));
+			return redirect(route('problem.data', $id).'?page=2');
 		} else {
 			return redirect('404');
 		}
@@ -416,6 +438,33 @@ class ProblemsetController extends Controller {
 		}		
 		return redirect('/problem/solution/upload/'.$id);
 	}
+    public function submitcode(Request $request) 
+    {
+        if (!Auth::check()) {
+            return redirect('login');
+		}
+		if (!in_array($request->pid,$this->problemShowList()))
+            return redirect('404');
+		if(!isset($request->cid))$request->cid=NULL;
+		$xid=DB::table('submission')->insertGetId(
+			['problem_id'=>$request->pid,
+            'problem_name'=>DB::select('select * from problemset where id=?',[$request->pid])[0]->title,
+            'user_id'=>Auth::User()->id,
+            'user_name'=>Auth::User()->name,
+            'result'=>"Waiting",
+            'score'=>-1,
+            'time_used'=>-1,
+            'memory_used'=>-1,
+            'source_code'=>$request->input('source_code'),
+            'code_length'=>strlen($request->input('source_code')),
+            'contest_id'=>$request->cid,
+            'created_at'=>NOW()]
+		);
+		Redis::rpush('submission','test '.$xid);
+		if($request->cid)return redirect('/contest/mysubmission/'.$request->cid);
+        return redirect('/submission');
+    }
+
 
 
 }

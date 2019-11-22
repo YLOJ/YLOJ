@@ -1,5 +1,3 @@
-<a href="{{ $href }}">
-  <button class="btn btn-sm btn-primary">
-    <img src="{{ asset('svg/icons/'.$icon.'.ico') }}" class="icon-sm" />  {{$text}}
-  </button>
+<a href="{{ $href }}" class="mdui-btn mdui-color-theme ">
+    <img src="{{ asset('svg/icons/'.$icon.'.ico') }}" class="icon-sm"/>  {{$text}}
 </a>

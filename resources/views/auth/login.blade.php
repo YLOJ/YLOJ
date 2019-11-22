@@ -1,73 +1,51 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="mdui-row">
+<div class="mdui-col-md-8 center">
+<div class="mdui-card">
+	<div class="mdui-card-primary">
+		<div class="mdui-card-primary-title">
+			{{ __('Login') }}
+		</div>
+	</div>
+	<div class="mdui-card-content">
+		<form method="POST" action="{{ route('login') }}">
+			@csrf
+			<div class="mdui-textfield mdui-textfield-floating-label {{$errors->has('name')?'mdui-textfield-invalid':''}}">
+				<label class="mdui-textfield-label">{{ __('Name') }}</label>
+				<input class="mdui-textfield-input " type="text" name="name"  value="{{old('name')}}" required autofocus/> </input>
+				@if ($errors->has('name'))
+					<div class="mdui-textfield-error">{{$errors->first('name')}}</div>	
+				@endif
+			</div>
+			<div class="mdui-textfield mdui-textfield-floating-label  {{$errors->has('password')?'mdui-textfield-invalid':''}}">
+				<label class="mdui-textfield-label">{{ __('Password') }}</label>
+				<input class="mdui-textfield-input " type="password" name="password" required/> </input>
+				@if ($errors->has('password'))
+					<div class="mdui-textfield-error">{{$errors->first('password')}}</div>	
+				@endif
+			</div>
+			<label class="mdui-switch">
+			  记住我
+			  <input type="checkbox"  name="remember" id="remember" {{ old('remember') ? 'checked' : '' }} />
+			  <i class="mdui-switch-icon"></i>
+			</label>
+			<div class="mdui-card-actions">
+				<button type="submit" class="mdui-btn mdui-btn-raised mdui-color-theme mdui-btn-dense">
+					{{ __('Login') }}
+				</button>
+			</div>
+								<!---
+								@if (Route::has('password.request'))
+									<a class="" href="{{ route('password.request') }}">
+										{{ __('Forgot Your Password?') }}
+									</a>
+								@endif
+								--!>
+		</form>
+	</div>
+</div>
+</div>
 </div>
 @endsection

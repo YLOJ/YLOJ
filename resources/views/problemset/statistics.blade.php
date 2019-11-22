@@ -13,7 +13,7 @@
 
 	</div>
 	<div id="fastest" class="mdui-p-a-2">
-	    <table class="mdui-table mdui-table-hoverable">
+	    <table class="mdui-table mdui-table-hoverable mdui-hoverable">
 		    @include('includes.verdict_table', ['first_column' => 'Rank']) 
 		    <tbody>
 	    	@foreach ($fastest as $sub)
@@ -25,7 +25,7 @@
 	    </table>
 	</div>
 	<div id="shortest" class="mdui-p-a-2">
-	    <table class="mdui-table mdui-table-hoverable">
+	    <table class="mdui-table mdui-table-hoverable mdui-hoverable">
 		    @include('includes.verdict_table', ['first_column' => 'Rank']) 
 		    <tbody>
 	    	@foreach ($shortest as $sub)

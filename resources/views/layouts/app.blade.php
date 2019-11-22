@@ -21,10 +21,10 @@
     </script>
 
 
-    	<link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
-	    <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
-	    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+   <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+   <!--	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">--!>
 		<link rel="stylesheet" href="/mdui/css/mdui.min.css"/>
 		<script src="/mdui/js/mdui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -38,15 +38,15 @@
 	<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-light-blue mdui-theme-accent-blue mdui-loaded">
 		<div class="mdui-appbar mdui-appbar-fixed">
 			<div class="mdui-toolbar mdui-color-theme  ">
-				<span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white mdui-text-color-white" mdui-drawer="{target: '#main-drawer', swipe: true}"><i class="mdui-icon material-icons">menu</i></span>
-				<a class="mdui-btn mdui-ripple  mdui-text-color-white" href="/"><span class="mdui-typo-title">{{ config('app.name', 'YLOJ') }}</span></a>
+				<span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white " mdui-drawer="{target: '#main-drawer', swipe: true}"><i class="mdui-icon material-icons">menu</i></span>
+				<a class="mdui-btn mdui-ripple  " href="/"><span class="mdui-typo-title">{{ config('app.name', 'YLOJ') }}</span></a>
 				<div class="mdui-toolbar-spacer"></div>
 			@guest
-				<a class="mdui-typo-title top-btn mdui-ripple  mdui-text-color-white" href="{{ route('login') }}">Login</a>
-				<a class="mdui-typo-title top-btn mdui-ripple  mdui-text-color-white" href="{{ route('register') }}">Register</a>
+				<a class="mdui-typo-title top-btn mdui-ripple  " href="{{ route('login') }}">Login</a>
+				<a class="mdui-typo-title top-btn mdui-ripple  " href="{{ route('register') }}">Register</a>
 			@else
 
-				<a class="mdui-typo-title top-btn mdui-ripple  mdui-text-color-white" mdui-menu="{target: '#example-1',covered: false}">{{ Auth::user()->name }}</a>
+				<a class="mdui-typo-title top-btn mdui-ripple  " mdui-menu="{target: '#example-1',covered: false}">{{ Auth::user()->name }}</a>
 <!--   -->
 			  <ul class="mdui-menu " id="example-1">
 			    <li class="mdui-menu-item">
@@ -61,7 +61,7 @@
 			  </ul>
 
 
-				<a class="mdui-typo-title top-btn mdui-ripple  mdui-text-color-white" href="{{ route('logout') }}"
+				<a class="mdui-typo-title top-btn mdui-ripple  " href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
                 {{ __('Logout') }}</a>

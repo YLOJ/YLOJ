@@ -1,16 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
     @auth
       @if ( Auth::user()->permission > 1 )
-        <div>
-          <form method="post" action="contest/add">
-            @include('buttons.submit' , ['text' => 'Add Contest'])
-            @csrf
-          </form>
-        </div> 
-        <br>
+         @include('buttons.jump' , ['text' => 'Add Contest','href'=>"/contest/add"])
       @endif
     @endauth
 
@@ -28,5 +21,4 @@
       'contests' => $past_contests,
       'title' => 'Past Contests'])
     @endcomponent 
-  </div>
 @endsection

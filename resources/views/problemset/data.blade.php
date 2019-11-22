@@ -1,21 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
     <?php use Illuminate\Support\Facades\Storage; ?>
 
-    <h2> 
-      Problem #{{ $id }} : Manage Data
-    </h2>
+   <h2><a href="{{url('/problem/'.$id)}}">Problem #{{$id}}</a> </h2>
 
     @include('buttons.jump', ['href' => url('/problem/edit/'.$id) , 'text' => '回到编辑题目页面'])
+	<div class="mdui-tab" mdui-tab>
+	  <a href="#uploadData" class="mdui-ripple {{$page==1?'mdui-tab-active':''}}">上传数据</a>
+	  <a href="#updateConfig" class="mdui-ripple  {{$page==2?'mdui-tab-active':''}}">修改数据配置文件</a>
+	  <a href="#matchData" class="mdui-ripple  {{$page==3?'mdui-tab-active':''}}">匹配数据</a>
+	</div>
+	<div>
+	<div id="uploadData"  class="mdui-p-a-2">
     @if (Storage::disk('data')->exists($id))
       <h3 class="text-success"> Data Uploaded </h3>
     @else 
       <h3 class="text-danger"> No Data Exists </h3>
     @endif
-	<div>
-	<div id="uploadData" style='float: left'>
     <form action="/problem/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
       <label> <b> 上传data.zip: </b> </label> <br>
       <input type="file" name="data"> <br> <br>
@@ -26,20 +28,23 @@
 	<br>
     @include('buttons.jump', ['href' => url('/problem/data_download/'.$id) , 'text' => '下载数据'])
 	</div>
-	<div id="updateConfig" style='float: left'>
+	<div id="updateConfig"  class="mdui-p-a-2">
     <form action="/problem/save_config/{{$id}}" method="post" enctype="multipart/form-data">
-      <label> <b> 修改config.yml: </b> </label> <br>
-		<textarea name='config' rows=10>{{$config}}</textarea>
+	<div class="mdui-textfield mdui-textfield-floating-label">
+	  <label class="mdui-textfield-label">Config</label>
+	  <textarea class="mdui-textfield-input" type="text" rows=10 name="config"> {{$config}}</textarea>
+	</div>
+
       <br> <br>
       @include('buttons.submit',['text' => '更新'])
       @csrf
 	</form>
 	</div>
-	<div id="formatData" style='float: left'>
-	<form action="/problem/data_format/{{$id}}" method="post" enctype="multipart/form-data">
+	<div id="matchData" class="mdui-p-a-2">
+	<form action="/problem/data_match/{{$id}}" method="post" enctype="multipart/form-data">
 	   <label><b> 选择题目类型 </b></label>
 
-	    <select name="type" id="type">
+	    <select name="type" id="type" class="mdui-select">
 
 	      <option value="0" selected>传统题</option>
 	
@@ -54,31 +59,35 @@
 				$("#type1").css("display","none");
 			});
 		</script>
-		<div name="type1" id="type1" style="display:none">
-		头文件：<input name="header" >	
+		<div class="mdui-textfield mdui-textfield-floating-label" id="type1" style="display:none">
+		  <label class="mdui-textfield-label">头文件名</label>
+		  <input class="mdui-textfield-input" type="text" name="header"/>
 		</div>
-		<br>
-      <label> <b> 生成数据列表规则：（自动匹配留空） </b> </label> <br>
+		<div class="mdui-textfield mdui-textfield-floating-label">
+		  <label class="mdui-textfield-label">匹配规则(自动匹配留空)</label>
+		  <textarea class="mdui-textfield-input" type="text" rows=10 name="matchrule"></textarea>
+		</div>
 
-		<textarea name='matchrule' rows=10></textarea>
+
       @csrf
 	  <br><br>
       @include('buttons.submit',['text' => '生成'])
 	</form>
 	<br>
-	</div>
-	<div id="formatResult" style='float: left'>
+	<div id="matchResult">
 	@if($log!='')
 		<pre><code>{{$log}}</code></pre>
 	<br>
-    	<form action="/problem/format_check/{{$id}}" method="post" enctype="multipart/form-data">
-			  <button name="check" type="submit" value=1>确定</button>
-			  <button name="check" type="submit" value=0>取消</button>
+    	<form action="/problem/match_check/{{$id}}" method="post" enctype="multipart/form-data">
+			  <button name="check" type="submit" value=1 class="mdui-btn mdui-btn-dense mdui-color-theme">确定</button>
+			  <button name="check" type="submit" value=0  class="mdui-btn mdui-btn-dense mdui-color-theme">取消</button>
       		  @csrf
 		</form>
 	@else
 	  <h4> 并没有生成过数据列表 </h4>
 	@endif
+	</div>
+
 	</div>
 	</div>
 	<br>

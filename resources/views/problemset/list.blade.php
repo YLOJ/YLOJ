@@ -9,10 +9,7 @@
     @auth
       @if ( Auth::user()->permission > 1 )
         <div>
-          <form method="post" action="problem/add">
-            @include('buttons.submit' , ['text' => 'Add Problem'])
-            @csrf
-          </form>
+        @include('buttons.jump' , ['text' => 'Add Problem','href'=>'/problem/add'])
         </div> 
       @endif
     @endauth

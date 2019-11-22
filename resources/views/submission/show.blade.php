@@ -9,7 +9,7 @@
 		if($rule==0){$sub->result='Unshown';$sub->score=$sub->time_used=$sub->memory_used=-1;$sub->judge_info="";}
 	}
 ?>
-        <table class="mdui-table mdui-table-hoverable"> 
+        <table class="mdui-table mdui-table-hoverable mdui-hoverable score-table"> 
           @include('includes.verdict_table')
           <tbody>
             <tr id="sub{{$sub->id}}">
@@ -17,8 +17,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="accordion">
-          @component('includes.collapse_box', ['id' => 'code', 'title' => 'Source Code'])
+          @component('includes.collapse_box', ['id' => 'code', 'title' => 'Source Code','main'=>1])
             <pre><code class="cpp">{{ $sub -> source_code }}</code></pre>
           @endcomponent
 	          @if($sub -> result == 'Compile Error')	
@@ -26,7 +25,7 @@
 	              <pre><code>{{ $sub -> judge_info }}</code></pre>
 	            @endcomponent
 	          @elseif($sub -> result == 'Accepted' || $sub -> result == 'Unaccepted')
-		            @component('includes.collapse_box', ['id' => 'details', 'title' => 'Details'])
+		            @component('includes.collapse_box', ['id' => 'details', 'title' => 'Details','main'=>1])
 						@if($sub->judge_info!='' && $rule!=2)
 		                @foreach($sub -> judge_info as $subtask)
 		                  @component('includes.collapse_box', 
@@ -42,7 +41,7 @@
 								<?php
 									$caseid=$loop->index;
 								?>
-								@if($info[0] == 'Accepted') <div class="table-success text-success case-table" style="width:100%;" onClick="updatehide({{$subid}},{{$caseid}})" >
+								@if($info[0] == 'Accepted') <div class="table-success text-success case-table" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
 		  
 								@elseif($info[0] == 'Partially Correct') <div class="table-warning case-table" style="color:orange;width:100%" onClick="updatehide({{$subid}},{{$caseid}})" > 
 								@else <div class="table-danger text-danger case-table" style="width:100%" onClick="updatehide({{$subid}},{{$caseid}})" >
@@ -78,14 +77,13 @@
 	              <pre><code>{{ $sub -> judge_info }}</code></pre>
 	            @endcomponent
 			@endif
-		</div>
 
 		<br>
 		@auth
 		  @if($permission)
-			@include('buttons.jump-danger', ['href' => url('submission/rejudge/'.$sub -> id), 'text' => 'Rejudge'])
+			@include('buttons.jump-col', ['href' => url('submission/rejudge/'.$sub -> id), 'text' => 'Rejudge'])
 			&nbsp
-			@include('buttons.jump-danger', ['href' => url('submission/delete/'.$sub -> id), 'text' => 'Delete'])
+			@include('buttons.jump-col', ['href' => url('submission/delete/'.$sub -> id), 'text' => 'Delete'])
 		  @endif
 		@endauth
 @endsection

@@ -6,24 +6,21 @@
     <br>
 
     <?php $id = $contest -> id ?>
-    <div class="btn-group-md" style="text-align:center">
-      @include('buttons.jump-icon' , ['href' => url('/contest/mysubmission/'.$id) , 'icon' => 'text-left' , 'text' => 'My Submissions'])
-      @include('buttons.jump-icon' , ['href' => url('/contest/submission/'.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
-      @include('buttons.jump-icon' , ['href' => url('/contest/standings/'.$id) , 'icon' => 'statistics' , 'text' => 'Standings'])
-      @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
-
-      @auth
-        @if ( $is_admin)
-          <button class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();">
-            <img src="{{ asset('svg/icons/edit.ico') }}" class="icon-sm"/> Edit </button>
-          <form id="myform" method="post" action="/contest/edit/{{$id}}">
-            @csrf </form>
-        @endif
-      @endauth
+    <div class="text-center">
+	    <div class="mdui-btn-group">
+	      @include('buttons.jump-icon' , ['href' => url('/contest/mysubmission/'.$id) , 'icon' => 'text-left' , 'text' => 'My Submissions'])
+	      @include('buttons.jump-icon' , ['href' => url('/contest/submission/'.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
+	      @include('buttons.jump-icon' , ['href' => url('/contest/standings/'.$id) , 'icon' => 'statistics' , 'text' => 'Standings'])
+	      @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
+		  @if ($is_admin)
+			<a class="mdui-btn mdui-color-theme-accent" href="/contest/edit/{{$id}}">
+            <img src="{{ asset('svg/icons/edit.ico') }}" class="icon-sm"/> Edit </a>
+          @endif
+    	</div>
     </div>
     <br>
 
-    <table class="mdui-table mdui-table-hoverable">
+    <table class="mdui-table mdui-table-hoverable mdui-hoverable">
       <thead>
         <tr>
           <th style="width:22%"> Begin Time </th>
@@ -55,13 +52,15 @@
               @endif
             </b>
           </td>
+			<td class="text-success"><b>
 			@if($contest->rule==0)
-            	<td class="text-success"> <b> OI </b> </td>
+				OI
 			@elseif($contest->rule==1)
-            	<td class="text-success"> <b> IOI </b> </td>
+				IOI
 			@elseif($contest->rule==2)
-            	<td class="text-success"> <b> ACM </b> </td>
+				ACM
 			@endif
+			</b></td>
         </tr>
       </tbody>
     </table>
@@ -100,15 +99,18 @@
       </script>
     @endif
 
-    <hr>
-    <h4> Annoucements: </h4> <br>
-      {{ $contest -> contest_info }}
-    <hr>
-
-    <div class="row">
-      <div class="col">
-        @component("includes.contest_problem_table", ['cid' => $contest -> id, 'problemset' => $contest -> problemset]) 
-        @endcomponent
-      </div>
-    </div>
+	@if($contest->contest_info)
+	<div class="mdui-card mdui-hoverable">
+	<div class="mdui-card-primary">
+		<div class="mdui-card-primary-title"> Annoucements: </div> 
+	</div>
+	<div class="mdui-card-content">
+		<?php 
+			echo $contest -> contest_info;
+		?>
+	</div>
+	</div>
+	@endif
+	<br>
+    @include("includes.contest_problem_table", ['cid' => $contest -> id, 'problemset' => $contest -> problemset]) 
 @endsection

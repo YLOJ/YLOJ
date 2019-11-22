@@ -1,13 +1,11 @@
-<div class="card" >
-  <div class="card-header" style="padding:5px 7px 2px;" id="heading{{ $id }}">
-    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ $id }}" aria-expanded="true" aria-controls="collapse{{ $id }}">
-      <a style="text-bg"> <b> {{ $title }} </b> </a>
-    </button>
-  </div>
-
-  <div id="collapse{{ $id }}" class="collapse show" aria-labelledby="heading{{ $id }}">
-    <div class="card-body" style="padding:15px 10px 0px;">
-      {{ $slot }}	
+<div class="mdui-panel" mdui-panel>
+  <div class="mdui-panel-item mdui-panel-item-open {{isset($main)?'mdui-hoverable':''}}">
+    <div class="mdui-panel-item-header">
+      <div class="mdui-panel-item-title">{{$title}}</div>
+      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+    </div>
+    <div class="mdui-panel-item-body" style="padding:0 12px 0 12px">
+		{{$slot}}
     </div>
   </div>
 </div>

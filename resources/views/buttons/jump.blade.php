@@ -1,3 +1,1 @@
-<a href="{{ $href }}">
-  <button class="btn btn-sm btn-primary"> {{ $text }} </button>
-</a>
+<a href="{{ $href }}" class="mdui-btn-dense mdui-btn mdui-color-theme">{{ $text }}</a>

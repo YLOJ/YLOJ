@@ -1,1 +1,1 @@
-<button type="submit" class="btn btn-sm btn-primary"> {{ $text }} </button>
+<button type="submit" class="mdui-btn mdui-btn-raised mdui-color-theme mdui-btn-dense"> {{ $text }} </button>

@@ -23,9 +23,11 @@
 	</p>
 	<div id='contest_problemset_update' style='vertical-align:top;display:inline-block;width:49%'>
     <form action="/contest/problemset_update/{{$id}}" method="post">
-      <div class="form-group">
-        <textarea rows="16" name="content" class="form-control"></textarea>
-      </div>
+	<div class="mdui-textfield mdui-textfield-floating-label">
+	  <label class="mdui-textfield-label">Content</label>
+	  <textarea class="mdui-textfield-input" type="text" name="content" rows=16></textarea>
+	</div>
+
       <br>
       @include('buttons.submit',['text' => '更新'])
       @csrf
@@ -33,7 +35,7 @@
 	</div>
 	<div id='contest_problemset_table' style='vertical-align:top;display:inline-block;width:49%'>
 		<h3>当前题目列表</h3>
-		<table class="mdui-table mdui-table-hoverable">
+		<table class="mdui-table mdui-table-hoverable mdui-hoverable" >
 		  <thead>
 		    <tr>
 		      <th style="width:20%">id</th>

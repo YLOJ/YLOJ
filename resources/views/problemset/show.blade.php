@@ -2,30 +2,69 @@
 
 @section("content")
         <div class="text-center">
-          <h1> #{{$id}}. {{ $title }} </h1>
+          <h1> {{ $title }} </h1>
 			<?php
 				echo $head;
 			?>
-          <div class="btn-group-md">
-            @include('buttons.jump-icon' , ['href' => url('/problem/submit/'.$id) , 'icon' => 'paper-plane' , 'text' => 'Submit'])
-            @include('buttons.jump-icon' , ['href' => url('/submission?problem_id='.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
-            @include('buttons.jump-icon' , ['href' => url('/problem/statistics/'.$id) , 'icon' => 'statistics' , 'text' => 'Statistics'])
-            @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
-            @include('buttons.jump-icon' , ['href' => url('/problem/solution/'.$id) , 'icon' => 'test-file' , 'text' => 'Solution'])
+          <div class="mdui-btn-group">
+			<button id="submit" class="mdui-btn mdui-color-theme" onclick="toggle()">
+		    <img src="{{ asset('svg/icons/paper-plane.ico') }}" class="icon-sm"/>  Submit
+			</button>
+			<button id="back" class="mdui-btn mdui-color-theme" onclick="toggle()" style="display:none">
+		    <img src="{{ asset('svg/icons/paper-plane.ico') }}" class="icon-sm"/>  Back
+			</button>
 
-            @auth
-              @if ($is_admin)
-                <button class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="document.getElementById('myform').submit();">
-                  <img src="{{ asset('svg/icons/edit.ico') }}" class="icon-sm"/> Edit </button>
-                <form id="myform" method="post" action="/problem/edit/{{$id}}">
-                  @csrf
-                </form>
-              @endif
-            @endauth
+            @include('buttons.jump-icon' , ['href' => url(($contest_id?'/contest/'.$contest_id:'').'/submission?problem_id='.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
+			@if($contest_ended)
+            @include('buttons.jump-icon' , ['href' => url('/problem/statistics/'.$id) , 'icon' => 'statistics' , 'text' => 'Statistics'])
+			@endif
+            @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
+			@if($contest_ended)
+            @include('buttons.jump-icon' , ['href' => url('/problem/solution/'.$id) , 'icon' => 'test-file' , 'text' => 'Solution'])
+			@endif
+			@if($contest_id)
+            @include('buttons.jump-icon' , ['href' => url('/contest/'.$contest_id) , 'icon' => 'paper-plane' , 'text' => 'Contest Index'])
+			@endif
+            @if ($is_admin)
+				<a class="mdui-btn mdui-color-theme-accent" href="/problem/edit/{{$id}}">
+                <img src="{{ asset('svg/icons/edit.ico') }}" class="icon-sm"/> Edit </a>
+        	@endif
           </div>
         </div>
 
         <br>
-		<div class="content"><?php
-				echo $content;?></div>
+		<div class="mdui-card mdui-hoverable" id="content">
+		<div class="mdui-card-content">
+			<?php
+				echo $content;?>
+			</div>
+		</div>
+
+		<div id="submit-code" style="display:none"  class="mdui-card mdui-hoverable">
+			<div class="mdui-card-content">
+		   		<form action="/problem/submit" method="post">
+					@csrf
+					<input type="hidden" name="pid" value={{$id}}>
+					@if($contest_id)
+						<input type="hidden" name="cid" value={{$contest_id}}>
+					@endif
+					<div class="mdui-textfield mdui-textfield-floating-label">
+					<label class="mdui-textfield-label">Code</label>
+					<textarea class="mdui-textfield-input" type="text" rows=20 name="source_code"></textarea>
+					</div>
+	      			@include('buttons.submit' , ['text' => 'Submit'])
+			    </form>
+			</div>
+		</div>
+
+		<script>
+			function toggle(){
+				$("#content").toggle();
+				$("#submit-code").toggle();
+				$("#submit").toggle();
+				$("#back").toggle();
+			}
+		</script>
+
+
 @endsection 

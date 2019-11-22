@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="container">
     @if ($errors->any())
       <div class="alert alert-danger">
         <ul>
@@ -21,9 +20,11 @@
 	</p>
 	<div id='contest_manager_update' style='vertical-align:top;display:inline-block;width:49%'>
     <form action="/contest/update_manager/{{$id}}" method="post">
-      <div class="form-group">
-        <textarea rows="16" name="content" class="form-control"></textarea>
-      </div>
+
+	<div class="mdui-textfield mdui-textfield-floating-label">
+	  <label class="mdui-textfield-label">Content</label>
+	  <textarea class="mdui-textfield-input" type="text" name="content" rows=16></textarea>
+	</div>
       <br>
       @include('buttons.submit',['text' => '更新'])
       @csrf
@@ -32,5 +33,4 @@
 	<div id='contest_manager_table' style='vertical-align:top;display:inline-block;width:49%'>
 	@include('includes.manager',['manager'=>$manager])
 	</div>
-  </div>
 @endsection

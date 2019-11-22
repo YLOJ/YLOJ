@@ -1,6 +1,6 @@
 @if($contests -> count() > 0)
 	<h3> {{ $title }} </h3>
-	<table class="mdui-table mdui-table-hoverable">
+	<table class="mdui-table mdui-table-hoverable mdui-hoverable">
 		<thead>
 			<tr>
 				<th style="width:8%"> ID </th>
@@ -42,7 +42,7 @@
 				@endforeach
 		</tbody>
 	</table>
-	<div class="row justify-content-center">
+	<div style="text-align: center">
 		{{ $contests -> links() }}
 	</div>
 @endif

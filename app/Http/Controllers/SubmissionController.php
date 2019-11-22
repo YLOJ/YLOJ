@@ -146,31 +146,6 @@ class SubmissionController extends Controller
 		}
 		broadcast(new Submission($req));
 	}
-    public function submitcode(Request $request, $id) 
-    {
-
-        if (!Auth::check()) {
-            return redirect('login');
-        }
-		if (!in_array($id,$this->problemShowList()))
-            return redirect('404');
-		$xid=DB::table('submission')->insertGetId(
-			['problem_id'=>$id,
-            'problem_name'=>DB::select('select * from problemset where id=?',[$id])[0]->title,
-            'user_id'=>Auth::User()->id,
-            'user_name'=>Auth::User()->name,
-            'result'=>"Waiting",
-            'score'=>-1,
-            'time_used'=>-1,
-            'memory_used'=>-1,
-            'source_code'=>$request->input('source_code'),
-            'code_length'=>strlen($request->input('source_code')),
-            'created_at'=>NOW()]
-		);
-		Redis::rpush('submission','test '.$xid);
-        return redirect('submission');
-    }
-
     public function rejudge($id)
     {
 		$pid=DB::table('submission')->where('id',$id)->first()->problem_id;
@@ -181,7 +156,6 @@ class SubmissionController extends Controller
 		Redis::rpush('submission','test '.$id);
         return redirect('submission/'.$id);
     }
-
     public function rejudge_problem($id)
     {
 		if (!in_array($id,$this->problemManageList()))

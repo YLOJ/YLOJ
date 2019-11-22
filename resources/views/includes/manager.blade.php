@@ -1,4 +1,4 @@
-<table class="mdui-table mdui-table-hoverable">
+<table class="mdui-table mdui-table-hoverable mdui-hoverable">
   <thead>
     <tr>
       <th>当前管理员</th>
