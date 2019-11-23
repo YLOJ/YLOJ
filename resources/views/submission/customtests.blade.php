@@ -3,28 +3,26 @@
 @section('content')
   <div class="container">
     <form action="" method="post">
-      <div class="form-group">
-        <label>Source Code</label> <br>
-        <textarea rows="15" name="code" , class="form-control">{{$code}}</textarea>
-      </div>
-	  <div>
-      <div class="form-group" style="width:50%;overflow:hidden;float:left">
-        <label>Input Text File</label> <br>
-        <textarea rows="5" name="input" , class="form-control">{{$input}}</textarea>
-      </div>
-      <div class="form-group" style="width:50%;overflow:hidden;float:left">
-		<label>Output Text File</label> 
-		<?php
-		if(isset($error))
-			 echo "<span style=color:red>*".$error."</span>";
-		?>
-<br>
-        <textarea rows="5" name="output" id="output" class="form-control">{{$output}}</textarea>
-      </div>
+	<div class="mdui-textfield mdui-textfield-floating-label">
+	  <label class="mdui-textfield-label">Source Code</label>
+	  <textarea class="mdui-textfield-input" type="text" rows=20 name="code"> {{$code}}</textarea>
+	</div>
+	<div>
+	  <div class="mdui-textfield mdui-textfield-floating-label" style="float:left;width:50%">
+	  	<label class="mdui-textfield-label">Input Text File</label>
+	  	<textarea class="mdui-textfield-input" type="text" rows=5 name="input"> {{$input}}</textarea>
 	  </div>
-      @include('buttons.submit' , ['text' => 'Submit'])
+	  <div class="mdui-textfield mdui-textfield-floating-label {{isset($error)?'mdui-textfield-invalid':''}}" style="float:left;width:50%">
+	  	<label class="mdui-textfield-label">Output Text File</label>
+	  	<textarea class="mdui-textfield-input" type="text" rows=5 name="output" id="output"> {{$output}}</textarea>
+		@if(isset($error))
+  			<div class="mdui-textfield-error">{{$error}}</div>
+		@endif
+	  </div>
+	 </div>
+     @include('buttons.submit' , ['text' => 'Submit'])
 
-      @csrf
+     @csrf
     </form>
 <script src=/js/app.js></script>
 <script>

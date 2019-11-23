@@ -8,7 +8,7 @@
     <h2 style='text-align:center;'> Standings </h2>
     <br>
 	<input type="checkbox" name="showafter" id="showafter"><label for="showafter">显示改题分数</label>
-	<div class="mdui-table-fluid">
+	<div class="mdui-table-fluid mdui-hoverable">
     <table id="standings" class="mdui-table mdui-table-hoverable" style="layout:fixed">
       <thead>
         <tr>
