@@ -4,7 +4,7 @@
 
 <div class="mdui-row">
 <div class="mdui-col-md-8 center">
-<div class="mdui-card">
+<div class="mdui-card mdui-hoverable">
 	<div class="mdui-card-primary">
 		<div class="mdui-card-primary-title">
 			编辑个人信息
