@@ -4,7 +4,10 @@
  *
  * Distributed under terms of the MIT license.
  */
-
+@font-face{
+    font-family: monaco;
+	src: url("/fonts/monaco.ttf");
+}
 .mdui-container{
 	padding: 1.5rem;
 }
@@ -117,4 +120,7 @@ img.icon-md {
   display:inline-block !important;
   vertical-align: bottom !important; 
 
+}
+.mdui-typo code, .mdui-typo kbd, .mdui-typo pre, .mdui-typo pre tt, .mdui-typo samp {
+    font-family: 'monaco' !important;
 }
