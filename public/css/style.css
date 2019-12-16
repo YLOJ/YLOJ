@@ -72,12 +72,12 @@ img.icon-md {
 
 
 .text-success{
-	color: #00cc00 !important;
+	color:#41ae3c !important;
 }
 
 
 .text-danger{
-	color: #cc0000 !important;
+	color: #F44336 !important;
 }
 .case-table{
 	position:relative;

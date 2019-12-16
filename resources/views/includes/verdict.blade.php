@@ -22,7 +22,7 @@
   @if ($sub -> result == "Waiting") 
     <a href={{ $sub -> url }}>
   @elseif ($sub -> result == "Accepted") 
-    <a style="color:#00cc00" href={{ $sub -> url }}>
+    <a class="text-success" href={{ $sub -> url }}>
   @elseif ($sub -> result == "Data Error") 
     <a style="color:#2F4F4F" href={{ $sub -> url }}>
   @elseif ($sub -> result == "Judgement Failed") 
@@ -32,7 +32,7 @@
   @elseif (substr($sub->result,0,7)=="Running")
     <a style="color:#0033CC" href={{ $sub -> url }}>
   @else
-    <a style="color:#cc0000" href={{ $sub -> url }}>
+    <a class="text-danger" href={{ $sub -> url }}>
   @endif
   <b> {{ $sub -> result }} </b>
  	</a>
