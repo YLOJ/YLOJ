@@ -22,7 +22,7 @@
           @foreach ($contest -> problemset as $problem)
 			<th style="width:{{$width}}">
 				<?php
-					echo "<a href='/contest/".$contest->id."/problem/".$problem."'>".chr($loop -> index +65)."</a>";
+					echo "<a href='/problem/".$problem."?contest_id=".$contest->id."'>".chr($loop -> index +65)."</a>";
 				?>
 			</th>
           @endforeach
