@@ -22,6 +22,7 @@
 
 
    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
    <!--	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">--!>
@@ -29,13 +30,11 @@
 		<script src="/mdui/js/mdui.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-  <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/xcode.min.css" rel="stylesheet">
-  <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
-  <script> hljs.initHighlightingOnLoad(); </script>
-
+	<script src="/js/prism.js"></script>
+    <link rel="stylesheet" href="/css/prism.css">
 	</head>
-	<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-light-blue mdui-theme-accent-blue mdui-loaded">
+	<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-light-blue mdui-theme-accent-blue mdui-loaded line-numbers">
+
 		<div class="mdui-appbar mdui-appbar-fixed">
 			<div class="mdui-toolbar mdui-color-theme  ">
 				<span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white " mdui-drawer="{target: '#main-drawer', swipe: true}"><i class="mdui-icon material-icons">menu</i></span>

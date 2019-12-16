@@ -18,7 +18,7 @@
           </tbody>
         </table>
           @component('includes.collapse_box', ['id' => 'code', 'title' => 'Source Code','main'=>1])
-            <pre><code class="cpp">{{ $sub -> source_code }}</code></pre>
+            <pre><code class="language-cpp">{{ $sub -> source_code }}</code></pre>
           @endcomponent
 	          @if($sub -> result == 'Compile Error')	
 	            @component('includes.collapse_box', ['id' => 'compile_info', 'title' => 'Compile Info'])
