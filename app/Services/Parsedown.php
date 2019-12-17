@@ -388,7 +388,7 @@ class Parsedown
 
 		$Block = array(
 			'element' => array(
-				'name' => 'span',
+				'name' => 'latex',
 				'handler' => 'element',
 				'text' => array(
 					'text' => '$$',
@@ -501,13 +501,16 @@ class Parsedown
                  * U+000D CARRIAGE RETURN (CR).
                  */
                 $language = substr($matches[1], 0, strcspn($matches[1], " \t\n\f\r"));
+			}
+			else
+				$language = 'none';
+
 
                 $class = 'language-'.$language;
 
                 $Element['attributes'] = array(
                     'class' => $class,
                 );
-            }
 
             $Block = array(
                 'char' => $Line['text'][0],
