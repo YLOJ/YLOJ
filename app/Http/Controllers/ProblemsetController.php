@@ -443,9 +443,21 @@ class ProblemsetController extends Controller {
         if (!Auth::check()) {
             return redirect('login');
 		}
-		if (!in_array($request->pid,$this->problemShowList()))
-            return redirect('404');
 		if(!isset($request->cid))$request->cid=NULL;
+
+		if (!in_array($request->pid,$this->problemManageList())){
+			if($request->cid){
+				if(!(in_array($request->cid,$this->contestShowList()) && in_array($request->pid,$this->getProblemList($request->cid))))return redirect('404');
+				$contest = DB::table('contest')->where('id', $request->cid)->first();
+				if (NOW() < $contest->begin_time && !in_array($request->cid,$this->contestManageList())) {
+					return redirect('404');
+				}
+			}
+			else{
+				if(!in_array($request->pid,$this->problemShowList()))return redirect("404");
+			}
+		}
+
 		$xid=DB::table('submission')->insertGetId(
 			['problem_id'=>$request->pid,
             'problem_name'=>DB::select('select * from problemset where id=?',[$request->pid])[0]->title,

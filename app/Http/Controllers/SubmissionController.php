@@ -125,16 +125,6 @@ class SubmissionController extends Controller
 			$rule=-1;
         return view('submission.show', ['sub' => $sub,'permission'=>$permission,'rule'=>$rule]);
     }
-    public function submitpage($id) 
-    {
-        if (!Auth::check()) {
-            return redirect('login');
-        }
-		if (!in_array($id,$this->problemShowList()))
-            return redirect('404');
-        $title = DB::table('problemset')-> where('id','=',$id) -> first() -> title;
-        return view('submission.submit', ['id' => $id,'title' => $title]);
-    }
 	public function update(Request $request){
 		$req=$request->all();
 		if($req ['token'] != env('UPDATE_SUBMISSION_TOKEN'))return redirect('404');
