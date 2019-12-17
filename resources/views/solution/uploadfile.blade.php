@@ -27,7 +27,7 @@
 		  <tbody>
 		    @foreach ($filelist as $one)
 		      <tr>
-			  <td> <a href='/problem/solution/{{$id}}/{{$one}}'>{{ $one }}</a> </td><td><a href='/problem/solution/delete_file/{{$id}}/{{$one}}'><img src="{{ asset('svg/icons/delete.svg') }}" class="icon-md"/></a> </td><td><code>[{{$one}}](/problem/{{$id}}/{{$one}})</code></td>
+			  <td> <a href='/problem/solution/{{$id}}/{{$one}}'>{{ $one }}</a> </td><td><a href='/problem/solution/delete_file/{{$id}}/{{$one}}'><img src="{{ asset('svg/icons/delete.svg') }}" class="icon-md"/></a> </td><td><code>[{{$one}}](/problem/solution/{{$id}}/{{$one}})</code></td>
 		      </tr>
 		    @endforeach
 		  </tbody>
