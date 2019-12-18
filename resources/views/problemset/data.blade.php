@@ -76,7 +76,7 @@
 	<br>
 	<div id="matchResult">
 	@if($log!='')
-		<pre><code>{{$log}}</code></pre>
+		<pre class="language-none"><code>{{$log}}</code></pre>
 	<br>
     	<form action="/problem/match_check/{{$id}}" method="post" enctype="multipart/form-data">
 			  <button name="check" type="submit" value=1 class="mdui-btn mdui-btn-dense mdui-color-theme">确定</button>

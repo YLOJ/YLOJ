@@ -124,17 +124,11 @@ class ProblemsetController extends Controller {
 		if (Auth::check() && $this->is_admin()) {
 			$content=$request->input('content_md');
 			if($content==null)$content="";
-			DB::insert('insert into `problemset` (
-				`title`, 
-				`content_md`,
-				`visibility`
-			) values (?, ?, ?)', [
-				$request->input('title'),
-				$content,
-				2
-			]);
-
-			return redirect(route('problem.index'));
+			$pid=DB::table('problemset')->insertGetId(
+				['title'=>$request->input('title'),
+				 'content_md'=>$content,
+				 'visibility'=>2]);
+			return redirect('/problem/'.$pid);
 		}
 		else return redirect('404');
 	}

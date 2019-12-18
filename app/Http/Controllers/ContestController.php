@@ -71,23 +71,15 @@ class ContestController extends Controller
 
 		$s=$request->input('contest_info');
 		if ($s==null)$s="";
-		DB::insert('insert into `contest` (
-			`title`,
-			`contest_info`,
-			`begin_time`,
-			`end_time`,
-			`rule`,
-			`visibility`
-		) values (?, ?, ?, ?, ?, ?)', [
-			$request -> input('title'),
-			$s,
-			$request -> input('begin_time'),
-			$request -> input('end_time'),
-			$request -> input('rule'),
-			2
+		$cid=DB::table('contest')->insertGetId([
+			'title'=>$request -> input('title'),
+			'contest_info'=>$s,
+			'begin_time'=>$request->input('begin_time'),
+			'end_time'=>$request->input('end_time'),
+			'rule'=>$request->input('rule'),
+			'visibility'=>2
 		]);
-
-		return redirect(route('contest.index'));
+		return redirect('/contest/'.$cid);
 	}
 
 	public function edit($id) 
