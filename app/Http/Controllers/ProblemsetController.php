@@ -457,7 +457,7 @@ class ProblemsetController extends Controller {
             'problem_name'=>DB::select('select * from problemset where id=?',[$request->pid])[0]->title,
             'user_id'=>Auth::User()->id,
             'user_name'=>Auth::User()->name,
-            'result'=>"Waiting",
+            'result'=>14,
             'score'=>-1,
             'time_used'=>-1,
             'memory_used'=>-1,

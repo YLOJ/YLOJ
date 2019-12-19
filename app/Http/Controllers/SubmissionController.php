@@ -47,9 +47,9 @@ class SubmissionController extends Controller
         $perPage = 10;
         $begin = ($page - 1) * $perPage;
 
-        $raw_data = DB::table('submission') -> where('result', "Accepted") -> where('problem_id', '=', $id);
+        $raw_data = DB::table('submission') -> where('result', 1) -> where('problem_id', '=', $id);
         $fastest_data= $raw_data -> orderby('time_used', 'asc') -> get() -> toArray();
-        $raw_data = DB::table('submission') -> where('result', "Accepted") -> where('problem_id', '=', $id);
+        $raw_data = DB::table('submission') -> where('result', 1) -> where('problem_id', '=', $id);
         $shortest_data= $raw_data -> orderby('code_length', 'asc') -> get() -> toArray();
         $map = array();
         $data = array();
@@ -142,7 +142,7 @@ class SubmissionController extends Controller
 		if (!in_array($pid,$this->problemManageList())) {
             return redirect('404');
         }
-        DB::table('submission') -> where('id', '=', $id) -> update(['result' => 'Waiting','score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+        DB::table('submission') -> where('id', '=', $id) -> update(['result' => 14,'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
 		Redis::rpush('submission','test '.$id);
         return redirect('submission/'.$id);
     }
@@ -152,7 +152,7 @@ class SubmissionController extends Controller
             return redirect('404');
 
 		$sublist=DB::select('select * from submission where problem_id=?',[$id]);
-        DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+        DB::table('submission') -> where('problem_id', '=', $id) -> update(['result' => 14, 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
 		foreach($sublist as $sub){
 			Redis::rpush('submission','test '.$sub->id);
 		}
@@ -163,8 +163,8 @@ class SubmissionController extends Controller
 		if (!in_array($id,$this->problemManageList()))
             return redirect('404');
 
-		$sublist=DB::select('select * from submission where problem_id=? and result="Accepted"',[$id]);
-        DB::table('submission') -> where('problem_id', '=', $id) ->where('result','=','Accepted') ->  update(['result' => 'Waiting', 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
+		$sublist=DB::select('select * from submission where problem_id=? and result=1',[$id]);
+        DB::table('submission') -> where('problem_id', '=', $id) ->where('result','=',1) ->  update(['result' => 14, 'score' => -1, 'time_used' => -1, 'memory_used' => -1]);
 		foreach($sublist as $sub){
 			Redis::rpush('submission','test '.$sub->id);
 		}
