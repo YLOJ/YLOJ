@@ -18,10 +18,8 @@
 	  <label class="mdui-textfield-label">Title</label>
 	  <input class="mdui-textfield-input" type="text" name="title"  value="{{$title}}" required/>
 	</div>
-	<div class="mdui-textfield mdui-textfield-floating-label">
-	  <label class="mdui-textfield-label">Content</label>
-	  <textarea class="mdui-textfield-input" type="text" rows=20 name="content_md"> {{$content_md}}</textarea>
-	</div>
+	<textarea id="content_md" type="text" rows=20 name="content_md" style="display:none">{{$content_md}}</textarea>
+	<div id="content_md_edit" style="height:50vh">{{$content_md}}</div>
     <div class="form-check">
       <label>
      	公开性	
@@ -64,4 +62,18 @@
     @include('buttons.jump-col', ['href' => '/submission/rejudge_problem_ac/'.$id , 'text' => 'Rejudge All AC Submission'])
 	</div>
   </div>
+
+<script src="/js/ace.js/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	function update_editor( editor ) {
+//		console.log( editor.getValue() );
+		document.getElementById('content_md').value = editor.getValue();
+	}
+    var editor = ace.edit("content_md_edit");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/markdown");
+	document.getElementById('content_md').value = editor.getValue();
+	editor.session.on('change', function( delta ) { update_editor( editor ); });
+</script>
 @endsection
+

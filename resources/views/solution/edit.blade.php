@@ -19,8 +19,21 @@
     <form action="/problem/solution/edit_submit/{{$id}}" method="post">
 	<div class="mdui-textfield mdui-textfield-floating-label">
 	  <label class="mdui-textfield-label">Content</label>
-	  <textarea class="mdui-textfield-input" type="text" rows=20 name="content_md"> {{$content_md}}</textarea>
+	  <textarea id="content_md" style="display:none" class="mdui-textfield-input" type="text" rows=20 name="content_md"> {{$content_md}}</textarea>
+		<div id="content_md_edit" style="height: 50vh">{{$content_md}}</div>
 	</div>
+<script src="/js/ace.js/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	function update_editor( editor ) {
+//		console.log( editor.getValue() );
+		document.getElementById('content_md').value = editor.getValue();
+	}
+    var editor = ace.edit("content_md_edit");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/markdown");
+	document.getElementById('content_md').value = editor.getValue();
+	editor.session.on('change', function( delta ) { update_editor( editor ); });
+</script>
 
       <br>
       @include('buttons.submit',['text' => 'Save'])

@@ -1,6 +1,7 @@
 @extends("layouts.app")
 
 @section("content")
+<script src="/js/ace.js/ace.js" type="text/javascript" charset="utf-8"></script>
         <div class="text-center">
           <h1> {{ $title }} </h1>
 			<?php
@@ -50,12 +51,23 @@
 					@endif
 					<div class="mdui-textfield mdui-textfield-floating-label">
 					<label class="mdui-textfield-label">Code</label>
-					<textarea class="mdui-textfield-input" type="text" rows=20 name="source_code"></textarea>
+					<textarea class="mdui-textfield-input" id="source_code" style="display:none" type="text" rows=20 name="source_code"></textarea>
+					<div id="source_code_edit" style="height: 50vh"></div>
 					</div>
 	      			@include('buttons.submit' , ['text' => 'Submit'])
 			    </form>
 			</div>
 		</div>
+		<script>
+			function update_editor( editor ) {
+				document.getElementById('source_code').value = editor.getValue();
+			}
+			var source_code_edit = ace.edit("source_code_edit");
+			source_code_edit.setTheme("ace/theme/monokai");
+			source_code_edit.session.setMode("ace/mode/c_cpp");
+			document.getElementById('source_code').value = source_code_edit.getValue();
+			source_code_edit.session.on('change', function( delta ) { update_editor( source_code_edit ); });
+		</script>
 
 		<script>
 			function toggle(){
