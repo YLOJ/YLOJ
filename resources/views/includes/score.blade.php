@@ -2,11 +2,11 @@
 	if(!isset($text))$text=$score;
 	if(!isset($score_full))$score_full=100;
 	if($text==='/')
-		echo '<span class="score">'.$text.'</span>';
+		echo '<b>'.$text.'</b>';
 	else if($score<=0)
-		echo '<span class="score text-danger">'.$text.'</span>';
+		echo '<b class="text-danger">'.$text.'</b>';
 	else if($score>=$score_full)
-		echo '<span class="score text-success">'.$text.'</span>';
+		echo '<b class="text-success">'.$text.'</b>';
 	else
-		echo '<span class="score" style="color:#ffa500">'.$text.'</span>';
+		echo '<b style="color:#ffa500">'.$text.'</b>';
 ?>

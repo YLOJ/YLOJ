@@ -73,10 +73,10 @@
 		</div>
 		<div class="mdui-drawer mdui-color-white" id="main-drawer">
 			<ul class="mdui-list">
-			  <a href="{{ route('contest.index') }}"><li class="mdui-list-item mdui-ripple">比赛</li></a>
-			  <a href="{{ route('problem.index') }}"><li class="mdui-list-item mdui-ripple">题库</li></a>
-			  <a href="{{ route('submission') }}"><li class="mdui-list-item mdui-ripple">提交记录</li></a>
-              <a href="{{ route('help') }}"><li class="mdui-list-item mdui-ripple">帮助</li></a>
+			  <a href="{{ route('contest.index') }}" class="mdui-list-item mdui-ripple">比赛</a>
+			  <a href="{{ route('problem.index') }}" class="mdui-list-item mdui-ripple">题库</a>
+			  <a href="{{ route('submission') }}" class="mdui-list-item mdui-ripple">提交记录</a>
+              <a href="{{ route('help') }}" class="mdui-list-item mdui-ripple">帮助</a>
 			</ul>
 		</div>
 		<div class="mdui-container mdui-typo"> 

@@ -119,7 +119,7 @@ class SubmissionController extends Controller
         }
 		else 
 			$permission=1;
-		if($sub->result=="Accepted" or $sub->result=="Unaccepted")
+		if($sub->result<=8)
 			$sub->judge_info=json_decode($sub->judge_info);
 		if($permission==1)
 			$rule=-1;

@@ -1,64 +1,28 @@
-function getColOfScore(score) {
-	if (score<=0) {
-		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(0, 100, 80)));
-	} else if (score>=1) {
-		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(120, 100, 80)));
-	} else {
-		return "rgb(256,165,0)";
-//		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(33, 100, 90)));
-//		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(15 + score * 90, 100, 90)));
-	}
-}
-$.fn.yloj_highlight = function() {
-	return $(this).each(function() {
-		$(this).find(".score").each(function() {
-			var score = parseInt($(this).data('score'));
-			var maxscore = parseInt($(this).data('max'));
-			if (isNaN(score)) {
-				return;
-			}
-			if (isNaN(maxscore)) {
-				$(this).css("color", getColOfScore(score / 100));
-			} else {
-				$(this).css("color", getColOfScore(score / maxscore));
-			}
-		});
-	});
-}
-
 /*$(document).ready(function() {
 	$('body').yloj_highlight();
 });*/
-var style={};
-style["Waiting"]='class="text-primary"';
-style["Accepted"]='class="text-success"';
-style["Data Error"]='style="color:#2F4F4F"';
-style["Judgement Failed"]='style="color:#2F4F4F"';
-style["Compile Error"]='style="color:#696969"';
+var verdict_list=["OK","Accepted","Wrong Answer","Time Limit Exceeded","Memory Limit Exceeded","Runtime Error","Presentation Error","Partially Correct","Skipped","Compile Error","Compiler Time Limit Exceeded","Spj Error","Judgement Failed","Data Error","Waiting","Compiling","Running","Submitted"];
 Echo.channel('Submission')
 .listen('.submission.update', (e) => {
 	xsub=e.message;
-
 	if('result' in xsub){
-		$('#sub'+xsub['id']+" #result").html([
-			"<a "+
-			(xsub['result'] in style?
-				style[xsub['result']]:
-				xsub['result'].substring(0,7)=="Running"?
-				'style="color:#0033CC"':'class="text-danger"'
-			)	+" href=/submission/"+xsub['id']+">"
-		,
-		"<b>"+xsub['result']+"</b>",
-		"</a>"
-	].join('\n'));
+		$('#sub'+xsub['id']+" #result a").html(
+((xsub['result']<=1)?"<b class='text-success'>":(
+(xsub['result']<=8)?"<b class='text-danger'>":(
+(xsub['result']<=11)?"<b style='color:#696969'>":(
+(xsub['result']<=13)?"<b style='color:#2F4F4F'>":(
+(xsub['result']==16)?"<b style='color:#0033CC'>":
+"<b>")))))
+			+verdict_list[xsub['result']]+
+			(xsub['result']==16 && xsub['data_id']?" on Test "+xsub['data_id']:"")+
+			"</b>");
 	}
 	if('score' in xsub){
 		if(xsub['score']==-1){
-			$('#sub'+xsub['id']+" #score .score").css("color","");
-			$('#sub'+xsub['id']+" #score .score").html("/");
+			$('#sub'+xsub['id']+" #score a").html("<b>/</b>");
 		}else{
-			$('#sub'+xsub['id']+" #score .score").css("color", getColOfScore(xsub['score'] / 100));
-			$('#sub'+xsub['id']+" #score .score").html(xsub['score']);
+			$('#sub'+xsub['id']+" #score a").html(
+				"<b "+(xsub['score']==0?"class='text-danger'":(xsub['score']>=100?"class='text-success'":"style='color:#ffa500'"))+">"+xsub['score']+"</b>");
 		}
 	}
 	if('time' in xsub){

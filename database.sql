@@ -31,7 +31,7 @@ CREATE TABLE `contest` (
   `rule` int(11) NOT NULL,
   `visibility` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `custom_tests` (
   `output` text DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=470 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=476 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,7 +134,7 @@ CREATE TABLE `problemset` (
   `content_md` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `solution` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=268 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=269 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,6 +150,34 @@ CREATE TABLE `submission` (
   `problem_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
   `user_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `score` int(11) NOT NULL,
+  `time_used` int(11) NOT NULL,
+  `memory_used` int(11) NOT NULL,
+  `source_code` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `judge_info` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `contest_id` int(11) DEFAULT NULL,
+  `code_length` int(11) DEFAULT NULL,
+  `result` int(11) NOT NULL,
+  `data_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27166 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `submission_new`
+--
+
+DROP TABLE IF EXISTS `submission_new`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `submission_new` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `problem_id` int(11) NOT NULL,
+  `problem_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `result` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `score` int(11) NOT NULL,
   `time_used` int(11) NOT NULL,
@@ -160,8 +188,10 @@ CREATE TABLE `submission` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `contest_id` int(11) DEFAULT NULL,
   `code_length` int(11) DEFAULT NULL,
+  `result_type` int(11) DEFAULT NULL,
+  `data_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26851 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27166 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,4 +227,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-17 19:58:53
+-- Dump completed on 2019-12-19 16:27:48
