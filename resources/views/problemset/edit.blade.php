@@ -70,9 +70,10 @@
 		document.getElementById('content_md').value = editor.getValue();
 	}
     var editor = ace.edit("content_md_edit");
-    editor.setTheme("ace/theme/monokai");
+    editor.setTheme("ace/theme/github");
     editor.session.setMode("ace/mode/markdown");
 	document.getElementById('content_md').value = editor.getValue();
+	editor.setOption( 'printMargin', false );
 	editor.session.on('change', function( delta ) { update_editor( editor ); });
 </script>
 @endsection

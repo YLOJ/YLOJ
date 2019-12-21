@@ -63,8 +63,9 @@
 				document.getElementById('source_code').value = editor.getValue();
 			}
 			var source_code_edit = ace.edit("source_code_edit");
-			source_code_edit.setTheme("ace/theme/monokai");
+			source_code_edit.setTheme("ace/theme/gitub");
 			source_code_edit.session.setMode("ace/mode/c_cpp");
+			source_code_edit.setOption( 'printMargin', false );
 			document.getElementById('source_code').value = source_code_edit.getValue();
 			source_code_edit.session.on('change', function( delta ) { update_editor( source_code_edit ); });
 		</script>
