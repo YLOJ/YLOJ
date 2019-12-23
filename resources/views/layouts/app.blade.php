@@ -71,12 +71,14 @@
 			@endguest
 			</div>
 		</div>
-		<div class="mdui-drawer mdui-color-white" id="main-drawer">
+		<div class="mdui-drawer" id="main-drawer" style="background-color:#D0D0D0">
 			<ul class="mdui-list">
-			  <a href="{{ route('contest.index') }}" class="mdui-list-item mdui-ripple">比赛</a>
-			  <a href="{{ route('problem.index') }}" class="mdui-list-item mdui-ripple">题库</a>
-			  <a href="{{ route('submission') }}" class="mdui-list-item mdui-ripple">提交记录</a>
-              <a href="{{ route('help') }}" class="mdui-list-item mdui-ripple">帮助</a>
+			  <a href="{{ route('contest.index') }}" class="mdui-list-item mdui-ripple"><i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">date_range</i><div class="mdui-list-item-content">比赛</div></a>
+			  <a href="{{ route('problem.index') }}" class="mdui-list-item mdui-ripple">
+<i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">book</i><div class="mdui-list-item-content">题库</div></a>
+			  <a href="{{ route('submission') }}" class="mdui-list-item mdui-ripple"><i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">format_list_bulleted</i><div class="mdui-list-item-content">提交记录</div></a>
+			  <a href="{{ route('help') }}" class="mdui-list-item mdui-ripple"><i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">help</i><div class="mdui-list-item-content">帮助
+</div></a>
 			</ul>
 		</div>
 		<div class="mdui-container mdui-typo"> 
