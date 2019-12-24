@@ -50,7 +50,7 @@
 					@endif
 					<div class="mdui-textfield mdui-textfield-floating-label">
 					<label class="mdui-textfield-label">Code</label>
-					<textarea use_ace="true" class="mdui-textfield-input" type="text" rows=20 name="source_code"></textarea>
+					<textarea use_ace="true" ace_language='c_cpp' class="mdui-textfield-input" type="text" rows=20 name="source_code"></textarea>
 					</div>
 	      			@include('buttons.submit' , ['text' => 'Submit'])
 			    </form>
