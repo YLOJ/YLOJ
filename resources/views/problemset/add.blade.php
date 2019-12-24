@@ -18,7 +18,7 @@
 	</div>
 	<div class="mdui-textfield mdui-textfield-floating-label">
 	  <label class="mdui-textfield-label">Content</label>
-	  <textarea class="mdui-textfield-input" type="text" name="content_md" rows=20></textarea>
+	  <textarea use_ace="true" class="mdui-textfield-input" type="text" name="content_md" rows=20></textarea>
 	</div>
       @include('buttons.submit' , ['text' => 'Add'])
       @csrf

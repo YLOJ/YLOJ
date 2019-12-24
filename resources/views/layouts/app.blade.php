@@ -11,6 +11,7 @@
     	<script src="{{ asset('js/app.js') }}" defer></script>
     	<script src="{{ asset('js/color-converter.min.js') }}" defer></script>
     	<script src="{{ asset('js/yloj.js') }}" defer></script>
+    	<script src="{{ asset('js/ace.js/ace.js') }}" defer></script>
     	<script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
     <script type="text/javascript" async
@@ -89,6 +90,22 @@
         enableTime: true,
         dateFormat: "Y-m-d H:i",
       });
+	  var $$ = mdui.JQ;
+	  function update_editor( obj, editor ) {
+		  $$( obj ).val( editor.getValue() );
+	  }
+	  $$( function(){
+		  $$.each( $$('[use_ace=true]') , function (i, obj) {
+			  $$( "<div class=\"ace-editor\" id=\"" + $$.guid( i + 'editor' ) + "\"></div>" ).insertAfter(obj);
+			  $$( obj ).css( 'display', 'none' );
+			  var editor = ace.edit( $$.guid( i + 'editor' ) );
+			  editor.setTheme("ace/theme/github");
+			  editor.session.setMode("ace/mode/markdown");
+			  editor.setOption( 'printMargin', false );
+			  editor.setValue( $$(obj).val() );
+			  editor.session.on('change', function( delta ) { update_editor( obj, editor ); });
+		  });
+	  });
     </script>
 
 	</body>

@@ -124,3 +124,7 @@ img.icon-md {
 .mdui-typo code, .mdui-typo kbd, .mdui-typo pre, .mdui-typo pre tt, .mdui-typo samp {
     font-family: 'monaco' !important;
 }
+
+.ace-editor {
+	height: 50vh;
+}
