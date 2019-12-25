@@ -37,9 +37,9 @@
  
 			</div>
 
-		<div class="mdui-textfield mdui-textfield-floating-label">
+		<div class="mdui-textfield">
 		  <label class="mdui-textfield-label">Contest Info</label>
-		  <textarea class="mdui-textfield-input" name="contest_info" rows=20>{{$contest->contest_info}}</textarea>
+		  <textarea use_ace="true" ace_language="markdown" class="mdui-textfield-input" name="contest_info" rows=20>{{$contest->contest_info}}</textarea>
 		</div>
 
     <div class="form-check">

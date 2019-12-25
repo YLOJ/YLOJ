@@ -18,7 +18,11 @@
 	  <label class="mdui-textfield-label">Title</label>
 	  <input class="mdui-textfield-input" type="text" name="title"  value="{{$title}}" required/>
 	</div>
-	<textarea use_ace="true" type="text" rows=20 name="content_md">{{$content_md}}</textarea>
+	<div class="mdui-textfield">
+	  <label class="mdui-textfield-label">Content</label>
+	  <textarea use_ace="true" ace_language='markdown' class="mdui-textfield-input" type="text" name="content_md" rows=20>{{$content_md}}</textarea>
+	</div>
+
     <div class="form-check">
       <label>
      	公开性	

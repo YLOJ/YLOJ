@@ -43,7 +43,7 @@ $$( function(){
 	$$.each( $$('[use_ace=true]') , function (i, obj) {
 		var default_language = $$(obj).attr( 'ace_language' );
 		if( default_language == null ) 
-			default_language = 'markdown';
+			default_language = 'plain_text';
 		$$( "<div class=\"ace-editor\" id=\"" + $$.guid( i + 'editor' ) + "\"></div>" ).insertAfter(obj);
 		$$( obj ).css( 'display', 'none' );
 		var editor = ace.edit( $$.guid( i + 'editor' ) );

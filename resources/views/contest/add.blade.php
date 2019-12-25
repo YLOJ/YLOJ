@@ -33,9 +33,9 @@
 
 
  
-		<div class="mdui-textfield mdui-textfield-floating-label">
+		<div class="mdui-textfield ">
 		  <label class="mdui-textfield-label">Contest Info</label>
-		  <textarea class="mdui-textfield-input" name="contest_info" rows=20></textarea>
+		  <textarea  use_ace="true" ace_language="markdown"  class="mdui-textfield-input" name="contest_info" rows=20></textarea>
 		</div>
       @include('buttons.submit' , ['text' => 'Add'])
       @csrf

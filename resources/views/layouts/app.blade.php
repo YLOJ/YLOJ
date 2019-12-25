@@ -11,7 +11,7 @@
     	<script src="{{ asset('js/app.js') }}" defer></script>
     	<script src="{{ asset('js/color-converter.min.js') }}" defer></script>
     	<script src="{{ asset('js/ace.js/ace.js') }}" defer></script>
-    	<script src="{{ asset('js/yloj.js?v=05cc82') }}" defer></script>
+    	<script src="{{ asset('js/yloj.js?v=20191225') }}" defer></script>
     	<script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
     <script type="text/javascript" async

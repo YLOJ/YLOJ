@@ -16,9 +16,9 @@
 	  <label class="mdui-textfield-label">Title</label>
 	  <input class="mdui-textfield-input" type="text" name="title" required/>
 	</div>
-	<div class="mdui-textfield mdui-textfield-floating-label">
+	<div class="mdui-textfield">
 	  <label class="mdui-textfield-label">Content</label>
-	  <textarea use_ace="true" class="mdui-textfield-input" type="text" name="content_md" rows=20></textarea>
+	  <textarea use_ace="true" ace_language='markdown' class="mdui-textfield-input" type="text" name="content_md" rows=20></textarea>
 	</div>
       @include('buttons.submit' , ['text' => 'Add'])
       @csrf

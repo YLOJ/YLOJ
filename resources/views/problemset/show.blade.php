@@ -48,7 +48,7 @@
 					@if($contest_id)
 						<input type="hidden" name="cid" value={{$contest_id}}>
 					@endif
-					<div class="mdui-textfield mdui-textfield-floating-label">
+					<div class="mdui-textfield">
 					<label class="mdui-textfield-label">Code</label>
 					<textarea use_ace="true" ace_language='c_cpp' class="mdui-textfield-input" type="text" rows=20 name="source_code"></textarea>
 					</div>

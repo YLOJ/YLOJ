@@ -30,9 +30,9 @@
 	</div>
 	<div id="updateConfig"  class="mdui-p-a-2">
     <form action="/problem/save_config/{{$id}}" method="post" enctype="multipart/form-data">
-	<div class="mdui-textfield mdui-textfield-floating-label">
+	<div class="mdui-textfield">
 	  <label class="mdui-textfield-label">Config</label>
-	  <textarea class="mdui-textfield-input" type="text" rows=10 name="config"> {{$config}}</textarea>
+	  <textarea use_ace="true"  ace_language='yaml'  class="mdui-textfield-input" type="text" rows=10 name="config">{{$config}}</textarea>
 	</div>
 
       <br> <br>
@@ -61,11 +61,11 @@
 		</script>
 		<div class="mdui-textfield mdui-textfield-floating-label" id="type1" style="display:none">
 		  <label class="mdui-textfield-label">头文件名</label>
-		  <input class="mdui-textfield-input" type="text" name="header"/>
+		  <input  class="mdui-textfield-input" type="text" name="header"/>
 		</div>
-		<div class="mdui-textfield mdui-textfield-floating-label">
+		<div class="mdui-textfield">
 		  <label class="mdui-textfield-label">匹配规则(自动匹配留空)</label>
-		  <textarea class="mdui-textfield-input" type="text" rows=10 name="matchrule"></textarea>
+		  <textarea use_ace="true" class="mdui-textfield-input" type="text" rows=10 name="matchrule"></textarea>
 		</div>
 
 
