@@ -37,3 +37,20 @@ Echo.channel('Submission')
 	}
 });
 
+var $$ = mdui.JQ;
+function update_editor( obj, editor ) { $$( obj ).val( editor.getValue() ); }
+$$( function(){
+	$$.each( $$('[use_ace=true]') , function (i, obj) {
+		var default_language = $$(obj).attr( 'ace_language' );
+		if( default_language == null ) 
+			default_language = 'markdown';
+		$$( "<div class=\"ace-editor\" id=\"" + $$.guid( i + 'editor' ) + "\"></div>" ).insertAfter(obj);
+		$$( obj ).css( 'display', 'none' );
+		var editor = ace.edit( $$.guid( i + 'editor' ) );
+		editor.setTheme("ace/theme/tomorrow");
+		editor.session.setMode("ace/mode/" + default_language );
+		editor.setOption( 'printMargin', false );
+		editor.setValue( $$(obj).val() );
+		editor.session.on('change', function( delta ) { update_editor( obj, editor ); });
+	});
+});
