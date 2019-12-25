@@ -128,3 +128,16 @@ img.icon-md {
 .ace-editor {
 	height: 50vh;
 }
+#content table{
+	width: 100%;
+	text-align: center;
+	border-collapse: collapse; 
+}
+#content th{
+	text-align: center;
+	border: 1px solid #dee2e6;
+}
+#content td{
+	text-align: center;
+	border: 1px solid #dee2e6;
+}
