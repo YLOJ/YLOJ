@@ -11,7 +11,7 @@
       </div>
     @endif
 
-    <form action="/contest/add_submit" method="post">    
+    <form action="/contest/add_submit" method="post">
 	<div class="mdui-textfield mdui-textfield-floating-label">
 	  <label class="mdui-textfield-label">Title</label>
 	  <input class="mdui-textfield-input" type="text" name="title"  value="" required/>
@@ -28,14 +28,14 @@
           <option value="1"> IOI </option>
           <option value="2"> ACM </option>
         </select>
-  
+
 			</div>
 
 
- 
+
 		<div class="mdui-textfield ">
 		  <label class="mdui-textfield-label">Contest Info</label>
-		  <textarea  use_ace="true" ace_language="markdown"  class="mdui-textfield-input" name="contest_info" rows=20></textarea>
+		  <textarea  class="ace-editor-base" ace_language="markdown"  class="mdui-textfield-input" name="contest_info" rows=20></textarea>
 		</div>
       @include('buttons.submit' , ['text' => 'Add'])
       @csrf

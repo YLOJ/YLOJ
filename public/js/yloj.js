@@ -40,7 +40,7 @@ Echo.channel('Submission')
 var $$ = mdui.JQ;
 function update_editor( obj, editor ) { $$( obj ).val( editor.getValue() ); }
 $$( function(){
-	$$.each( $$('[use_ace=true]') , function (i, obj) {
+	$$.each( $$( '.ace-editor-base' ) , function (i, obj) {
 		var default_language = $$(obj).attr( 'ace_language' );
 		if( default_language == null ) 
 			default_language = 'plain_text';

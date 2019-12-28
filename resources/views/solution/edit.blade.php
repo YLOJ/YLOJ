@@ -19,7 +19,7 @@
     <form action="/problem/solution/edit_submit/{{$id}}" method="post">
 	<div class="mdui-textfield ">
 	  <label class="mdui-textfield-label">Content</label>
-	  <textarea use_ace='true' ace_language="markdown" class="mdui-textfield-input" type="text" rows=20 name="content_md">{{$content_md}}</textarea>
+	  <textarea class="ace-editor-base" ace_language="markdown" class="mdui-textfield-input" type="text" rows=20 name="content_md">{{$content_md}}</textarea>
 	</div>
 
       <br>

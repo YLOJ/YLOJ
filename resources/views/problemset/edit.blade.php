@@ -20,12 +20,12 @@
 	</div>
 	<div class="mdui-textfield">
 	  <label class="mdui-textfield-label">Content</label>
-	  <textarea use_ace="true" ace_language='markdown' class="mdui-textfield-input" type="text" name="content_md" rows=20>{{$content_md}}</textarea>
+	  <textarea class="ace-editor-base" ace_language='markdown' class="mdui-textfield-input" type="text" name="content_md" rows=20>{{$content_md}}</textarea>
 	</div>
 
     <div class="form-check">
       <label>
-     	公开性	
+     	公开性
        </label>
 	<br>
 	<label class="mdui-radio">
@@ -67,4 +67,3 @@
   </div>
 
 @endsection
-

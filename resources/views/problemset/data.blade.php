@@ -15,7 +15,7 @@
 	<div id="uploadData"  class="mdui-p-a-2">
     @if (Storage::disk('data')->exists($id))
       <h3 class="text-success"> Data Uploaded </h3>
-    @else 
+    @else
       <h3 class="text-danger"> No Data Exists </h3>
     @endif
     <form action="/problem/data_submit/{{$id}}" method="post" enctype="multipart/form-data">
@@ -32,7 +32,7 @@
     <form action="/problem/save_config/{{$id}}" method="post" enctype="multipart/form-data">
 	<div class="mdui-textfield">
 	  <label class="mdui-textfield-label">Config</label>
-	  <textarea use_ace="true"  ace_language='yaml'  class="mdui-textfield-input" type="text" rows=10 name="config">{{$config}}</textarea>
+	  <textarea class="ace-editor-base" ace_language='yaml'  class="mdui-textfield-input" type="text" rows=10 name="config">{{$config}}</textarea>
 	</div>
 
       <br> <br>
@@ -47,9 +47,9 @@
 	    <select name="type" id="type" class="mdui-select">
 
 	      <option value="0" selected>传统题</option>
-	
+
 	      <option value="1">交互题(OI style)</option>
-	
+
 	    </select>
 		<script>
 			$("#type").change(function(){
@@ -65,7 +65,7 @@
 		</div>
 		<div class="mdui-textfield">
 		  <label class="mdui-textfield-label">匹配规则(自动匹配留空)</label>
-		  <textarea use_ace="true" class="mdui-textfield-input" type="text" rows=10 name="matchrule"></textarea>
+		  <textarea class="ace-editor-base" class="mdui-textfield-input" type="text" rows=10 name="matchrule"></textarea>
 		</div>
 
 
@@ -91,6 +91,6 @@
 	</div>
 	</div>
 	<br>
-	
+
   </div>
 @endsection
