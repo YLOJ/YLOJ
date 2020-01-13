@@ -383,7 +383,7 @@ class ContestController extends Controller
 				if($contest->rule==2){//ACM mode
 					if($result_user->result[$submission->problem_id]->score_after==1)continue;
 					$result_problem=&$result_user->result[$submission->problem_id];
-					if($submission->result=="Accepted"){
+					if($submission->result==1){
 						$result_problem->score_after=1;
 						$result_problem->id_after=$submission->id;
 						$standing[$name]->score_after+=1;
@@ -428,7 +428,7 @@ class ContestController extends Controller
 								$result_problem->score=$result_problem->score_after=$submission->score;
 								$result_problem->id=$result_problem->id_after=$submission->id;
 								$result_problem->time=$result_user->time=strtotime($submission->created_at)-strtotime($contest->begin_time);
-								if($submission->result=="Accepted"){
+								if($submission->result==1){
 									if(!$fb[$submission->problem_id]){
 										$result_problem->fb=1;
 										$fb[$submission->problem_id]=1;
@@ -453,7 +453,7 @@ class ContestController extends Controller
 
 					if($submission->created_at<=$contest->end_time && !array_key_exists($submission->id,$sk)){
 						$result_problem=&$result_user->result[$submission->problem_id];
-						if($submission->result=="Accepted"){
+						if($submission->result==1){
 							if(!$fb[$submission->problem_id]){
 								$result_problem->fb=1;
 								$fb[$submission->problem_id]=1;
