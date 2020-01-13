@@ -14,7 +14,7 @@
 		    <img src="{{ asset('svg/icons/paper-plane.ico') }}" class="icon-sm"/>  Back
 			</button>
 
-            @include('buttons.jump-icon' , ['href' => url(($contest_id?'/contest/'.$contest_id:'').'/submission?problem_id='.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
+            @include('buttons.jump-icon' , ['href' => url(($contest_id?'/contest/submission/'.$contest_id:'/submission').'?problem_id='.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
 			@if($contest_ended)
             @include('buttons.jump-icon' , ['href' => url('/problem/statistics/'.$id) , 'icon' => 'statistics' , 'text' => 'Statistics'])
 			@endif

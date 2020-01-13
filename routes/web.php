@@ -46,7 +46,7 @@ Route::name('problem.')->prefix('problem')->group(function() {
     Route::get('/solution/{id}', 'ProblemsetController@show_solution')->name('show_solution')->where('id', '[0-9]+');
     Route::get('/solution/{id}/{file}', 'ProblemsetController@view_solution_file')->name('view_solution_file')->where('id', '[0-9]+')->where('file','\S+');
     Route::any('/solution/edit/{id}', 'ProblemsetController@solution_edit')->name('solution_edit')->where('id', '[0-9]+');
-    Route::post('/solution/edit_submit/{id}', 'ProblemsetController@solution_edit_submit')->name('solution_edit_submit')->where('id', '[-1-9]+');
+    Route::post('/solution/edit_submit/{id}', 'ProblemsetController@solution_edit_submit')->name('solution_edit_submit')->where('id', '[0-9]+');
     Route::any('/solution/upload/{id}', 'ProblemsetController@solution_upload')->name('solution_upload')->where('id', '[0-9]+');
     Route::post('/solution/upload_file/{id}', 'ProblemsetController@solution_upload_file')->name('solution_upload_file')->where('id', '[0-9]+');
    Route::any('/solution/delete_file/{id}/{file}', 'ProblemsetController@solution_delete_file')->name('solution_delete_file')->where('id', '[0-9]+')->where('file','\S+');;

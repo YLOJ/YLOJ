@@ -1,17 +1,16 @@
 @extends("layouts.app")
 
 @section("content")
-  <div class="container">
-    <div class="row">
-      <div class="col">
         <div class="text-center">
           <h1> #{{$id}}. {{ $title }} </h1>
 
-          <div class="btn-group-md">
+
+				<a class="mdui-btn mdui-color-theme-accent mdui-btn-raised" href="/problem/{{$id}}">
+				<img src="{{ asset('svg/icons/paper-plane.ico') }}" class="icon-sm"/>  Back</a>
             @auth
               @if ($is_admin)
 
-                <button class="mdui-btn mdui-color-theme-accent" href="javascript:void(0);" onclick="document.getElementById('myform').submit();">
+                <button class="mdui-btn mdui-color-theme-accent mdui-btn-raised" href="javascript:void(0);" onclick="document.getElementById('myform').submit();">
                   <img src="{{ asset('svg/icons/edit.ico') }}" class="icon-sm"/> Edit </button>
                 <form id="myform" method="post" action="/problem/solution/edit/{{$id}}">
                   @csrf
@@ -19,7 +18,6 @@
               @endif
             @endauth
           </div>
-        </div>
 
         <br>
 
@@ -28,8 +26,4 @@
 				echo $content;?>
 			</div>
 		</div>
-
-      </div>
-    </div>
-  </div>
 @endsection 
