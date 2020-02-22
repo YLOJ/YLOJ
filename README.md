@@ -11,7 +11,6 @@ git clone https://github.com/YLOJ/YLOJ
 cd YLOJ
 npm install
 composer install
-npm run dev
 ```
 
 在`mysql`里面建立数据库，假设名字叫做`yloj_data`
