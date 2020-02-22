@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
-use Chumper\Zipper\Zipper;
+use ZipArchive;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 class ProblemsetController extends Controller {
@@ -295,8 +295,9 @@ class ProblemsetController extends Controller {
 				$id . '/data.zip',
 				file_get_contents( $request -> file('data') )
 			);
-			$zipper = new Zipper;
-			$zipper -> make(storage_path('app/data/'.$id.'/data.zip')) -> extractTo(storage_path('app/data/'.$id.'/'));
+			$zip=new ZipArchive;
+			$zip->open(storage_path('app/data/'.$id.'/data.zip'));
+			$zip->extractTo(storage_path('app/data/'.$id.'/'));
 			if (!Storage::disk('data')->exists($id.'/config.yml')){
 				Storage::disk('data')->put($id.'/config.yml','');
 			}
