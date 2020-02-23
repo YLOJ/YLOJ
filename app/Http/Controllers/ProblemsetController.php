@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
 use ZipArchive;
+use Chumper\Zipper\Zipper;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 class ProblemsetController extends Controller {
@@ -320,20 +321,6 @@ class ProblemsetController extends Controller {
 	public function data_download($id)
 	{
 		if (in_array($id,$this->problemManageList())){
-			$files = glob(storage_path('app/data/'.$id.'/'));
-			$zipper=new Zipper();
-			$zipper->make(storage_path('app/data/'.$id.'.zip'))->add($files)->close();
-			return Storage::disk('data')->download("$id.zip", "data_$id.zip");
-		} else {
-			return redirect('404');
-		}
-	}
-
-	public function data_download_api(Request $request)
-	{
-
-		if($request->token == env('DATA_DOWNLOAD_TOKEN')){
-			$id=$request->id;
 			$files = glob(storage_path('app/data/'.$id.'/'));
 			$zipper=new Zipper();
 			$zipper->make(storage_path('app/data/'.$id.'.zip'))->add($files)->close();
