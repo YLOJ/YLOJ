@@ -12,7 +12,7 @@
     @foreach ($problemset as $problem)
       <tr>
       <td style="text-align:center"> {{ $problem -> id }} </td>
-      <td style="text-align:center"> <a href="/problem/{{ $problem->id }}"> {{$problem->title}} </a> </td>
+      <td style="text-align:center"> <a href="/problem/{{ $problem->id }}?contest_id={{$cid}}"> {{$problem->title}} </a> </td>
       <?php $x = (($problem -> id ^ 43863) * 4367 + 4385) % 233 - 100; ?>
 
       @if ($x > 0)
