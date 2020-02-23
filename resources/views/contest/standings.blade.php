@@ -12,7 +12,7 @@
     <table id="standings" class="mdui-table mdui-table-hoverable" style="layout:fixed">
       <thead>
         <tr>
-          <th style="width: 5%">Rank</th>
+          <th style="width: 5%;text-align:center">#</th>
           <th style="width: 15%;word-break:break-all">Username</th>
           <th style="width: 15%;word-break:break-all">Nickname</th>
 		<?php
@@ -36,7 +36,7 @@
 @else
     <tr>
 @endif
-          <td> {{ $user -> rank}} </td>
+          <td style="text-align:center"> {{ $user -> rank}} </td>
 		  <td style="word-break:break-all"> {{ $user -> user_name }} 
 @if(!$user->in_contest)
 *

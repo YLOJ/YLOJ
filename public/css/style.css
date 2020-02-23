@@ -24,7 +24,8 @@
 }
 #standings td{
 	text-align: center;
-	padding: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 #standings th{
@@ -140,4 +141,7 @@ img.icon-md {
 #content td{
 	text-align: center;
 	border: 1px solid #dee2e6;
+}
+#contest th,#contest td{
+	text-align:center;
 }

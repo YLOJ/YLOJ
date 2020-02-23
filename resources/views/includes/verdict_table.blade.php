@@ -3,7 +3,7 @@
 ?>
 <thead> 
   <tr>
-    <th> {{ $first_column }} </th>
+    <th style="text-align:center">#</th>
     <th>Problem Name</th>
     <th>User</th>
     <th>Result</th>
