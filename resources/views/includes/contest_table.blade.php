@@ -1,10 +1,10 @@
 @if($contests -> count() > 0)
 	<h3> {{ $title }} </h3>
-	<table class="mdui-table mdui-table-hoverable mdui-hoverable">
+	<table class="mdui-table mdui-table-hoverable mdui-hoverable" id="contest">
 		<thead>
 			<tr>
-				<th style="width:8%"> ID </th>
-				<th style="width:32%"> Contest Name </th>
+				<th style="width:4%"> # </th>
+				<th style="width:36%"> Contest Name </th>
 				<th style="width:18%"> Begin Time </th>
 				<th style="width:18%"> End Time </th>
 				<th style="width:12%"> Duration </th>
@@ -32,11 +32,11 @@
 				</td>
 
 				@if($contest->rule==0)
-	            	<td class="text-success"> <b> OI </b> </td>
+	            	<td class="text-success" > <b> OI </b> </td>
 				@elseif($contest->rule==1)
 	            	<td class="text-success"> <b> IOI </b> </td>
 				@elseif($contest->rule==2)
-	            	<td class="text-success"> <b> ACM </b> </td>
+	            	<td class="text-success"> <b> ICPC </b> </td>
 				@endif
 					</tr>
 				@endforeach

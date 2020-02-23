@@ -4,7 +4,7 @@
   $sub -> url = url("submission/".$sub -> id);
 ?>
 
-<td> 
+<td style="text-align:center"> 
 
   {{ $sub -> id }} 
 </td>
