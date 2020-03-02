@@ -50,6 +50,8 @@
 
 	      <option value="1">交互题(OI style)</option>
 
+	      <option value="2">交互题(IO style)</option>
+
 	    </select>
 		<script>
 			$("#type").change(function(){
