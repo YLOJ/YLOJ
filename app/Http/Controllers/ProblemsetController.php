@@ -80,6 +80,14 @@ class ProblemsetController extends Controller {
 							($sameML?("Memory Limit: ".$memory_limit."<br>"):"")."Input File: ".$input_file."<br>Output File: ".$output_file."<br>";
 					}
 					else if($type==1){
+						if(array_key_exists('time_limit_same',$config))
+							$sameTL=filter_var($config["time_limit_same"], FILTER_VALIDATE_BOOLEAN);
+						else $sameTL=1;
+
+						if(array_key_exists('memory_limit_same',$config))
+							$sameML=filter_var($config["memory_limit_same"], FILTER_VALIDATE_BOOLEAN);
+						else $sameML=1;
+
 						if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
 						else $time_limit=1000;
 						$time_limit.=' ms';
@@ -88,9 +96,31 @@ class ProblemsetController extends Controller {
 						else $memory_limit=256000;
 						$memory_limit.=' KB';
 		
-						$head="Time Limit: ".$time_limit."<br>Memory Limit: ".
-							$memory_limit."<br>Type: Interactive(OI)<br>";
+						$head=($sameTL?("Time Limit: ".$time_limit."<br>"):"").
+							($sameML?("Memory Limit: ".$memory_limit."<br>"):"")."Type: Interactive(OI)<br>";
 					}
+					else if($type==2){
+												if(array_key_exists('time_limit_same',$config))
+							$sameTL=filter_var($config["time_limit_same"], FILTER_VALIDATE_BOOLEAN);
+						else $sameTL=1;
+
+						if(array_key_exists('memory_limit_same',$config))
+							$sameML=filter_var($config["memory_limit_same"], FILTER_VALIDATE_BOOLEAN);
+						else $sameML=1;
+
+						if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
+						else $time_limit=1000;
+						$time_limit.=' ms';
+
+						if(array_key_exists('memory_limit',$config))$memory_limit=$config['memory_limit'];
+						else $memory_limit=256000;
+						$memory_limit.=' KB';
+
+						$head=($sameTL?("Time Limit: ".$time_limit."<br>"):"").
+							($sameML?("Memory Limit: ".$memory_limit."<br>"):"")."Type: Interactive(IO)<br>";
+
+					}
+					else $head="Unknown Type";
 				} catch (ParseException $exception) {
    					 $head='Unable to parse the YAML string: '.$exception->getMessage().'<br>';
 				}

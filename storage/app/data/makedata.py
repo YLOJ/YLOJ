@@ -75,12 +75,24 @@ type: 1
     else:
         print("Header File Not Found")
         sys.exit()
+elif type[0]=='2':
+    if "./{}/interactor.cpp".format(s[0]) in ls:
+        print("Interactor Found")
+        os.system("cp ./{0}/interactor.cpp ./{0}-new/".format(s[0]))
+        config="""time_limit: 1000
+memory_limit: 256000
+type: 2
+"""
+    else:
+        print("Interactor Not Found")
+        sys.exit()
+if type[0]!='2':
+    if './{}/chk.cpp'.format(s[0]) in ls:
+        os.system("cp {0}/chk.cpp {0}-new/chk.cpp".format(s[0]))
+        print("checker found") 
+    else:
+        config+='checker: fcmp\n'
 
-if './{}/chk.cpp'.format(s[0]) in ls:
-    os.system("cp {0}/chk.cpp {0}-new/chk.cpp".format(s[0]))
-    print("checker found") 
-else:
-    config+='checker: fcmp\n'
 if len(s)==1 or len(s)==2:
     allin1= len(s)==1
     s=s[0]
