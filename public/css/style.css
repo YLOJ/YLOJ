@@ -159,3 +159,6 @@ body {
 .mdui-btn{
   font-family: Roboto, Noto, Helvetica, Arial, sans-serif;
 }
+#content a{
+	display: inline!important;
+}
