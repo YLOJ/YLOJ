@@ -22,7 +22,7 @@
     </script>
 
 
-   <link href="{{ asset('css/style.css?v=20200223') }}" rel="stylesheet">
+   <link href="{{ asset('css/style.css?v=20200312') }}" rel="stylesheet">
 
    <!--	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
@@ -42,11 +42,11 @@
 				<a class="mdui-btn mdui-ripple  " href="/"><span class="mdui-typo-title">{{ config('app.name', 'YLOJ') }}</span></a>
 				<div class="mdui-toolbar-spacer"></div>
 			@guest
-				<a class="mdui-typo-title top-btn mdui-ripple  " href="{{ route('login') }}">Login</a>
-				<a class="mdui-typo-title top-btn mdui-ripple  " href="{{ route('register') }}">Register</a>
+				<a class="mdui-btn mdui-ripple  " href="{{route('login')}}"><span class="mdui-typo-title">Login</span></a>
+				<a class="mdui-btn mdui-ripple  " href="{{route('register')}}"><span class="mdui-typo-title">Register</span></a>
 			@else
 
-				<a class="mdui-typo-title top-btn mdui-ripple  " mdui-menu="{target: '#example-1',covered: false}">{{ Auth::user()->name }}</a>
+				<a class="mdui-btn top-btn mdui-ripple" mdui-menu="{target: '#example-1',covered: false}"><span class="mdui-typo-title">{{ Auth::user()->name }}</span></a>
 <!--   -->
 			  <ul class="mdui-menu " id="example-1">
 			    <li class="mdui-menu-item">
@@ -61,10 +61,10 @@
 			  </ul>
 
 
-				<a class="mdui-typo-title top-btn mdui-ripple  " href="{{ route('logout') }}"
+				<a class="mdui-btn top-btn mdui-ripple  " href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
-                {{ __('Logout') }}</a>
+									<span class="mdui-typo-title">{{ __('Logout') }}</span></a>
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                       @csrf

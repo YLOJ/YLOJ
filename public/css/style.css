@@ -8,6 +8,11 @@
     font-family: monaco;
 	src: url("/fonts/monaco.ttf");
 }
+
+@font-face{
+    font-family: microhei;
+	src: url("/fonts/wqy-microhei.ttf");
+}
 .mdui-container{
 	padding: 1.5rem;
 }
@@ -123,7 +128,7 @@ img.icon-md {
 
 }
 .mdui-typo code, .mdui-typo kbd, .mdui-typo pre, .mdui-typo pre tt, .mdui-typo samp {
-    font-family: 'monaco' !important;
+    font-family: monaco !important;
 }
 
 .ace-editor {
@@ -147,4 +152,10 @@ img.icon-md {
 }
 #content p{
 	text-indent: 2em;	
+}
+body {
+	font-family: microhei, serif!important;
+}
+.mdui-btn{
+  font-family: Roboto, Noto, Helvetica, Arial, sans-serif;
 }
