@@ -145,3 +145,6 @@ img.icon-md {
 #contest th,#contest td{
 	text-align:center;
 }
+#content p{
+	text-indent: 2em;	
+}
