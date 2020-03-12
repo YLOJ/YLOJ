@@ -21,7 +21,7 @@
 
         <br>
 
-		<div class="mdui-card mdui-hoverable">
+		<div class="mdui-card mdui-hoverable" id="content">
 			<div class="mdui-card-content"><?php
 				echo $content;?>
 			</div>
