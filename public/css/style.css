@@ -159,7 +159,6 @@ body {
   font-family: Roboto, Noto, Helvetica, Arial, sans-serif;
 }
 #content a,span{
-	display: inline!important;
 	text-indent: 0 !important;	
 }
 .mdui-typo blockquote{
