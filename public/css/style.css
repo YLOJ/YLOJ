@@ -158,6 +158,10 @@ body {
 .mdui-btn{
   font-family: Roboto, Noto, Helvetica, Arial, sans-serif;
 }
-#content a{
+#content a,span{
 	display: inline!important;
+}
+.mdui-typo blockquote{
+	padding-left: 0!important;
+	margin: 0!important;
 }
