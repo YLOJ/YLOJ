@@ -160,6 +160,7 @@ body {
 }
 #content a,span{
 	display: inline!important;
+	text-indent: 0 !important;	
 }
 .mdui-typo blockquote{
 	padding-left: 0!important;
