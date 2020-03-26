@@ -9,8 +9,8 @@
 	src: url("/fonts/monaco.ttf");
 }
 @font-face{
-    font-family: microhei;
-	src: url("/fonts/wqy-microhei.ttf");
+    font-family: stix;
+	src: url("/fonts/STIX2Text-Regular.otf");
 }
 .mdui-container{
 	padding: 1.5rem;
@@ -129,7 +129,9 @@ img.icon-md {
 .mdui-typo code, .mdui-typo kbd, .mdui-typo pre, .mdui-typo pre tt, .mdui-typo samp {
     font-family: monaco !important;
 }
-
+.mdui-container{
+    font-family: stix !important;
+}
 .ace-editor {
 	height: 50vh;
 }
