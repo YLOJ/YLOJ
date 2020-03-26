@@ -22,7 +22,7 @@
     </script>
 
 
-   <link href="{{ asset('css/style.css?v=20200325') }}" rel="stylesheet">
+   <link href="{{ asset('css/style.css?v=20200326') }}" rel="stylesheet">
 
    <!--	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-grid.css') }}" rel="stylesheet">
