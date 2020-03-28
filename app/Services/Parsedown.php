@@ -401,7 +401,7 @@ class Parsedown
 
     protected function blockLatexContinue($Line, $Block = null)
     {
-		if( $Line['body'][0] == $Line['body'][1] && $Line['body'][0] == '$' ) {
+		if( isset( $Line['body'][1] ) && $Line['body'][0] == $Line['body'][1] && $Line['body'][0] == '$' ) {
 			unset($Block['continuable']);
 			$Block['element']['text']['text'] .= $Line['body'];
 			return $Block;
