@@ -17,9 +17,12 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 class ProblemsetController extends Controller {
 
-    public function index()
-    { $problemset = $this->problemShowListSQL()->paginate(50);
-        return view('problemset.list', ['problemset' => $problemset]);
+    public function index(Request $request)
+	{ 
+		$table=$this->problemShowListSQL();
+		if(isset($request->keyword))
+			$table=$table->where('title','like','%'.$request->keyword.'%');
+        return view('problemset.list', ['problemset' => $table->paginate(50)]);
     }
 	public function getProblemList($id){
 		$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
