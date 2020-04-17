@@ -167,3 +167,6 @@ body {
 	padding-left: 0!important;
 	margin: 0!important;
 }
+.mdui-textfield .mdui-icon {
+    padding: 0!important;
+}
