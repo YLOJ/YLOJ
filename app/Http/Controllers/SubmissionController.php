@@ -112,11 +112,15 @@ class SubmissionController extends Controller
 		}
 		else $in_running_contest=0;
 		if (!in_array($sub->problem_id,$this->problemManageList())) {
-			if($in_running_contest){
-				$rule=$contest->rule;
-				if($sub->user_id != Auth::user()->id)return redirect('404');
+			if($sub->contest_id!=NULL){
+				if(!in_array($sub->contest_id,$this->contestShowList()))return redirect('404');
+				if(!in_array($sub->contest_id,$this->contestManageList())&&NOW()<$contest->begin_time)return redirect('404');
+				if($in_running_contest){
+					$rule=$contest->rule;
+					if($sub->user_id != Auth::user()->id)return redirect('404');
+				}
 			}
-			else if (!in_array($sub->problem_id,$this->problemShowList()))
+			else if(!in_array($sub->problem_id,$this->problemShowList()))
 				return redirect('404');
 			$permission=0;
         }
