@@ -106,13 +106,15 @@ class SubmissionController extends Controller
         $sub = DB::table('submission') -> where('id', $id) -> first();
 		$rule= -1;
 		$show_code=1;
+		if($sub -> contest_id!=NULL){
+			$contest=DB::table('contest')->where('id',$sub->contest_id)->first();
+			$in_running_contest=$contest->begin_time<=NOW() && NOW()<=$contest->end_time;
+		}
+		else $in_running_contest=0;
 		if (!in_array($sub->problem_id,$this->problemManageList())) {
-			if($sub -> contest_id!=NULL){
-				$contest=DB::table('contest')->where('id',$sub->contest_id)->first();
-				if($contest->begin_time<=NOW() && NOW()<=$contest->end_time){
-					$rule=$contest->rule;
-					if($sub->user_id != Auth::user()->id)return redirect('404');
-				}
+			if($in_running_contest){
+				$rule=$contest->rule;
+				if($sub->user_id != Auth::user()->id)return redirect('404');
 			}
 			else if (!in_array($sub->problem_id,$this->problemShowList()))
 				return redirect('404');
@@ -120,8 +122,7 @@ class SubmissionController extends Controller
         }
 		else 
 			$permission=1;
-//		if($sub->user_id != Auth::user()->id)$show_code=0;
-		if(!config("app.show_contest_submission_code",true)&&$sub -> contest_id!=NULL && $sub->user_id != Auth::user()->id)$show_code=0;
+		if(!config("app.show_contest_submission_code",true)&&$in_running_contest && $sub->user_id != Auth::user()->id)$show_code=0;
 		if($sub->result<=8)
 			$sub->judge_info=json_decode($sub->judge_info);
 		if($permission==1)
