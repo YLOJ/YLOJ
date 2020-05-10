@@ -228,6 +228,6 @@ return [
 
 		'Zipper' => Chumper\Zipper\Zipper::class,
 
-    ],
-
+	],
+	'show_contest_submission_code' => env('SHOW_CONTEST_SUBMISSION_CODE', true)
 ];
