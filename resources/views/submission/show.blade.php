@@ -18,7 +18,12 @@
               @include('includes.verdict', ['sub' => $sub])
             </tr>
           </tbody>
-        </table>
+		</table>
+		<?php
+			if(isset($show_code)&&!$show_code){
+				$sub->source_code="";	
+			}
+		?>
           @component('includes.collapse_box', ['id' => 'code', 'title' => 'Source Code','main'=>1])
             <pre><code class="language-cpp">{{ $sub -> source_code }}</code></pre>
           @endcomponent
