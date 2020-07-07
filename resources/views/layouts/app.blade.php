@@ -12,10 +12,9 @@
     	<script src="{{ asset('js/color-converter.min.js') }}" defer></script>
     	<script src="{{ asset('js/ace.js/ace.js') }}" defer></script>
     	<script src="{{ asset('js/yloj.js?v=20191225') }}" defer></script>
-    	<script src=" https://code.jquery.com/jquery-2.1.3.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery/3.5.1/jquery.min.js"></script>
 
-    <script type="text/javascript" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+		<script src="https://cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     </script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
