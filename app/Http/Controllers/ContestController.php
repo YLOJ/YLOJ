@@ -346,7 +346,7 @@ class ContestController extends Controller
 		) 
 		{
 			$data = DB::table('submission') -> where('contest_id', $cid) 
-								   -> where('created_at', '>=', $contest -> begin_time)->orderby("id","asc")->get()->toarray();
+								   ->orderby("id","asc")->get()->toarray();
 			$standing=array();
 			$contest->problemset=$this->getProblemList($cid);
 			$fb=array();
@@ -361,7 +361,8 @@ class ContestController extends Controller
 						$standing[$name]->nickname=$nickname->first()->nickname;
 					else $standing[$name]->nickname="";
 					$standing[$name]->result=array();
-					if($submission->created_at<=$contest->end_time)$standing[$name]->in_contest=1;
+					if($contest->begin_time<=$submission->created_at&&$submission->created_at<=$contest->end_time)
+						$standing[$name]->in_contest=1;
 					else $standing[$name]->in_contest=0;
 					foreach($contest->problemset as $pid){
 						$result_problem=&$standing[$name]->result[$pid];
@@ -387,7 +388,7 @@ class ContestController extends Controller
 						$result_problem->score_after=1;
 						$result_problem->id_after=$submission->id;
 						$standing[$name]->score_after+=1;
-						if($submission->created_at<=$contest->end_time){
+						if($contest->begin_time<=$submission->created_at&&$submission->created_at<=$contest->end_time){
 							$standing[$name]->score+=1;
 							$result_problem->score=1;
 							$result_problem->id=$submission->id;
@@ -400,14 +401,14 @@ class ContestController extends Controller
 						}
 					}
 					else
-						if($submission->created_at<=$contest->end_time){
+						if($contest->begin_time<=$submission->created_at&&$submission->created_at<=$contest->end_time){
 							++$result_problem->try;
 						}
 				}
 				else{
 					if($contest->rule==0){//OI rule
 						$result_problem=&$result_user->result[$submission->problem_id];
-						if($submission->created_at<=$contest->end_time){
+						if($contest->begin_time<=$submission->created_at&&$submission->created_at<=$contest->end_time){
 							$sk[$result_problem->id]=1;
 							$result_user->score+=$submission->score-$result_problem->score;
 							$result_problem->score=$submission->score;
@@ -422,7 +423,7 @@ class ContestController extends Controller
 					}
 					else{//IOI?
 						$result_problem=&$result_user->result[$submission->problem_id];
-						if($submission->created_at<=$contest->end_time){
+						if($contest->begin_time<=$submission->created_at&&$submission->created_at<=$contest->end_time){
 							if(!$result_problem->id|| $submission->score>$result_problem->score){
 								$result_user->score=$result_user->score_after+=$submission->score-$result_problem->score;
 								$result_problem->score=$result_problem->score_after=$submission->score;
@@ -451,7 +452,7 @@ class ContestController extends Controller
 					$name=$submission->user_name;
 					$result_user=&$standing[$name];
 
-					if($submission->created_at<=$contest->end_time && !array_key_exists($submission->id,$sk)){
+					if($contest->begin_time<=$submission->created_at&&$submission->created_at<=$contest->end_time && !array_key_exists($submission->id,$sk)){
 						$result_problem=&$result_user->result[$submission->problem_id];
 						if($submission->result==1){
 							if(!$fb[$submission->problem_id]){
