@@ -24,10 +24,6 @@ class ProblemsetController extends Controller {
 			$table=$table->where('title','like','%'.$request->keyword.'%');
         return view('problemset.list', ['problemset' => $table->paginate(50)]);
     }
-	public function getProblemList($id){
-		$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
-		return $problems;
-	}
 
     public function show(Request $request,$id)
     {

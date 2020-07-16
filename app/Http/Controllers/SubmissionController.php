@@ -41,7 +41,18 @@ class SubmissionController extends Controller
 
     public function statistics($id, Request $request)
 	{
-		if(!in_array($id,$this->problemShowList()))return redirect('404');
+		$cid=isset($request->contest_id)?$request->contest_id:NULL;
+		if($cid){
+			if(!in_array($id,$this->getProblemList($cid)))return redirect('404');
+			if(
+				!in_array($cid,$this->contestEndedList())
+				&&!in_array($id,$this->problemManageList())
+			)return redirect('404');
+		}
+		else{
+			if(!in_array($id,$this->problemShowList()))
+				return redirect('404');
+		}
 
         $page = $request -> page ?: 1;
         $perPage = 10;

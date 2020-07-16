@@ -16,7 +16,7 @@
 
             @include('buttons.jump-icon' , ['href' => url(($contest_id?'/contest/submission/'.$contest_id:'/submission').'?problem_id='.$id) , 'icon' => 'text-left' , 'text' => 'Submissions'])
 			@if($contest_ended)
-            @include('buttons.jump-icon' , ['href' => url('/problem/statistics/'.$id) , 'icon' => 'statistics' , 'text' => 'Statistics'])
+            @include('buttons.jump-icon' , ['href' => url('/problem/statistics/'.$id.($contest_id?'?contest_id='.$contest_id:'')) , 'icon' => 'statistics' , 'text' => 'Statistics'])
 			@endif
             @include('buttons.jump-icon' , ['href' => url('/problem/customtests/') , 'icon' => 'test-file' , 'text' => 'Custom tests'])
 			@if($contest_ended)
