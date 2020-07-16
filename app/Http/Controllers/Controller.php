@@ -55,7 +55,6 @@ class Controller extends BaseController
 	public function contestShowList(){
 		return array_column($this->contestShowListSQL()->get()->toArray(),'id');
 	}
-
 	public function contestEndedList(){
 		return array_column($this->contestShowListSQL()->where("end_time","<=",now())->get()->toArray(),'id');
 	}
@@ -66,5 +65,9 @@ class Controller extends BaseController
 			else return array_column(DB::select('select contest_id from contest_manager where username=?',[Auth::user()->name]),'contest_id');	
 		}
 		return array();
+	}
+	public function getProblemList($id){
+		$problems=array_column(DB::select('select problem from contest_problems where id=?',[$id]),'problem');
+		return $problems;
 	}
 }
