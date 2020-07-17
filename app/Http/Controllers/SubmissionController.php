@@ -146,14 +146,24 @@ class SubmissionController extends Controller
     }
 	public function update(Request $request){
 		$req=$request->all();
-		if($req ['token'] != env('UPDATE_SUBMISSION_TOKEN'))return redirect('404');
+		if($req ['token'] != env('UPDATE_SUBMISSION_TOKEN'))return "kill";
 		unset($req['token']);
-        $sub = DB::table('submission') -> where('id', $req['id']) -> first();
+		$tb=DB::table('submission') -> where('id', $req['id']);
+		if(!$tb->exists())return "kill";
+        $sub = $tb-> first();
+		$tb->update(['result'=>$req['result'],
+			'data_id'=>$req['data_id'],
+			'score'=>$req['score'],
+			'time_used'=>$req['time'],
+			'memory_used'=>$req['memory'],
+			'judge_info'=>$req['judge_info']
+			]);
 		if($sub->contest_id!=NULL){
         	$contest = DB::table('contest') -> where('id', $sub->contest_id) -> first();
-			if($contest->rule==0 && now()<$contest->end_time)return;
+			if($contest->rule==0 && now()<$contest->end_time)return "ok";
 		}
 		broadcast(new Submission($req));
+		return "ok";
 	}
     public function rejudge($id)
     {
