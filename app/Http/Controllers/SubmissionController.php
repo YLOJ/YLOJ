@@ -198,14 +198,6 @@ class SubmissionController extends Controller
         return redirect('submission');
     }
 
-    public function delete_problem_submission($id)
-    {
-
-		if (!in_array($id,$this->problemManageList()))
-            return redirect('404');
-        DB::table('submission') -> where('problem_id', '=', $id) -> delete();
-        return redirect('problem/edit/'.$id);
-    }
     public function customtests() 
 	{
 		if(!Auth::check())return redirect("404");

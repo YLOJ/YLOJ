@@ -58,8 +58,6 @@
 	<br>
 	<br>
 	<div class="mdui-btn-group">
-    @include('buttons.jump-col', ['href' => '/submission/delete_problem/'.$id , 'text' => 'Delete All Submission'])
-    &nbsp &nbsp
     @include('buttons.jump-col', ['href' => '/submission/rejudge_problem/'.$id , 'text' => 'Rejudge All Submission'])
     &nbsp &nbsp
     @include('buttons.jump-col', ['href' => '/submission/rejudge_problem_ac/'.$id , 'text' => 'Rejudge All AC Submission'])
