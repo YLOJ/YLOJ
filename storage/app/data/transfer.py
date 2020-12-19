@@ -13,8 +13,9 @@ with open(name,"r") as f:
 testdata={}
 config.pop("time_limit_same",None)
 config.pop("memory_limit_same",None)
-if config['checker']=='fcmp':
-    config['checker']='noip'
+if 'checker' in config.keys():
+    if config['checker']=='fcmp':
+        config['checker']='noip'
 c=config['subtask_num']
 for i in range(1,c+1):
     d=config['subtask{}'.format(i)]['data_num']
