@@ -49,18 +49,10 @@ class ProblemsetController extends Controller {
 		}
 			if (Storage::disk('data')->exists($id.'/config.yml') && Storage::disk('data')->get($id.'/config.yml')){
 				try {
-					$config=Yaml::parse(Storage::disk('data')->get($id.'/config.yml'));
+					$config=Yaml::parse(Storage::disk('data')->get($id.'/config.yml'))['config'];
 					if(array_key_exists('type',$config))$type=$config['type'];
 					else $type=0;
 					if($type==0){
-						if(array_key_exists('time_limit_same',$config))
-							$sameTL=filter_var($config["time_limit_same"], FILTER_VALIDATE_BOOLEAN);
-						else $sameTL=1;
-
-						if(array_key_exists('memory_limit_same',$config))
-							$sameML=filter_var($config["memory_limit_same"], FILTER_VALIDATE_BOOLEAN);
-						else $sameML=1;
-
 						if(array_key_exists('time_limit',$config))$time_limit=$config['time_limit'];
 						else $time_limit=1000;
 						$time_limit.=' ms';
@@ -75,8 +67,8 @@ class ProblemsetController extends Controller {
 						if(array_key_exists('output_file',$config))$output_file=$config['output_file'];
 						else $output_file='Standard Output';
 
-						$head=($sameTL?("Time Limit: ".$time_limit."<br>"):"").
-							($sameML?("Memory Limit: ".$memory_limit."<br>"):"")."Input File: ".$input_file."<br>Output File: ".$output_file."<br>";
+						$head="Time Limit: ".$time_limit."<br>".
+							"Memory Limit: ".$memory_limit."<br>"."Input File: ".$input_file."<br>Output File: ".$output_file."<br>";
 					}
 					else if($type==1){
 						if(array_key_exists('time_limit_same',$config))
@@ -278,16 +270,17 @@ class ProblemsetController extends Controller {
 	public function data(Request $request,$id)
 	{
 		if (in_array($id,$this->problemManageList())){
-			if (Storage::disk('data')->exists($id.'-new/log'))
-				$log=Storage::disk('data')->get($id.'-new/log');
+			if (Storage::disk('data')->exists($id.'/config-new.yml'))
+				$newconf=Storage::disk('data')->get($id.'/config-new.yml');
 			else
-				$log='';
+				$newconf='';
+
 			if (Storage::disk('data')->exists($id.'/config.yml'))
 				$config=Storage::disk('data')->get($id.'/config.yml');
 			else
 				$config='';
 			$page=$request->page?$request->page:1;
-			return view('problemset.data', [ 'id' => $id, 'config'=>$config, 'log'=>$log,'page'=>$page]);
+			return view('problemset.data', [ 'id' => $id, 'config'=>$config, 'newconf'=>$newconf,'page'=>$page]);
 		} else {
 			return redirect('404');
 		}
@@ -307,8 +300,8 @@ class ProblemsetController extends Controller {
 	public function match_check(Request $request, $id){
 		if (in_array($id,$this->problemManageList())){
 			if($request -> input('check')==1){
-				Storage::deleteDirectory('data/'.$id);
-				Storage::move('data/'.$id.'-new','data/'.$id);
+				Storage::delete('data/'.$id.'/config.yml');
+				Storage::move('data/'.$id.'/config-new.yml','data/'.$id.'/config.yml');
 				return redirect(route('problem.data', $id).'?page=2');
 			}
 			return redirect(route('problem.data', $id).'?page=3');
