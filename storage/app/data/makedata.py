@@ -178,9 +178,9 @@ else:
     config+="  subtask_num: {}\n".format(subid)
     for i in range(1,subid+1):
         config+="""  subtask{}: 
-    type: sum 
+    type: {}
     score: {}
-""".format(i,(100+i-1)//subid)
+""".format(i,"sum" if subid==1 else "min",(100+i-1)//subid)
         if i>1:
             config+="    # dependency: []\n"
 print(config+testdata)
